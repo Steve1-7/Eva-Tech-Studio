@@ -12,18 +12,18 @@ interface Metric {
 }
 
 const INITIAL_METRICS: Metric[] = [
-  { label: 'Revenue Generated', value: 12, prefix: 'R', suffix: 'M+', trend: 'up', trendValue: 12 },
-  { label: 'Active Campaigns', value: 48, suffix: '', trend: 'up', trendValue: 8 },
-  { label: 'Avg. ROAS', value: 4.8, suffix: '×', trend: 'up', trendValue: 0.4 },
-  { label: 'New Leads Today', value: 23, suffix: '', trend: 'up', trendValue: 15 },
+  { label: 'Revenue Generated', value: 100, prefix: 'R', suffix: 'K+', trend: 'up', trendValue: 12 },
+  { label: 'Active Campaigns', value: 8, suffix: '', trend: 'up', trendValue: 8 },
+  { label: 'Avg. ROAS', value: 2.8, suffix: '×', trend: 'up', trendValue: 0.4 },
+  { label: 'New Leads Today', value: 5, suffix: '', trend: 'up', trendValue: 15 },
 ]
 
 const RECENT_EVENTS = [
-  { time: '2m ago', event: 'Outpost Outdoors generated R48K in sales', type: 'revenue' },
-  { time: '5m ago', event: 'NovaSpark hit 340% organic traffic growth', type: 'growth' },
-  { time: '8m ago', event: 'New lead from Google Ads — Vertex Financial', type: 'lead' },
-  { time: '12m ago', event: 'Lumis Beauty reached R1M in Shopify revenue', type: 'revenue' },
-  { time: '15m ago', event: 'Drift Labs campaign ROAS hit 7.2×', type: 'metric' },
+  { time: '2m ago', event: 'DripGather generated R12K in sales', type: 'revenue' },
+  { time: '5m ago', event: 'PromptlyOS onboarded 3 new users', type: 'growth' },
+  { time: '8m ago', event: 'New lead from Google Ads — local SME', type: 'lead' },
+  { time: '12m ago', event: 'DripGather AI recommendation engine deployed', type: 'metric' },
+  { time: '15m ago', event: 'PromptlyOS career dashboard ROAS hit 2.8×', type: 'metric' },
 ]
 
 export default function LiveDashboard() {

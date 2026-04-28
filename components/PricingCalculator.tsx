@@ -1,15 +1,16 @@
 'use client'
 import { useState, useMemo } from 'react'
+import Link from 'next/link'
 import SectionLabel from './SectionLabel'
 import CountUp from './CountUp'
 
 const SERVICES = [
-  { id: 'social', name: 'Social Media Marketing', basePrice: 5500, desc: 'Content creation, posting, community management' },
-  { id: 'ads', name: 'Paid Ads Management', basePrice: 7500, desc: 'Campaign setup, optimization, reporting (excl. ad spend)' },
-  { id: 'seo', name: 'SEO & Content', basePrice: 4500, desc: 'Technical SEO, content strategy, link building' },
-  { id: 'web', name: 'Website Development', basePrice: 10000, desc: 'Custom design, development, optimization (once-off)' },
-  { id: 'email', name: 'Email Marketing', basePrice: 3500, desc: 'Campaign design, automation, list management' },
-  { id: 'brand', name: 'Branding & Design', basePrice: 8000, desc: 'Logo, brand guidelines, marketing assets (once-off)' },
+  { id: 'social', name: 'Social Media Marketing', basePrice: 4675, desc: 'Content creation, posting, community management' },
+  { id: 'ads', name: 'Paid Ads Management', basePrice: 6375, desc: 'Campaign setup, optimization, reporting (excl. ad spend)' },
+  { id: 'seo', name: 'SEO & Content', basePrice: 3825, desc: 'Technical SEO, content strategy, link building' },
+  { id: 'web', name: 'Website Development', basePrice: 8500, desc: 'Custom design, development, optimization (once-off)' },
+  { id: 'email', name: 'Email Marketing', basePrice: 2975, desc: 'Campaign design, automation, list management' },
+  { id: 'brand', name: 'Branding & Design', basePrice: 6800, desc: 'Logo, brand guidelines, marketing assets (once-off)' },
 ]
 
 const TIERS = [
@@ -170,9 +171,9 @@ export default function PricingCalculator() {
                 </div>
               </div>
 
-              <button className="btn-primary w-full justify-center py-4 text-[0.9rem]">
+              <Link href="/contact" className="btn-primary w-full justify-center py-4 text-[0.9rem] flex items-center">
                 Get Custom Quote →
-              </button>
+              </Link>
             </div>
           </div>
         </div>

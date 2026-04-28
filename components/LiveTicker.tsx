@@ -2,14 +2,14 @@
 import { useEffect, useState } from 'react'
 
 const EVENTS = [
-  { icon: '🎯', msg: 'Outpost Outdoors just generated R48K in sales today' },
-  { icon: '📈', msg: 'NovaSpark hit 340% organic traffic growth this month' },
-  { icon: '⚡', msg: 'New lead from Google Ads — Vertex Financial' },
-  { icon: '🛒', msg: 'Lumis Beauty reached R1M in Shopify revenue' },
-  { icon: '🎉', msg: 'Meridian Consulting closed 3 deals via automated nurture sequence' },
-  { icon: '📊', msg: 'Drift Labs campaign ROAS hit 7.2× this week' },
-  { icon: '🌍', msg: 'Client website ranked #1 on Google for 12 new keywords' },
-  { icon: '💬', msg: '47 new leads generated via paid ads in the last 24 hours' },
+  { icon: '🎯', msg: 'DripGather just generated R12K in sales today' },
+  { icon: '📈', msg: 'PromptlyOS onboarded 3 new users this week' },
+  { icon: '⚡', msg: 'New lead from Google Ads — local SME' },
+  { icon: '🛒', msg: 'DripGather AI recommendation engine deployed' },
+  { icon: '🎉', msg: 'PromptlyOS career dashboard launched successfully' },
+  { icon: '📊', msg: 'Client campaign ROAS hit 2.8× this week' },
+  { icon: '🌍', msg: 'Client website ranked #1 on Google for 3 new keywords' },
+  { icon: '💬', msg: '12 new leads generated via paid ads in the last 24 hours' },
 ]
 
 export default function LiveTicker() {

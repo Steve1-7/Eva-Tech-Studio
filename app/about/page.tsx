@@ -76,9 +76,9 @@ export default function AboutPage() {
       <section className="py-16 px-6 md:px-[60px]" style={{ background: 'var(--obsidian-3)', borderTop: '1px solid rgba(201,169,110,0.08)', borderBottom: '1px solid rgba(201,169,110,0.08)' }}>
         <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
-            { end: 150, suffix: '+', label: 'Brands Scaled', decimals: 0 },
+            { end: 10, suffix: '+', label: 'Brands Scaled', decimals: 0 },
             { end: 94, suffix: '%', label: 'Client Retention', decimals: 0 },
-            { end: 48, prefix: '$', suffix: 'M+', label: 'Revenue Generated', decimals: 0 },
+            { end: 100, prefix: 'R', suffix: 'K+', label: 'Revenue Generated', decimals: 0 },
             { end: 6, suffix: ' years', label: 'In Business', decimals: 0 },
           ].map((s, i) => (
             <ScrollReveal key={s.label} delay={i * 80}>

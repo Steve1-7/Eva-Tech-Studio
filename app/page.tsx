@@ -35,7 +35,7 @@ const steps = [
 ]
 
 const testimonials = [
-  { text: 'Eve-Tech-Studio completely transformed our online presence. Within 90 days, our organic traffic tripled and our cost-per-lead dropped by 60%. They think like growth partners, not service providers.', name: 'Kavya Mehta', role: 'CEO, NovaSpark E-commerce', initials: 'KM', featured: false },
+  { text: 'Eve-Tech-Studio completely transformed our online presence. Within 90 days, our organic traffic tripled and our cost-per-lead dropped by 60%. They think like growth partners, not service providers.', name: 'Kavya Mehta', role: 'CEO, DripGather', initials: 'KM', featured: false },
   { text: "We scaled from R200K to R1.2M monthly revenue in 8 months. Their paid ads strategy and website rebuild were game-changing. Eve-Tech-Studio doesn't just deliver work — they deliver transformation.", name: 'James Steyn', role: 'Founder, Outpost Outdoors', initials: 'JS', featured: true },
   { text: 'The automation systems they built saved us 20+ hours per week. Our CRM now runs itself, follow-ups happen instantly, and our close rate jumped 35%.', name: 'Amara Langa', role: 'MD, Vertex Financial', initials: 'AL', featured: false },
 ]
@@ -109,8 +109,8 @@ export default function Home() {
               <div className="flex flex-wrap gap-10 mt-14 pt-10 border-t border-[rgba(201,169,110,0.1)]">
                 {[
                   { end: 3.2, suffix: '×', label: 'Avg. ROI Increase', decimals: 1 },
-                  { end: 150, suffix: '+', label: 'Brands Scaled', decimals: 0 },
-                  { end: 12, prefix: 'R', suffix: 'M+', label: 'Revenue Generated', decimals: 0 },
+                  { end: 10, suffix: '+', label: 'Brands Scaled', decimals: 0 },
+                  { end: 100, prefix: 'R', suffix: 'K+', label: 'Revenue Generated', decimals: 0 },
                 ].map(({ end, suffix, prefix, label, decimals }) => (
                   <div key={label}>
                     <div className="font-cormorant text-[2.8rem] font-bold leading-none tracking-tight text-shimmer">

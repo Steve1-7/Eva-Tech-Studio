@@ -15,9 +15,9 @@ interface LiveMetric {
 // Simulated WebSocket connection for demo
 export default function WebSocketMetrics() {
   const [metrics, setMetrics] = useState<LiveMetric[]>([
-    { id: '1', name: 'Active Users', value: 2847, unit: '', trend: 12, color: '#4A7A64', sparkline: [20, 35, 45, 30, 55, 65, 80] },
-    { id: '2', name: 'Revenue/Min', value: 3420, unit: 'R', trend: 8, color: '#C9A96E', sparkline: [40, 30, 50, 45, 60, 55, 70] },
-    { id: '3', name: 'Conversion', value: 4.8, unit: '%', trend: -2, color: '#6BA889', sparkline: [60, 55, 45, 50, 40, 55, 48] },
+    { id: '1', name: 'Active Users', value: 47, unit: '', trend: 12, color: '#4A7A64', sparkline: [20, 35, 45, 30, 55, 65, 80] },
+    { id: '2', name: 'Revenue/Min', value: 120, unit: 'R', trend: 8, color: '#C9A96E', sparkline: [40, 30, 50, 45, 60, 55, 70] },
+    { id: '3', name: 'Conversion', value: 2.8, unit: '%', trend: -2, color: '#6BA889', sparkline: [60, 55, 45, 50, 40, 55, 48] },
     { id: '4', name: 'Page Load', value: 0.8, unit: 's', trend: -15, color: '#E8C97A', sparkline: [80, 75, 70, 65, 60, 55, 50] },
   ])
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('connecting')
@@ -87,9 +87,9 @@ export default function WebSocketMetrics() {
   }
 
   return (
-    <div className="rounded-[24px] p-6" style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.06)' }}>
+    <div className="rounded-[24px] p-4 md:p-6" style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.06)' }}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
         <div>
           <h3 className="font-semibold text-[1rem] mb-1" style={{ color: '#E8E3D8' }}>
             Live System Metrics
@@ -112,7 +112,7 @@ export default function WebSocketMetrics() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {metrics.map((metric) => (
           <div 
             key={metric.id}
@@ -154,7 +154,7 @@ export default function WebSocketMetrics() {
       </div>
 
       {/* Footer */}
-      <div className="mt-4 pt-4 border-t border-[rgba(232,227,216,0.05)] flex items-center justify-between">
+      <div className="mt-4 pt-4 border-t border-[rgba(232,227,216,0.05)] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <span className="text-[0.65rem]" style={{ color: '#3A3830' }}>
           Last update: {isMounted && lastUpdate ? lastUpdate.toLocaleTimeString() : 'Connecting...'}
         </span>

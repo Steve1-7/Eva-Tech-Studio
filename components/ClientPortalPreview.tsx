@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 import SectionLabel from './SectionLabel'
 import ScrollReveal from './ScrollReveal'
 import CountUp from './CountUp'
@@ -12,9 +13,9 @@ const TABS = [
 ]
 
 const CAMPAIGNS = [
-  { name: 'Google Search - Brand', status: 'active', budget: 25000, spent: 18750, roas: 4.2, clicks: 12500, conversions: 340 },
-  { name: 'Meta - Prospecting', status: 'active', budget: 18000, spent: 15600, roas: 3.8, clicks: 8900, conversions: 220 },
-  { name: 'LinkedIn - B2B', status: 'paused', budget: 12000, spent: 8000, roas: 5.1, clicks: 3400, conversions: 85 },
+  { name: 'Google Search - Brand', status: 'active', budget: 8000, spent: 5200, roas: 2.8, clicks: 1800, conversions: 42 },
+  { name: 'Meta - Prospecting', status: 'active', budget: 5000, spent: 4100, roas: 2.4, clicks: 1200, conversions: 28 },
+  { name: 'LinkedIn - B2B', status: 'paused', budget: 3000, spent: 2100, roas: 3.1, clicks: 480, conversions: 12 },
 ]
 
 const RECENT_ACTIVITY = [
@@ -62,7 +63,7 @@ export default function ClientPortalPreview() {
                   <span className="text-lg">🥧</span>
                 </div>
                 <div>
-                  <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>NovaSpark E-commerce</div>
+                  <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>DripGather</div>
                   <div className="text-[0.65rem]" style={{ color: '#4A7A64' }}>● Live Dashboard</div>
                 </div>
               </div>
@@ -114,10 +115,10 @@ export default function ClientPortalPreview() {
               {/* KPI Cards */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 {[
-                  { label: 'Monthly Revenue', value: 289000, prefix: 'R', suffix: '', format: true, trend: '+127%' },
-                  { label: 'Total ROAS', value: 4.2, prefix: '', suffix: '×', format: false, trend: '+0.8×' },
-                  { label: 'Conversions', value: 2450, prefix: '', suffix: '', format: true, trend: '+340%' },
-                  { label: 'Ad Spend', value: 42350, prefix: 'R', suffix: '', format: true, trend: '82% of budget' },
+                  { label: 'Monthly Revenue', value: 85000, prefix: 'R', suffix: '', format: true, trend: '+34%' },
+                  { label: 'Total ROAS', value: 2.8, prefix: '', suffix: '×', format: false, trend: '+0.6×' },
+                  { label: 'Conversions', value: 82, prefix: '', suffix: '', format: false, trend: '+45%' },
+                  { label: 'Ad Spend', value: 11300, prefix: 'R', suffix: '', format: true, trend: '75% of budget' },
                 ].map((kpi, i) => (
                   <div 
                     key={i}
@@ -201,22 +202,23 @@ export default function ClientPortalPreview() {
                   </h4>
                   <div className="grid grid-cols-2 gap-2">
                     {[
-                      'Download Report',
-                      'Schedule Call',
-                      'Request Changes',
-                      'View Invoices',
+                      { label: 'Download Report', href: '/contact' },
+                      { label: 'Schedule Call', href: '/contact' },
+                      { label: 'Request Changes', href: '/contact' },
+                      { label: 'View Invoices', href: '/contact' },
                     ].map((action, i) => (
-                      <button
+                      <Link
                         key={i}
-                        className="px-3 py-2 rounded-lg text-[0.75rem] font-medium transition-all hover:bg-[rgba(201,169,110,0.1)]"
+                        href={action.href}
+                        className="px-3 py-2 rounded-lg text-[0.75rem] font-medium transition-all hover:bg-[rgba(201,169,110,0.1)] block text-center"
                         style={{ 
                           background: 'var(--obsidian-3)', 
                           color: '#B8B2A8',
                           border: '1px solid rgba(232,227,216,0.05)',
                         }}
                       >
-                        {action}
-                      </button>
+                        {action.label}
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -231,12 +233,13 @@ export default function ClientPortalPreview() {
               <span className="text-[0.7rem]" style={{ color: '#3A3830' }}>
                 Last synced: Just now
               </span>
-              <button 
-                className="px-4 py-2 rounded-lg text-[0.75rem] font-medium text-[#07080F]"
+              <Link 
+                href="/contact"
+                className="px-4 py-2 rounded-lg text-[0.75rem] font-medium text-[#07080F] inline-flex items-center gap-1"
                 style={{ background: '#C9A96E' }}
               >
                 Access Full Portal →
-              </button>
+              </Link>
             </div>
           </div>
         </ScrollReveal>

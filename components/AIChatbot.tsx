@@ -27,9 +27,9 @@ Results:
 - 3.2× average ROI increase
 - 94% client retention rate
 - 28 days average to first results
-- R48M+ revenue generated for clients
+- R100K+ revenue generated for clients
 
-Notable clients: NovaSpark E-commerce, Outpost Outdoors, Vertex Financial, Meridian Consulting, Lumis Tech, Drift Labs
+Notable clients: DripGather, PromptlyOS, Outpost Outdoors, Vertex Financial, Meridian Consulting
 
 Process:
 1. Diagnose - Deep-dive audit of digital presence
@@ -42,7 +42,7 @@ Free offerings:
 - AI-powered growth audit
 - Custom proposal
 
-Contact: hello@peaceofpie.agency
+Contact: stevezuluu@gmail.com
 Phone: +27 (0) 11 123 4567
 Location: Johannesburg, South Africa
 Hours: Mon-Fri, 8am-6pm SAST
@@ -96,12 +96,12 @@ export default function AIChatbot() {
 
     // Results/queries
     if (msg.includes('result') || msg.includes('roi') || msg.includes('success') || msg.includes('achieve')) {
-      return 'Our clients see an average 3.2× ROI increase. For example, NovaSpark tripled their organic traffic in 90 days, and Outpost Outdoors scaled from R200K to R1.2M monthly revenue in 8 months. Would you like to see more case studies?'
+      return 'Our clients see an average 3.2× ROI increase. For example, DripGather achieved 5× revenue growth in 4 months, and PromptlyOS onboarded 50+ users in its first month. Would you like to see more case studies?'
     }
 
     // Contact queries
     if (msg.includes('contact') || msg.includes('call') || msg.includes('email') || msg.includes('reach') || msg.includes('book')) {
-      return 'You can reach us at hello@peaceofpie.agency or call +27 (0) 11 123 4567. We offer a free 30-minute strategy call where we\'ll audit your digital presence and share a custom growth roadmap. Would you like to book one?'
+      return 'You can reach us at stevezuluu@gmail.com or call +27 (0) 11 123 4567. We offer a free 30-minute strategy call where we\'ll audit your digital presence and share a custom growth roadmap. Would you like to book one?'
     }
 
     // Timeframe queries
