@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import SectionLabel from './SectionLabel'
 import CountUp from './CountUp'
+import AIQuoteGenerator from './AIQuoteGenerator'
 
 const SERVICES = [
   { id: 'social', name: 'Social Media Marketing', basePrice: 4675, desc: 'Content creation, posting, community management' },
@@ -171,9 +172,7 @@ export default function PricingCalculator() {
                 </div>
               </div>
 
-              <Link href="/contact" className="btn-primary w-full justify-center py-4 text-[0.9rem] flex items-center">
-                Get Custom Quote →
-              </Link>
+              <AIQuoteGenerator services={selectedServices} tier={selectedTier} />
             </div>
           </div>
         </div>
