@@ -5,18 +5,98 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-// Valid Gemini model - using gemini-3-flash-preview
-// DO NOT use deprecated suffixes like "-latest" as they cause 404 errors
-export const GEMINI_MODEL = 'gemini-3-flash-preview'
+// Model priority list for automatic fallback
+// Models are tried in order; if one fails, the next is attempted
+export const MODELS = [
+  'gemini-2.5-pro',           // Primary: Most capable
+  'gemini-flash-latest',      // Secondary: Fast and reliable
+  'gemini-flash-lite-latest', // Fallback: Lightweight
+]
 
-// Alternative models if needed:
-// export const GEMINI_MODEL_PRO = 'gemini-1.5-pro'
-// export const GEMINI_MODEL_FLASH_2 = 'gemini-2.0-flash-exp'
+// Legacy single model reference (kept for compatibility)
+export const GEMINI_MODEL = MODELS[0]
 
 // Generation config defaults
 export const DEFAULT_GENERATION_CONFIG = {
   temperature: 0.7,
   maxOutputTokens: 2048,
+}
+
+// Request timeout in milliseconds
+export const REQUEST_TIMEOUT = 30000
+
+// Delay between model fallback attempts (exponential backoff base)
+export const RETRY_DELAY_BASE = 1000
+
+/**
+ * Robust Gemini AI request handler with automatic model fallback
+ * Tries each model in priority order with exponential backoff
+ * @param prompt - The prompt text to send to the AI
+ * @param apiKey - Optional API key (falls back to env var)
+ * @param config - Optional generation config
+ * @returns The AI response text
+ * @throws Error if all models fail
+ */
+export async function callGemini(
+  prompt: string,
+  apiKey?: string,
+  config: Partial<typeof DEFAULT_GENERATION_CONFIG> = {}
+): Promise<string> {
+  const effectiveApiKey = apiKey || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+
+  if (!effectiveApiKey) {
+    throw new Error('GOOGLE_GENERATIVE_AI_API_KEY is not set')
+  }
+
+  const genAI = new GoogleGenerativeAI(effectiveApiKey)
+  const generationConfig = { ...DEFAULT_GENERATION_CONFIG, ...config }
+
+  let lastError: Error | null = null
+
+  for (let i = 0; i < MODELS.length; i++) {
+    const model = MODELS[i]
+    const attemptDelay = i > 0 ? RETRY_DELAY_BASE * Math.pow(2, i - 1) : 0
+
+    if (attemptDelay > 0) {
+      console.log(`[AI-FALLBACK] Waiting ${attemptDelay}ms before trying model ${model}...`)
+      await new Promise(resolve => setTimeout(resolve, attemptDelay))
+    }
+
+    try {
+      console.log(`[AI-FALLBACK] Attempting model ${model} (${i + 1}/${MODELS.length})...`)
+
+      const aiModel = genAI.getGenerativeModel({ model })
+      const result = await Promise.race([
+        aiModel.generateContent(prompt),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Request timeout')), REQUEST_TIMEOUT)
+        )
+      ])
+
+      const response = result.response
+      const text = response.text()
+
+      if (!text || text.trim().length === 0) {
+        throw new Error('Empty response from model')
+      }
+
+      console.log(`[AI-FALLBACK] Success with model ${model}`)
+      return text
+
+    } catch (error: any) {
+      lastError = error
+      const errorMessage = error?.message || String(error)
+      console.warn(`[AI-FALLBACK] Model ${model} failed:`, errorMessage)
+
+      // Continue to next model
+      continue
+    }
+  }
+
+  // All models failed
+  throw new Error(
+    `All Gemini models failed. Last error: ${lastError?.message || 'Unknown error'}`
+  )
 }
 
 export const QUOTE_GENERATION_CONFIG = {

@@ -186,9 +186,88 @@ export default function AIQuoteGenerator({
   }
 
   if (step === 'quote') {
+    const tierPricing: Record<string, { monthly: number; annual: number }> = {
+      starter: { monthly: 7500, annual: 76500 },
+      growth: { monthly: 15000, annual: 153000 },
+      enterprise: { monthly: 35000, annual: 357000 }
+    }
+    const pricing = tierPricing[tier.toLowerCase()] || tierPricing.growth
+    const serviceNames = Array.isArray(services) ? services : [services]
+    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1)
+
     return (
       <>
         <Confetti trigger={confettiTrigger} />
+
+        {/* Quote Summary Card */}
+        <div className="rounded-[20px] p-6 mb-4" style={{ background: 'rgba(201,169,110,0.05)', border: '1px solid rgba(201,169,110,0.15)' }}>
+          <h4 className="text-[0.8rem] font-bold uppercase tracking-[0.1em] mb-4" style={{ color: '#C9A96E' }}>📋 Quote Summary</h4>
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <span className="block text-[0.7rem] uppercase tracking-[0.08em] mb-1" style={{ color: '#6B6860' }}>Business</span>
+              <span className="text-[0.9rem] font-medium" style={{ color: '#E8E3D8' }}>{quoteData.businessName || 'Not specified'}</span>
+            </div>
+            <div>
+              <span className="block text-[0.7rem] uppercase tracking-[0.08em] mb-1" style={{ color: '#6B6860' }}>Package Tier</span>
+              <span className="text-[0.9rem] font-medium" style={{ color: '#E8E3D8' }}>{tierName}</span>
+            </div>
+          </div>
+          <div>
+            <span className="block text-[0.7rem] uppercase tracking-[0.08em] mb-2" style={{ color: '#6B6860' }}>Selected Services</span>
+            <div className="flex flex-wrap gap-2">
+              {serviceNames.map((service, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1 rounded-full text-[0.75rem]"
+                  style={{ background: 'rgba(201,169,110,0.1)', color: '#C9A96E', border: '1px solid rgba(201,169,110,0.2)' }}
+                >
+                  {service}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Pricing Breakdown Card */}
+        <div className="rounded-[20px] p-6 mb-4" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(232,227,216,0.06)' }}>
+          <h4 className="text-[0.8rem] font-bold uppercase tracking-[0.1em] mb-4" style={{ color: '#C9A96E' }}>💰 Pricing Breakdown</h4>
+
+          <div className="space-y-4">
+            {/* Monthly Price */}
+            <div className="flex items-center justify-between p-4 rounded-[12px]" style={{ background: 'rgba(232,227,216,0.03)', border: '1px solid rgba(232,227,216,0.05)' }}>
+              <div>
+                <span className="text-[0.85rem] font-medium" style={{ color: '#E8E3D8' }}>Monthly Payment</span>
+                <p className="text-[0.7rem]" style={{ color: '#6B6860' }}>Billed monthly, cancel anytime with 30 days notice</p>
+              </div>
+              <span className="text-[1.4rem] font-bold" style={{ color: '#E8E3D8' }}>R{pricing.monthly.toLocaleString()}</span>
+            </div>
+
+            {/* Annual Price with Discount */}
+            <div className="flex items-center justify-between p-4 rounded-[12px]" style={{ background: 'rgba(74,122,100,0.1)', border: '1px solid rgba(74,122,100,0.2)' }}>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[0.85rem] font-medium" style={{ color: '#4A7A64' }}>Annual Payment</span>
+                  <span className="px-2 py-0.5 rounded-full text-[0.65rem] font-bold" style={{ background: 'rgba(74,122,100,0.2)', color: '#4A7A64' }}>SAVE 15%</span>
+                </div>
+                <p className="text-[0.7rem]" style={{ color: '#6B6860' }}>Billed annually · R{((pricing.monthly * 12 - pricing.annual) / 1000).toFixed(0)}K savings</p>
+              </div>
+              <div className="text-right">
+                <span className="text-[0.75rem] line-through" style={{ color: '#6B6860' }}>R{(pricing.monthly * 12).toLocaleString()}</span>
+                <span className="text-[1.4rem] font-bold block" style={{ color: '#4A7A64' }}>R{pricing.annual.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Estimated Delivery */}
+          <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(232,227,216,0.05)' }}>
+            <div className="flex items-center gap-2 text-[0.8rem]" style={{ color: '#6B6860' }}>
+              <span>⏱️</span>
+              <span>Estimated kickoff: <strong style={{ color: '#E8E3D8' }}>Within 5-7 business days</strong> of confirmation</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Full AI Quote Result */}
         <div className="rounded-[20px] p-6 mb-4" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(232,227,216,0.06)' }}>
           <div className="flex items-center gap-3 mb-4 pb-4" style={{ borderBottom: '1px solid rgba(232,227,216,0.05)' }}>
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-[0.72rem] font-bold" style={{ background: 'rgba(201,169,110,0.12)', color: '#C9A96E' }}>
@@ -196,7 +275,7 @@ export default function AIQuoteGenerator({
             </div>
             <div>
               <div className="font-semibold text-[0.85rem]" style={{ color: '#E8E3D8' }}>
-                Your Custom Quote
+                Detailed Quote
               </div>
               <div className="text-[0.7rem]" style={{ color: '#6B6860' }}>
                 Generated by Google Gemini AI · Eve-Tech-Studio
@@ -207,20 +286,22 @@ export default function AIQuoteGenerator({
             {quoteResult}
           </div>
         </div>
+
+        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleDownloadQuote}
             className="flex-1 py-3 rounded-full text-[0.85rem] font-medium transition-all cursor-pointer hover:border-[rgba(201,169,110,0.3)]"
             style={{ border: '1px solid rgba(232,227,216,0.08)', color: '#6B6860' }}
           >
-            Download Quote 📥
+            📥 Download Quote
           </button>
           <button
             onClick={handleNegotiate}
             className="flex-1 py-3 rounded-full font-semibold text-[0.85rem] transition-all hover:-translate-y-0.5 cursor-pointer"
             style={{ background: 'var(--gold)', color: 'var(--obsidian)', boxShadow: '0 0 30px rgba(201,169,110,0.15)' }}
           >
-            Negotiate Price 💬
+            💬 Negotiate Price
           </button>
         </div>
       </>
@@ -326,31 +407,11 @@ export default function AIQuoteGenerator({
           Sending Your Request...
         </h3>
         <p className="text-[0.82rem]" style={{ color: '#6B6860' }}>
-          We'll get back to you at stevezuluu@gmail.com
+          Please wait while we submit your negotiation proposal to our team
         </p>
-      </div>
-    )
-  }
-
-  if (step === 'success') {
-    return (
-      <div className="rounded-[20px] p-12 text-center" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(232,227,216,0.06)' }}>
-        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(74,122,100,0.15)', border: '1px solid rgba(74,122,100,0.3)' }}>
-          <span className="text-3xl">✓</span>
-        </div>
-        <h3 className="font-cormorant text-[1.4rem] font-semibold mb-2" style={{ color: '#E8E3D8' }}>
-          Request Sent!
-        </h3>
-        <p className="text-[0.82rem] mb-6" style={{ color: '#6B6860' }}>
-          We've received your negotiation request and will respond to stevezuluu@gmail.com within 24 hours.
+        <p className="text-[0.75rem] mt-2" style={{ color: '#3A3830' }}>
+          An email confirmation will be sent to {negotiationData.email}
         </p>
-        <button
-          onClick={() => setStep('form')}
-          className="px-6 py-3 rounded-full font-semibold text-[0.85rem] transition-all hover:-translate-y-0.5 cursor-pointer"
-          style={{ background: 'var(--gold)', color: 'var(--obsidian)', boxShadow: '0 0 30px rgba(201,169,110,0.15)' }}
-        >
-          Generate Another Quote
-        </button>
       </div>
     )
   }

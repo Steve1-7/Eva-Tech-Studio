@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import {
-  GEMINI_MODEL,
-  DEFAULT_GENERATION_CONFIG,
+  callGemini,
   classifyAIError,
   getAIErrorMessage,
   logAIOperation
@@ -108,13 +106,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<AuditResp
       goalPreview: goal.substring(0, 30)
     })
 
-    // Initialize Gemini AI with valid model
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY)
-    const model = genAI.getGenerativeModel({
-      model: GEMINI_MODEL,
-      generationConfig: DEFAULT_GENERATION_CONFIG
-    })
-
     const prompt = `You are a senior digital growth strategist at Eve-Tech-Studio. Write concise, expert growth audits. Format with emoji section headers. Be specific and action-oriented. Under 350 words.
 
 Write a growth audit for:
@@ -129,8 +120,7 @@ Sections:
 💡 LONG-TERM STRATEGY
 ⚡ EVE-TECH-STUDIO RECOMMENDATION`
 
-    const result = await model.generateContent(prompt)
-    const text = result.response.text()
+    const text = await callGemini(prompt)
 
     const duration = Date.now() - startTime
     logAIOperation('ai-audit', 'success', {

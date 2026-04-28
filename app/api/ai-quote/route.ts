@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import {
-  GEMINI_MODEL,
+  callGemini,
   QUOTE_GENERATION_CONFIG,
   classifyAIError,
   getAIErrorMessage,
@@ -152,13 +151,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<QuoteResp
       business: businessName || 'none'
     })
 
-    // Initialize Gemini AI with valid model
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY)
-    const model = genAI.getGenerativeModel({
-      model: GEMINI_MODEL,
-      generationConfig: QUOTE_GENERATION_CONFIG
-    })
-
     const prompt = `You are a senior pricing strategist at Eve-Tech-Studio. Generate professional, detailed quotes for digital marketing services. Be specific about deliverables, timelines, and expected outcomes. Format with clear sections. Use South African Rand (R) currency.
 
 Generate a detailed quote for:
@@ -179,8 +171,7 @@ Format the quote with these sections:
 
 Be specific about what's included in each service. Provide realistic pricing based on the tier (Starter = base pricing ~R7,500/mo, Growth = 1.5× ~R15,000/mo, Enterprise = 2.5× ~R35,000/mo).`
 
-    const result = await model.generateContent(prompt)
-    const text = result.response.text()
+    const text = await callGemini(prompt, undefined, QUOTE_GENERATION_CONFIG)
 
     const duration = Date.now() - startTime
     logAIOperation('ai-quote', 'success', {
