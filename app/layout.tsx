@@ -6,7 +6,7 @@ import PremiumCursor from '@/components/PremiumCursor'
 import SmoothScrollProvider from '@/components/SmoothScrollProvider'
 import GrainOverlay from '@/components/GrainOverlay'
 import AIChatbot from '@/components/AIChatbot'
-import SoundDesign from '@/components/SoundDesign'
+// import SoundDesign from '@/components/SoundDesign'
 import PageTransition from '@/components/PageTransition'
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScrollProvider>
           <PremiumCursor />
           <GrainOverlay />
-          <SoundDesign />
+          {/* <SoundDesign /> */}
           <Navbar />
           <PageTransition>
             <main>{children}</main>

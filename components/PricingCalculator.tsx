@@ -172,7 +172,7 @@ export default function PricingCalculator() {
                 </div>
               </div>
 
-              <AIQuoteGenerator services={selectedServices} tier={selectedTier} />
+              <AIQuoteGenerator services={selectedServices.map(id => SERVICES.find(s => s.id === id)?.name || id)} tier={selectedTier} />
             </div>
           </div>
         </div>

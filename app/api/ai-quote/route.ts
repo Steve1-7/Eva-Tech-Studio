@@ -4,11 +4,19 @@ import { generateText } from 'ai'
 
 export async function POST(request: NextRequest) {
   try {
+    // Check API key
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+      console.error('GOOGLE_GENERATIVE_AI_API_KEY not set')
+      return NextResponse.json({ error: 'AI service not configured' }, { status: 500 })
+    }
+
     const { services, tier, businessName, industry, description } = await request.json()
 
     if (!services?.length || !tier) {
       return NextResponse.json({ error: 'Services and tier are required' }, { status: 400 })
     }
+
+    console.log('Generating quote for:', { services, tier, businessName })
 
     const serviceNames = services.join(', ')
     const tierName = tier.charAt(0).toUpperCase() + tier.slice(1)
