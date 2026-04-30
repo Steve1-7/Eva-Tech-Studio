@@ -1,41 +1,75 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import ScrollReveal from '@/components/ScrollReveal'
+import { useParams } from 'next/navigation'
 
-// Mock blog post - in production, this would come from a database
-const blogPost = {
-  id: 1,
-  title: 'The Future of AI in Digital Marketing',
-  content: `# The Future of AI in Digital Marketing
-
-Artificial intelligence is revolutionizing the way businesses approach marketing. From predictive analytics to personalized content generation, AI is becoming an indispensable tool for marketers.
-
-## Predictive Analytics
-
-AI-powered predictive analytics can forecast customer behavior, optimize ad spend, and identify high-value leads before they even convert. This allows businesses to allocate resources more efficiently and maximize ROI.
-
-## Personalized Content
-
-With AI, marketers can create personalized content at scale. From email subject lines to landing page copy, AI can tailor messaging to individual preferences and behaviors.
-
-## Automated Campaigns
-
-AI can automate entire marketing campaigns, from audience targeting to bid optimization. This frees up marketers to focus on strategy and creative work.
-
-## The Human Touch
-
-While AI is powerful, it's not a replacement for human creativity and strategic thinking. The best marketing combines AI efficiency with human insight.
-
----
-
-*Powered by Eva-Tech-Studio*`,
-  author: 'Steve Zulu',
-  date: '2026-04-15',
-  coverImage: '/blog-ai-marketing.jpg',
-  category: 'AI & Technology',
-  readTime: '5 min read'
+interface BlogPost {
+  id: number
+  title: string
+  excerpt: string
+  content: string
+  author: string
+  date: string
+  coverImage: string
+  category: string
+  published: boolean
+  metaDescription?: string
+  tags?: string[]
 }
 
-export default function BlogPostPage({ params }: { params: { id: string } }) {
+export default function BlogPostPage() {
+  const params = useParams()
+  const [post, setPost] = useState<BlogPost | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (params.id) {
+      loadPost()
+    }
+  }, [params.id])
+
+  const loadPost = async () => {
+    try {
+      const res = await fetch(`/api/blog/${params.id}`)
+      if (res.ok) {
+        const data = await res.json()
+        setPost(data.post)
+      } else {
+        setError('Post not found')
+      }
+    } catch (err) {
+      setError('Failed to load post')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--obsidian)' }}>
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-2 border-[#C9A96E] border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p style={{ color: '#6B6860' }}>Loading article...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !post) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--obsidian)' }}>
+        <div className="text-center">
+          <p style={{ color: '#6B6860' }}>{error || 'Post not found'}</p>
+          <Link href="/blog" className="inline-flex items-center gap-2 text-[#C9A96E] mt-4">
+            ← Back to Blog
+          </Link>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="min-h-screen" style={{ background: 'var(--obsidian)' }}>
       {/* Header */}
@@ -50,23 +84,23 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
             <div className="flex items-center gap-3 mb-4">
               <span className="text-[0.68rem] font-bold uppercase tracking-[0.08em] px-2 py-1 rounded-full"
                 style={{ background: 'rgba(201,169,110,0.1)', color: '#C9A96E' }}>
-                {blogPost.category}
+                {post.category}
               </span>
-              <span className="text-[0.68rem]" style={{ color: '#3A3830' }}>{blogPost.readTime}</span>
+              <span className="text-[0.68rem]" style={{ color: '#3A3830' }}>5 min read</span>
             </div>
 
             <h1 className="text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-tight mb-6" style={{ color: '#E8E3D8' }}>
-              {blogPost.title}
+              {post.title}
             </h1>
 
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-full flex items-center justify-center text-[0.85rem] font-bold"
                 style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
-                {blogPost.author.split(' ').map(n => n[0]).join('')}
+                {post.author.split(' ').map((n: string) => n[0]).join('')}
               </div>
               <div>
-                <div className="text-[0.85rem] font-medium" style={{ color: '#E8E3D8' }}>{blogPost.author}</div>
-                <div className="text-[0.72rem]" style={{ color: '#3A3830' }}>{new Date(blogPost.date).toLocaleDateString('en-ZA', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                <div className="text-[0.85rem] font-medium" style={{ color: '#E8E3D8' }}>{post.author}</div>
+                <div className="text-[0.72rem]" style={{ color: '#3A3830' }}>{new Date(post.date).toLocaleDateString('en-ZA', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
               </div>
             </div>
           </ScrollReveal>
@@ -79,7 +113,7 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
           <ScrollReveal delay={80}>
             <article className="prose prose-invert max-w-none" style={{ color: '#B8B2A8' }}>
               <div className="whitespace-pre-wrap leading-[1.8] font-light">
-                {blogPost.content}
+                {post.content}
               </div>
             </article>
           </ScrollReveal>
