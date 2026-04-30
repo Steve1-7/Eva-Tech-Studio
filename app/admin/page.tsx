@@ -27,6 +27,7 @@ export default function AdminDashboard() {
   const [isEditing, setIsEditing] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
   const [showLinkedInPreview, setShowLinkedInPreview] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const contentRef = useRef<HTMLTextAreaElement>(null)
 
   const insertMarkdown = (before: string, after?: string) => {
@@ -151,6 +152,7 @@ export default function AdminDashboard() {
   }
 
   const handleSavePost = async (updatedPost: BlogPost) => {
+    setIsSaving(true)
     try {
       const url = updatedPost.id === 0 ? '/api/blog' : `/api/blog/${updatedPost.id}`
       const method = updatedPost.id === 0 ? 'POST' : 'PUT'
@@ -167,9 +169,15 @@ export default function AdminDashboard() {
         await loadPosts()
         setIsEditing(false)
         setEditingPost(null)
+      } else {
+        const error = await res.json()
+        alert(`Failed to save post: ${error.error || 'Unknown error'}`)
       }
     } catch (error) {
       console.error('Failed to save post:', error)
+      alert('Failed to save post. Please try again.')
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -432,13 +440,15 @@ export default function AdminDashboard() {
             <div className="flex gap-4">
               <button
                 onClick={() => handleSavePost(editingPost)}
-                className="btn-primary flex-1 py-3"
+                disabled={isSaving}
+                className="btn-primary flex-1 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Save Post
+                {isSaving ? 'Saving...' : 'Save Post'}
               </button>
               <button
                 onClick={() => setIsEditing(false)}
-                className="btn-outline flex-1 py-3"
+                disabled={isSaving}
+                className="btn-outline flex-1 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
