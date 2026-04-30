@@ -24,6 +24,10 @@ CREATE TABLE IF NOT EXISTS admin_sessions (
   expires_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
+-- Disable RLS on tables for server-side operations
+ALTER TABLE IF EXISTS admin_sessions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS blog_posts DISABLE ROW LEVEL SECURITY;
+
 -- Index for faster queries
 CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON blog_posts(published);
 CREATE INDEX IF NOT EXISTS idx_blog_posts_date ON blog_posts(date DESC);
@@ -39,7 +43,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger for blog_posts
+-- Trigger for blog_posts (drop if exists first)
+DROP TRIGGER IF EXISTS update_blog_posts_updated_at ON blog_posts;
 CREATE TRIGGER update_blog_posts_updated_at
   BEFORE UPDATE ON blog_posts
   FOR EACH ROW
