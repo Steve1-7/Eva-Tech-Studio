@@ -420,7 +420,7 @@ export default function Home() {
 
           {/* Logo cloud */}
           <div className="flex flex-wrap items-center justify-center gap-10 mt-16 pt-10 border-t border-[rgba(232,227,216,0.05)]">
-            {['NOVOSPARK', 'OUTPOST CO.', 'VERTEX FIN', 'MERIDIAN', 'LUMIS TECH', 'DRIFT LABS'].map(logo => (
+            {['Eva-Tech-Studio', 'DripGathr', 'PromptlyOS', 'OmniCommut', 'Kingsbarber'].map(logo => (
               <span key={logo} className="font-syne text-[0.8rem] font-bold tracking-[0.1em] transition-colors duration-200 cursor-default hover:text-[#C9A96E]"
                 style={{ color: '#232638' }}>{logo}</span>
             ))}

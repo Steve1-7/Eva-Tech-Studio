@@ -9,6 +9,7 @@ const AmbientSound = dynamic(() => import('@/components/AmbientSound'), { ssr: f
 const links = [
   { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
+  { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
   { href: '/work', label: 'Work' },
   { href: '/pricing', label: 'Pricing' },
@@ -35,7 +36,7 @@ export default function Navbar() {
           : 'py-5'
       }`}>
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo5.webp" alt="Eve-Tech-Studio" className="h-16 w-auto max-w-[200px] object-contain" />
+          <img src="/logo5.webp" alt="Eve-Tech-Studio" className="h-24 w-auto max-w-[300px] object-contain" />
         </Link>
 
         {/* Desktop */}

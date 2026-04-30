@@ -25,9 +25,9 @@ export default function Footer() {
               powerful technology, and systems that compound.
             </p>
             <div className="flex gap-3 mt-6">
-              {['in', 'li', '𝕏', 'f'].map((s, i) => (
-                <a key={i} href="#" className="footer-social-link">{s}</a>
-              ))}
+              <a href="https://www.linkedin.com/company/111078966" target="_blank" rel="noopener noreferrer" className="footer-social-link" title="LinkedIn">in</a>
+              <a href="https://github.com/Steve1-7" target="_blank" rel="noopener noreferrer" className="footer-social-link" title="GitHub">gh</a>
+              <a href="mailto:stevezuluu@gmail.com" className="footer-social-link" title="Email">@</a>
             </div>
           </div>
 

@@ -3,7 +3,8 @@ import {
   callGemini,
   classifyAIError,
   getAIErrorMessage,
-  logAIOperation
+  logAIOperation,
+  addAIWatermark
 } from '@/lib/ai-config'
 
 interface AuditRequest {
@@ -121,16 +122,17 @@ Sections:
 ⚡ EVE-TECH-STUDIO RECOMMENDATION`
 
     const text = await callGemini(prompt)
+    const textWithWatermark = addAIWatermark(text)
 
     const duration = Date.now() - startTime
     logAIOperation('ai-audit', 'success', {
       duration: `${duration}ms`,
-      resultLength: text.length
+      resultLength: textWithWatermark.length
     })
 
     return NextResponse.json({
       success: true,
-      result: text
+      result: textWithWatermark
     })
 
   } catch (error: any) {

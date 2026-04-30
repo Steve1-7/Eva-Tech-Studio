@@ -106,6 +106,33 @@ export default function AIQuoteGenerator({
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
+
+      // Send WhatsApp message
+      const serviceNames = Array.isArray(services) ? services.join(', ') : services
+      const tierName = tier.charAt(0).toUpperCase() + tier.slice(1)
+      const whatsappMessage = encodeURIComponent(
+`*New Negotiation Request*
+━━━━━━━━━━━━━━━━━━━━━
+
+*Name:* ${negotiationData.name}
+*Email:* ${negotiationData.email}
+*Business:* ${quoteData.businessName}
+
+*Selected Package:* ${tierName}
+*Services:* ${serviceNames}
+
+*Proposed Budget:* ${negotiationData.budget}
+*Timeline:* ${negotiationData.timeline || 'Not specified'}
+
+*Message:*
+${negotiationData.message || 'No additional message'}
+
+━━━━━━━━━━━━━━━━━━━━━
+Sent from Eve-Tech-Studio`
+      )
+      const whatsappUrl = `https://wa.me/27676283210?text=${whatsappMessage}`
+      window.open(whatsappUrl, '_blank')
+
       setStep('success')
     } catch {
       setError('Unable to send negotiation request. Please try again or contact us directly at stevezuluu@gmail.com')

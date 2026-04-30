@@ -110,6 +110,16 @@ export const QUOTE_GENERATION_CONFIG = {
 export type AIErrorType = 'model_not_found' | 'rate_limit' | 'timeout' | 'unknown' | 'config_missing'
 
 /**
+ * Add subtle watermark to AI-generated content
+ * @param content - The AI-generated text
+ * @returns Content with watermark appended
+ */
+export function addAIWatermark(content: string): string {
+  const watermark = '\n\n---\n*Powered by Eva-Tech-Studio*'
+  return content.trim() + watermark
+}
+
+/**
  * Classify an AI error into a specific type
  */
 export function classifyAIError(error: any): AIErrorType {

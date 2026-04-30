@@ -4,7 +4,8 @@ import {
   QUOTE_GENERATION_CONFIG,
   classifyAIError,
   getAIErrorMessage,
-  logAIOperation
+  logAIOperation,
+  addAIWatermark
 } from '@/lib/ai-config'
 
 interface QuoteRequest {
@@ -172,16 +173,17 @@ Format the quote with these sections:
 Be specific about what's included in each service. Provide realistic pricing based on the tier (Starter = base pricing ~R7,500/mo, Growth = 1.5× ~R15,000/mo, Enterprise = 2.5× ~R35,000/mo).`
 
     const text = await callGemini(prompt, undefined, QUOTE_GENERATION_CONFIG)
+    const textWithWatermark = addAIWatermark(text)
 
     const duration = Date.now() - startTime
     logAIOperation('ai-quote', 'success', {
       duration: `${duration}ms`,
-      resultLength: text.length
+      resultLength: textWithWatermark.length
     })
 
     return NextResponse.json({
       success: true,
-      result: text
+      result: textWithWatermark
     })
 
   } catch (error: any) {
