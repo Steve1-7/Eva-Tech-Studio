@@ -184,7 +184,7 @@ export default function AboutPage() {
           ].map((s, i) => (
             <ScrollReveal key={s.label} delay={i * 80}>
               <div className="font-cormorant text-[3rem] font-bold leading-none text-shimmer mb-2">
-                <CountUp end={s.end} suffix={s.suffix} prefix={s.prefix} decimals={s.decimals} />
+                <CountUp end={s.end} suffix={s.suffix} decimals={s.decimals} />
               </div>
               <div className="text-[0.78rem] tracking-[0.06em]" style={{ color: '#6B6860' }}>{s.label}</div>
             </ScrollReveal>
