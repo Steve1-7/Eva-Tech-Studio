@@ -35,9 +35,9 @@ const steps = [
 ]
 
 const testimonials = [
-  { text: 'Eva-Tech-Studio completely transformed our online presence. Within 90 days, our organic traffic tripled and our cost-per-lead dropped by 60%. They think like growth partners, not service providers.', name: 'Kavya Mehta', role: 'CEO, DripGather', initials: 'KM', featured: false },
-  { text: "We scaled from R200K to R1.2M monthly revenue in 8 months. Their paid ads strategy and website rebuild were game-changing. Eva-Tech-Studio doesn't just deliver work — they deliver transformation.", name: 'James Steyn', role: 'Founder, Outpost Outdoors', initials: 'JS', featured: true },
-  { text: 'The automation systems they built saved us 20+ hours per week. Our CRM now runs itself, follow-ups happen instantly, and our close rate jumped 35%.', name: 'Amara Langa', role: 'MD, Vertex Financial', initials: 'AL', featured: false },
+  { text: 'Eva-Tech-Studio completely transformed our online presence. Within 90 days, our organic traffic tripled and our cost-per-lead dropped significantly. They think like growth partners, not service providers.', name: 'Kavya Mehta', role: 'CEO, DripGather', initials: 'KM', featured: false },
+  { text: "Their paid ads strategy and website rebuild were game-changing. Eva-Tech-Studio doesn't just deliver work — they deliver transformation. We have seen measurable growth in every metric that matters.", name: 'James Steyn', role: 'Founder, Outpost Outdoors', initials: 'JS', featured: true },
+  { text: 'The automation systems they built saved us 20+ hours per week. Our CRM now runs itself, follow-ups happen instantly, and our close rate jumped significantly. Feels like having an extra team member.', name: 'Amara Langa', role: 'MD, Vertex Financial', initials: 'AL', featured: false },
 ]
 
 const marqueeItems = ['Social Media Marketing', 'Paid Ads Management', 'Website Development', 'SEO Optimisation', 'E-commerce Development', 'Brand Strategy', 'CRM Integration', 'Business Automation']
@@ -108,13 +108,13 @@ export default function Home() {
             <ScrollReveal delay={320}>
               <div className="flex flex-wrap gap-10 mt-14 pt-10 border-t border-[rgba(201,169,110,0.1)]">
                 {[
-                  { end: 3.2, suffix: '×', label: 'Avg. ROI Increase', decimals: 1 },
+                  { end: 340, suffix: '%', label: 'Traffic Growth', decimals: 0 },
                   { end: 10, suffix: '+', label: 'Brands Scaled', decimals: 0 },
-                  { end: 100, prefix: 'R', suffix: 'K+', label: 'Revenue Generated', decimals: 0 },
-                ].map(({ end, suffix, prefix, label, decimals }) => (
+                  { end: 60, suffix: '%', label: 'Cost Per Lead Reduced', decimals: 0 },
+                ].map(({ end, suffix, label, decimals }) => (
                   <div key={label}>
                     <div className="font-cormorant text-[2.8rem] font-bold leading-none tracking-tight text-shimmer">
-                      <CountUp end={end} suffix={suffix} prefix={prefix} decimals={decimals} />
+                      <CountUp end={end} suffix={suffix} decimals={decimals} />
                     </div>
                     <div className="text-[0.75rem] mt-1.5 tracking-[0.05em]" style={{ color: '#6B6860' }}>{label}</div>
                   </div>
@@ -234,7 +234,7 @@ export default function Home() {
             {[
               { end: 94, suffix: '%', label: 'Client retention rate', desc: 'Our results keep clients coming back', gold: false },
               { end: 28, suffix: '', label: 'Days avg to first results', desc: 'Fast momentum, long-term impact', gold: true },
-              { end: 5.1, suffix: '×', label: 'Average ad ROAS', desc: 'Across all managed accounts', gold: true },
+              { end: 3, suffix: '×', label: 'Avg. Traffic Increase', desc: 'Organic growth multiplier', gold: true },
               { end: 150, suffix: '+', label: 'Brands scaled globally', desc: 'B2B, DTC, SaaS & beyond', gold: false },
             ].map((c, i) => (
               <ScrollReveal key={c.label} delay={i * 80}>

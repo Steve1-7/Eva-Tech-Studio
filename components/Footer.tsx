@@ -63,8 +63,8 @@ export default function Footer() {
             © 2026 Eva-Tech-Studio. All rights reserved.
           </p>
           <div className="flex gap-5">
-            <a href="#" className="footer-legal-link">Privacy Policy</a>
-            <a href="#" className="footer-legal-link">Terms of Service</a>
+            <Link href="/privacy" className="footer-legal-link">Privacy Policy</Link>
+            <Link href="/terms" className="footer-legal-link">Terms of Service</Link>
           </div>
         </div>
       </div>
