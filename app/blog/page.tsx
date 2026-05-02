@@ -87,9 +87,19 @@ export default function BlogPage() {
                     <article className="rounded-[20px] overflow-hidden card h-full transition-all duration-300 group-hover:border-[rgba(201,169,110,0.2)]"
                       style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.06)' }}>
                       {/* Cover Image */}
-                      <div className="aspect-[16/10] bg-gradient-to-br from-[rgba(201,169,110,0.1)] to-[rgba(74,122,100,0.1)] flex items-center justify-center"
-                        style={{ background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))' }}>
-                        <span className="text-4xl">📝</span>
+                      <div className="aspect-[16/10] overflow-hidden">
+                        {post.coverImage ? (
+                          <img 
+                            src={post.coverImage} 
+                            alt={post.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-[rgba(201,169,110,0.1)] to-[rgba(74,122,100,0.1)] flex items-center justify-center"
+                            style={{ background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))' }}>
+                            <span className="text-4xl">📝</span>
+                          </div>
+                        )}
                       </div>
 
                       {/* Content */}

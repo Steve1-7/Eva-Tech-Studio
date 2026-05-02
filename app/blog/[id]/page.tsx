@@ -107,6 +107,23 @@ export default function BlogPostPage() {
         </div>
       </section>
 
+      {/* Cover Image */}
+      {post.coverImage && (
+        <section className="px-6 md:px-[60px] pb-[40px]">
+          <div className="max-w-[800px] mx-auto">
+            <ScrollReveal delay={40}>
+              <div className="rounded-[20px] overflow-hidden aspect-[16/9]">
+                <img 
+                  src={post.coverImage} 
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
       {/* Content */}
       <section className="py-[60px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
         <div className="max-w-[800px] mx-auto">
