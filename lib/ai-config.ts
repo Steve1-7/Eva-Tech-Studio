@@ -1,5 +1,5 @@
 /**
- * Shared AI configuration and utilities for Eve-Tech-Studio
+ * Shared AI configuration and utilities for Eva-Tech-Studio
  * Centralizes model names, error handling, and common functions
  */
 

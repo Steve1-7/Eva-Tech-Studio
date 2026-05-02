@@ -65,7 +65,7 @@ export default function BlogPage() {
                 <span className="text-shimmer italic font-light">Strategies</span>
               </h1>
               <p className="leading-[1.85] font-light text-[1rem]" style={{ color: '#6B6860' }}>
-                Expert perspectives on digital marketing, technology, and business growth from the Eve-Tech-Studio team.
+                Expert perspectives on digital marketing, technology, and business growth from the Eva-Tech-Studio team.
               </p>
             </div>
           </ScrollReveal>

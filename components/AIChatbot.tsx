@@ -8,7 +8,7 @@ interface Message {
 }
 
 const KNOWLEDGE_BASE = `
-Eve-Tech-Studio is a growth-driven digital agency based in Johannesburg, South Africa.
+Eva-Tech-Studio is a growth-driven digital agency based in Johannesburg, South Africa.
 
 Services:
 - Social Media Marketing (Instagram, TikTok, LinkedIn, X)
@@ -53,7 +53,7 @@ export default function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Hi! I am Eve-Tech-Studio\'s AI assistant. Ask me about our services, pricing, process, or how we can help grow your business!',
+      content: 'Hi! I am Eva-Tech-Studio\'s AI assistant. Ask me about our services, pricing, process, or how we can help grow your business!',
       timestamp: new Date(),
     },
   ])
@@ -190,7 +190,7 @@ export default function AIChatbot() {
               <span className="text-lg">🤖</span>
             </div>
             <div>
-              <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>Eve-Tech-Studio AI</div>
+              <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>Eva-Tech-Studio AI</div>
               <div className="flex items-center gap-1.5 text-[0.65rem]" style={{ color: '#4A7A64' }}>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />
                 Online
@@ -267,7 +267,7 @@ export default function AIChatbot() {
               </button>
             </div>
             <div className="text-center mt-2 text-[0.6rem]" style={{ color: '#3A3830' }}>
-              AI Assistant • Powered by Eve-Tech-Studio
+              AI Assistant • Powered by Eva-Tech-Studio
             </div>
           </form>
         </div>

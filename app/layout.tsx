@@ -10,9 +10,9 @@ import AIChatbot from '@/components/AIChatbot'
 import PageTransition from '@/components/PageTransition'
 
 export const metadata: Metadata = {
-  title: 'Eve-Tech-Studio — Growth-Driven Digital Agency',
+  title: 'Eva-Tech-Studio — Growth-Driven Digital Agency',
   description: 'We architect digital ecosystems that compound your growth — from performance marketing to scalable tech infrastructure.',
-  openGraph: { title:'Eve-Tech-Studio', description:'Stop leaving revenue on the table. Build your growth engine.', type:'website' },
+  openGraph: { title:'Eva-Tech-Studio', description:'Stop leaving revenue on the table. Build your growth engine.', type:'website' },
   icons: { 
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',

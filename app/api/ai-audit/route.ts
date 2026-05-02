@@ -107,7 +107,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<AuditResp
       goalPreview: goal.substring(0, 30)
     })
 
-    const prompt = `You are a senior digital growth strategist at Eve-Tech-Studio. Write concise, expert growth audits. Format with emoji section headers. Be specific and action-oriented. Under 350 words.
+    const prompt = `You are a senior digital growth strategist at Eva-Tech-Studio. Write concise, expert growth audits. Format with emoji section headers. Be specific and action-oriented. Under 350 words.
 
 Write a growth audit for:
 Website: ${url || 'Not provided'}

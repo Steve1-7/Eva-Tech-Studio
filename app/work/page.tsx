@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 
 const BeforeAfterSlider = dynamic(() => import('@/components/BeforeAfterSlider'), { ssr: false })
 
-export const metadata: Metadata = { title: 'Case Studies — Eve-Tech-Studio', description: 'Real campaigns, real results.' }
+export const metadata: Metadata = { title: 'Case Studies — Eva-Tech-Studio', description: 'Real campaigns, real results.' }
 
 export default function WorkPage() {
   return (

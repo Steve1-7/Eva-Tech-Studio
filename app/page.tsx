@@ -35,8 +35,8 @@ const steps = [
 ]
 
 const testimonials = [
-  { text: 'Eve-Tech-Studio completely transformed our online presence. Within 90 days, our organic traffic tripled and our cost-per-lead dropped by 60%. They think like growth partners, not service providers.', name: 'Kavya Mehta', role: 'CEO, DripGather', initials: 'KM', featured: false },
-  { text: "We scaled from R200K to R1.2M monthly revenue in 8 months. Their paid ads strategy and website rebuild were game-changing. Eve-Tech-Studio doesn't just deliver work — they deliver transformation.", name: 'James Steyn', role: 'Founder, Outpost Outdoors', initials: 'JS', featured: true },
+  { text: 'Eva-Tech-Studio completely transformed our online presence. Within 90 days, our organic traffic tripled and our cost-per-lead dropped by 60%. They think like growth partners, not service providers.', name: 'Kavya Mehta', role: 'CEO, DripGather', initials: 'KM', featured: false },
+  { text: "We scaled from R200K to R1.2M monthly revenue in 8 months. Their paid ads strategy and website rebuild were game-changing. Eva-Tech-Studio doesn't just deliver work — they deliver transformation.", name: 'James Steyn', role: 'Founder, Outpost Outdoors', initials: 'JS', featured: true },
   { text: 'The automation systems they built saved us 20+ hours per week. Our CRM now runs itself, follow-ups happen instantly, and our close rate jumped 35%.', name: 'Amara Langa', role: 'MD, Vertex Financial', initials: 'AL', featured: false },
 ]
 
@@ -86,7 +86,7 @@ export default function Home() {
             <ScrollReveal delay={160}>
               <p className="text-[1.05rem] leading-[1.85] font-light max-w-[480px] mb-7" style={{ color: '#6B6860' }}>
                 We architect digital ecosystems that compound your growth — from performance
-                marketing to scalable tech infrastructure, Eve-Tech-Studio turns ambition into
+                marketing to scalable tech infrastructure, Eva-Tech-Studio turns ambition into
                 measurable results.
               </p>
               <div className="mb-9">
@@ -195,7 +195,7 @@ export default function Home() {
       <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
         <div className="max-w-[1200px] mx-auto grid md:grid-cols-2 gap-20 items-center">
           <div>
-            <ScrollReveal><SectionLabel>Why Eve-Tech-Studio</SectionLabel></ScrollReveal>
+            <ScrollReveal><SectionLabel>Why Eva-Tech-Studio</SectionLabel></ScrollReveal>
             <ScrollReveal delay={80}>
               <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-6" style={{ color: '#E8E3D8' }}>
                 We Don't Just Run<br />Campaigns. We Build<br />Growth Machines.

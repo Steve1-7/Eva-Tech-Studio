@@ -196,8 +196,8 @@ export default function CaseStudySlider() {
               <BeforeAfterSlider
                 value={sliderValue}
                 onChange={setSliderValue}
-                leftLabel="Before Eve-Tech-Studio"
-                rightLabel="After Eve-Tech-Studio"
+                leftLabel="Before Eva-Tech-Studio"
+                rightLabel="After Eva-Tech-Studio"
               />
             </div>
 

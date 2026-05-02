@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <img src="/logo5.webp" alt="Eve-Tech-Studio" className="h-16 w-auto max-w-[210px] object-contain" />
+              <img src="/logo5.webp" alt="Eva-Tech-Studio" className="h-16 w-auto max-w-[210px] object-contain" />
             </Link>
             <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#6B6860' }}>
               A growth-driven digital agency helping ambitious brands scale through smart marketing,
@@ -60,7 +60,7 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[0.72rem] tracking-[0.04em]" style={{ color: '#3A3830' }}>
-            © 2026 Eve-Tech-Studio. All rights reserved.
+            © 2026 Eva-Tech-Studio. All rights reserved.
           </p>
           <div className="flex gap-5">
             <a href="#" className="footer-legal-link">Privacy Policy</a>

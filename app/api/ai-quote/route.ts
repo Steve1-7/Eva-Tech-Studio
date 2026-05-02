@@ -152,7 +152,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<QuoteResp
       business: businessName || 'none'
     })
 
-    const prompt = `You are a senior pricing strategist at Eve-Tech-Studio. Generate professional, detailed quotes for digital marketing services. Be specific about deliverables, timelines, and expected outcomes. Format with clear sections. Use South African Rand (R) currency.
+    const prompt = `You are a senior pricing strategist at Eva-Tech-Studio. Generate professional, detailed quotes for digital marketing services. Be specific about deliverables, timelines, and expected outcomes. Format with clear sections. Use South African Rand (R) currency.
 
 Generate a detailed quote for:
 

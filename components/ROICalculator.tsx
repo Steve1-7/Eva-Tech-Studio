@@ -37,7 +37,7 @@ export default function ROICalculator() {
             See What Growth Actually Looks Like
           </h2>
           <p className="font-light max-w-[500px] mx-auto leading-[1.75]" style={{ color: '#6B6860' }}>
-            Plug in your numbers and see your projected revenue growth with Eve-Tech-Studio.
+            Plug in your numbers and see your projected revenue growth with Eva-Tech-Studio.
           </p>
         </div>
 
