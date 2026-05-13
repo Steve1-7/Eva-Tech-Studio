@@ -7,6 +7,7 @@ import {
   logAIOperation,
   addAIWatermark
 } from '@/lib/ai-config'
+import { checkRateLimit, aiQuoteLimiter } from '@/lib/rate-limit'
 
 interface QuoteRequest {
   services: string[] | string
@@ -107,6 +108,29 @@ export async function POST(request: NextRequest): Promise<NextResponse<QuoteResp
   const startTime = Date.now()
 
   try {
+    // Get client IP for rate limiting
+    const clientIp = request.ip || request.headers.get('x-forwarded-for') || 'anonymous'
+
+    // Check rate limiting
+    const rateLimitCheck = checkRateLimit(aiQuoteLimiter, clientIp)
+    if (!rateLimitCheck.allowed) {
+      console.log('[AI-QUOTE] Rate limit exceeded for IP:', clientIp)
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Rate limit exceeded. You can generate 5 quotes per hour. Please try again later.`
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil((rateLimitCheck.resetTime - Date.now()) / 1000).toString(),
+            'X-RateLimit-Remaining': rateLimitCheck.remaining.toString(),
+            'X-RateLimit-ResetTime': new Date(rateLimitCheck.resetTime).toISOString()
+          }
+        }
+      )
+    }
+
     // Check API key
     if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       logAIOperation('ai-quote', 'error', { reason: 'API_KEY_MISSING' })

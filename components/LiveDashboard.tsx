@@ -21,7 +21,7 @@ const INITIAL_METRICS: Metric[] = [
 const RECENT_EVENTS = [
   { time: '2m ago', event: 'DripGather generated R12K in sales', type: 'revenue' },
   { time: '5m ago', event: 'PromptlyOS onboarded 3 new users', type: 'growth' },
-  { time: '8m ago', event: 'New lead from Google Ads — local SME', type: 'lead' },
+  { time: '8m ago', event: 'CleanSmith booked 2 Executive Ceramic details', type: 'growth' },
   { time: '12m ago', event: 'DripGather AI recommendation engine deployed', type: 'metric' },
   { time: '15m ago', event: 'PromptlyOS career dashboard ROAS hit 2.8×', type: 'metric' },
 ]

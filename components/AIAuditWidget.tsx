@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import SectionLabel from './SectionLabel'
 import Link from 'next/link'
 import Confetti from './Confetti'
+import { downloadPDF } from '@/lib/pdf-export'
 
 interface AuditData {
   url: string
@@ -154,10 +155,6 @@ export default function AIAuditWidget() {
   const handleCopyAudit = () => {
     if (typeof window === 'undefined' || !navigator.clipboard) return
     navigator.clipboard.writeText(result)
-      .then(() => {
-        // Could add toast notification here
-        console.log('[AI-AUDIT] Audit copied to clipboard')
-      })
       .catch((err) => {
         console.error('[AI-AUDIT] Failed to copy:', err)
       })
@@ -173,6 +170,43 @@ export default function AIAuditWidget() {
       return Date.now() - data.timestamp < 7 * 24 * 60 * 60 * 1000
     } catch {
       return false
+    }
+  }
+
+  const handleExportAuditPDF = async () => {
+    try {
+      const businessName = biz.substring(0, 30).replace(/\s+/g, '-')
+      const timestamp = new Date().toISOString().split('T')[0]
+      const filename = `eva-tech-audit-${businessName}-${timestamp}.pdf`
+
+      const response = await fetch('/api/export-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `Growth Audit Report - ${biz}`,
+          content: result,
+          filename,
+          contentType: 'audit'
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF')
+      }
+
+      // Download the PDF
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('[AI-AUDIT] PDF export error:', err)
+      alert('Failed to export PDF. Please try again.')
     }
   }
 
@@ -353,6 +387,13 @@ export default function AIAuditWidget() {
                   <Link href="/contact" className="btn-primary flex-1 text-center text-[0.86rem] py-4">
                     Book a Full Strategy Session →
                   </Link>
+                  <button
+                    onClick={handleExportAuditPDF}
+                    className="flex-1 py-4 rounded-full text-[0.86rem] font-medium transition-all cursor-pointer hover:border-[rgba(201,169,110,0.3)]"
+                    style={{ border: '1px solid rgba(232,227,216,0.08)', color: '#6B6860' }}
+                  >
+                    📥 Export as PDF
+                  </button>
                   <button
                     onClick={handleCopyAudit}
                     className="flex-1 py-4 rounded-full text-[0.86rem] font-medium transition-all cursor-pointer hover:border-[rgba(201,169,110,0.3)]"

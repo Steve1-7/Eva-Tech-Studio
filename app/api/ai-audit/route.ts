@@ -6,6 +6,7 @@ import {
   logAIOperation,
   addAIWatermark
 } from '@/lib/ai-config'
+import { checkRateLimit, aiAuditLimiter } from '@/lib/rate-limit'
 
 interface AuditRequest {
   url?: string
@@ -71,6 +72,29 @@ export async function POST(request: NextRequest): Promise<NextResponse<AuditResp
   const startTime = Date.now()
 
   try {
+    // Get client IP for rate limiting
+    const clientIp = request.ip || request.headers.get('x-forwarded-for') || 'anonymous'
+
+    // Check rate limiting
+    const rateLimitCheck = checkRateLimit(aiAuditLimiter, clientIp)
+    if (!rateLimitCheck.allowed) {
+      console.log('[AI-AUDIT] Rate limit exceeded for IP:', clientIp)
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Rate limit exceeded. You can generate 5 audits per hour. Please try again later.`
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil((rateLimitCheck.resetTime - Date.now()) / 1000).toString(),
+            'X-RateLimit-Remaining': rateLimitCheck.remaining.toString(),
+            'X-RateLimit-ResetTime': new Date(rateLimitCheck.resetTime).toISOString()
+          }
+        }
+      )
+    }
+
     // Check API key
     if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       logAIOperation('ai-audit', 'error', { reason: 'API_KEY_MISSING' })

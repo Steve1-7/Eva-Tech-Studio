@@ -42,7 +42,7 @@ Free offerings:
 - AI-powered growth audit
 - Custom proposal
 
-Contact: stevezuluu@gmail.com
+Contact: info@eve-tech-studio.com
 Phone: +27 (0) 11 123 4567
 Location: Johannesburg, South Africa
 Hours: Mon-Fri, 8am-6pm SAST
@@ -101,7 +101,7 @@ export default function AIChatbot() {
 
     // Contact queries
     if (msg.includes('contact') || msg.includes('call') || msg.includes('email') || msg.includes('reach') || msg.includes('book')) {
-      return 'You can reach us at stevezuluu@gmail.com or call +27 (0) 11 123 4567. We offer a free 30-minute strategy call where we\'ll audit your digital presence and share a custom growth roadmap. Would you like to book one?'
+      return 'You can reach us at info@eve-tech-studio.com or call +27 (0) 11 123 4567. We offer a free 30-minute strategy call where we\'ll audit your digital presence and share a custom growth roadmap. Would you like to book one?'
     }
 
     // Timeframe queries

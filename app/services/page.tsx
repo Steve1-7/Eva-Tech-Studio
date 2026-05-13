@@ -5,7 +5,15 @@ import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 import StickySplitServices from '@/components/StickySplitServices'
 
-export const metadata: Metadata = { title: 'Services — Eva-Tech-Studio', description: 'Every digital service your brand needs to win.' }
+export const metadata: Metadata = {
+  title: 'Services — Eva-Tech-Studio',
+  description: 'Every digital service your brand needs to win. Social media, paid ads, web development, SEO, and more.',
+  keywords: ['digital marketing services', 'social media marketing', 'paid advertising', 'web development', 'SEO services', 'Johannesburg'],
+  openGraph: {
+    title: 'Services — Eva-Tech-Studio',
+    description: 'Every digital service your brand needs to win.',
+  },
+}
 
 export default function ServicesPage() {
   return (

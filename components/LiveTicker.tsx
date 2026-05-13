@@ -7,7 +7,8 @@ const EVENTS = [
   { icon: '⚡', msg: 'New lead from Google Ads — local SME' },
   { icon: '🛒', msg: 'DripGather AI recommendation engine deployed' },
   { icon: '🎉', msg: 'PromptlyOS career dashboard launched successfully' },
-  { icon: '📊', msg: 'Client campaign ROAS hit 2.8× this week' },
+  { icon: '�', msg: 'CleanSmith booked 5 detailing appointments today' },
+  { icon: '�📊', msg: 'Client campaign ROAS hit 2.8× this week' },
   { icon: '🌍', msg: 'Client website ranked #1 on Google for 3 new keywords' },
   { icon: '💬', msg: '12 new leads generated via paid ads in the last 24 hours' },
 ]

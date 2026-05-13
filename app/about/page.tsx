@@ -6,9 +6,14 @@ import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 import CountUp from '@/components/CountUp'
 
-export const metadata: Metadata = { 
-  title: 'About Us — Eva-Tech-Studio', 
-  description: 'We build growth systems for ambitious brands. Strategy, execution, and measurable results.' 
+export const metadata: Metadata = {
+  title: 'About Us — Eva-Tech-Studio',
+  description: 'We build growth systems for ambitious brands. Strategy, execution, and measurable results.',
+  keywords: ['about us', 'digital agency team', 'growth agency', 'marketing agency Johannesburg'],
+  openGraph: {
+    title: 'About Us — Eva-Tech-Studio',
+    description: 'We build growth systems for ambitious brands. Strategy, execution, and measurable results.',
+  },
 }
 
 const values = [
@@ -21,10 +26,8 @@ const values = [
 ]
 
 const team = [
-  { initials: 'EC', name: 'Edward Chirwa', role: 'Founder & Brand Director', focus: 'Brand strategy & positioning' },
-  { initials: 'LP', name: 'Lerato Pule', role: 'Head of Paid Media', focus: 'Performance marketing & ROI' },
-  { initials: 'SR', name: 'Steve Ronald', role: 'Developer & Strategy Director', focus: 'Tech architecture & growth systems' },
-  { initials: 'AZ', name: 'Amara Zulu', role: 'Creative & Brand Lead', focus: 'Visual identity & creative direction' },
+  { initials: 'SR', name: 'Steve Ronald', role: 'Developer & Creative Technologist', focus: 'Tech architecture & creative systems' },
+  { initials: 'EC', name: 'Edward Chirwa', role: 'Graphic Design Lead', focus: 'CRM & Automation Operations' },
 ]
 
 const differentiators = [

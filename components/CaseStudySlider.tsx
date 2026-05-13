@@ -43,6 +43,16 @@ const CASE_STUDIES: CaseStudy[] = [
     duration: '3 months',
     services: ['Web Dev', 'AI Integration', 'SaaS'],
   },
+  {
+    id: 'cleansmith',
+    client: 'CleanSmith',
+    industry: 'Mobile Detailing',
+    before: { traffic: 300, conversion: 0.8, revenue: 8000 },
+    after: { traffic: 2800, conversion: 2.4, revenue: 52000 },
+    description: 'Premium mobile car wash & detailing service bringing showroom-quality results directly to clients across Johannesburg. WhatsApp-integrated booking, service packages, and gallery showcase.',
+    duration: '2 months',
+    services: ['Web Dev', 'WhatsApp Integration', 'Booking System'],
+  },
 ]
 
 function BeforeAfterSlider({ value, onChange, leftLabel, rightLabel }: {

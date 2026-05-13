@@ -35,12 +35,24 @@ const steps = [
 ]
 
 const testimonials = [
-  { text: 'Eva-Tech-Studio completely transformed our online presence. Within 90 days, our organic traffic tripled and our cost-per-lead dropped significantly. They think like growth partners, not service providers.', name: 'Kavya Mehta', role: 'CEO, DripGather', initials: 'KM', featured: false },
-  { text: "Their paid ads strategy and website rebuild were game-changing. Eva-Tech-Studio doesn't just deliver work — they deliver transformation. We have seen measurable growth in every metric that matters.", name: 'James Steyn', role: 'Founder, Outpost Outdoors', initials: 'JS', featured: true },
-  { text: 'The automation systems they built saved us 20+ hours per week. Our CRM now runs itself, follow-ups happen instantly, and our close rate jumped significantly. Feels like having an extra team member.', name: 'Amara Langa', role: 'MD, Vertex Financial', initials: 'AL', featured: false },
+  { text: 'Working with Eva-Tech-Studio transformed our brand visibility across all digital channels. Their strategic approach to social media marketing drove unprecedented engagement and converted followers into paying customers. Exceptional team.', name: 'Micah Daniels', role: 'Founder', initials: 'MD', featured: false },
+  { text: 'Eva-Tech-Studio delivered a complete growth ecosystem. From paid ads to automation, their holistic approach generated 3× ROI within the first quarter. They think like true partners invested in our success.', name: 'Ryan Zulu', role: 'CEO', initials: 'RZ', featured: true },
+  { text: 'The website redesign and content strategy from Eva-Tech-Studio positioned us as industry leaders. Our conversion rate increased by 240% and our customer acquisition cost dropped dramatically. Highly recommended.', name: 'Cleansmith', role: 'Founder', initials: 'CS', featured: false },
 ]
 
 const marqueeItems = ['Social Media Marketing', 'Paid Ads Management', 'Website Development', 'SEO Optimisation', 'E-commerce Development', 'Brand Strategy', 'CRM Integration', 'Business Automation']
+
+export const metadata = {
+  title: 'Eva-Tech-Studio — Growth-Driven Digital Agency',
+  description: 'We architect digital ecosystems that compound your growth — from performance marketing to scalable tech infrastructure.',
+  keywords: ['digital agency', 'growth marketing', 'paid advertising', 'web development', 'SEO', 'social media marketing', 'Johannesburg', 'South Africa'],
+  openGraph: {
+    title: 'Eva-Tech-Studio — Growth-Driven Digital Agency',
+    description: 'Stop leaving revenue on the table. Build your growth engine.',
+    type: 'website',
+    url: 'https://evatechstudio.com',
+  },
+}
 
 export default function Home() {
   return (
@@ -420,7 +432,7 @@ export default function Home() {
 
           {/* Logo cloud */}
           <div className="flex flex-wrap items-center justify-center gap-10 mt-16 pt-10 border-t border-[rgba(232,227,216,0.05)]">
-            {['Eva-Tech-Studio', 'DripGathr', 'PromptlyOS', 'OmniCommut', 'Kingsbarber'].map(logo => (
+            {['Eva-Tech-Studio', 'Cleansmith', 'Kingsbarber', 'PromptlyOS', 'OmniCommut'].map(logo => (
               <span key={logo} className="font-syne text-[0.8rem] font-bold tracking-[0.1em] transition-colors duration-200 cursor-default hover:text-[#C9A96E]"
                 style={{ color: '#232638' }}>{logo}</span>
             ))}

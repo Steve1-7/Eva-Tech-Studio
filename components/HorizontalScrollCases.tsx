@@ -5,6 +5,7 @@ import Link from 'next/link'
 const cases = [
   { icon: '💼', bg: 'linear-gradient(135deg,#0D1F3A,#1A3A5C)', tag: 'AI-Powered SaaS', title: 'PromptlyOS', sub: 'Multi-role career tracking dashboard', results: [['4','Role Dashboards'],['AI-Powered','Career Tracking'],['Real-time','Analytics']], link: 'https://promptlyos-seven.vercel.app/' },
   { icon: '🛍️', bg: 'linear-gradient(135deg,#1A0D2E,#3D1A5C)', tag: 'AI E-Commerce', title: 'Drip-Gather', sub: 'Premium AI-powered shopping experience', results: [['AI','Product Discovery'],['Premium','UX Design'],['Smart','Recommendations']], link: 'https://drip-gather.vercel.app/' },
+  { icon: '🚗', bg: 'linear-gradient(135deg,#0F1A0D,#1A3D2A)', tag: 'Mobile Detailing', title: 'CleanSmith', sub: 'Premium mobile car wash & detailing', results: [['3','Service Packages'],['Mobile','On-Demand'],['WhatsApp','Booking']], link: 'https://cleansmith.co.za/' },
 ]
 
 export default function HorizontalScrollCases() {

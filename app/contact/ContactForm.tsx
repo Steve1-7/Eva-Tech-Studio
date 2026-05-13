@@ -12,7 +12,31 @@ const budgets = ['Under R10,000/month','R10,000 – R25,000/month','R25,000 – 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
   const [confettiTrigger, setConfettiTrigger] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({ firstName:'',lastName:'',email:'',phone:'',service:'',budget:'',message:'' })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error || 'Failed to send message')
+      setConfettiTrigger(true)
+      setSubmitted(true)
+    } catch (err: any) {
+      setError(err.message || 'Unable to send message. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   if (submitted) return (
     <>
@@ -48,7 +72,7 @@ export default function ContactPage() {
               <SectionLabel>Contact Details</SectionLabel>
               <h3 className="font-cormorant text-[1.8rem] font-semibold mt-1 mb-5" style={{ color: '#E8E3D8' }}>Free Audit — No Strings Attached</h3>
               <p className="text-[0.9rem] leading-[1.8] mb-8" style={{ color: '#6B6860' }}>Book a 30-minute strategy session. We will audit your digital presence, identify your growth levers, and share a custom roadmap — completely free.</p>
-              {[['📧','stevezuluu@gmail.com'],['📞','+27 (0) 11 123 4567'],['📍','Johannesburg, South Africa'],['🕐','Mon–Fri, 8am–6pm SAST']].map(([icon,text]) => (
+              {[['📧','info@eve-tech-studio.com'],['�','sales@eve-tech-studio.com'],['🛟','support@eve-tech-studio.com'],['�📞','+27 67 628 3210'],['📍','Johannesburg, South Africa'],['🕐','Mon–Fri, 8am–6pm SAST']].map(([icon,text]) => (
                 <div key={text} className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0 text-lg" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(201,169,110,0.12)' }}>{icon}</div>
                   <span className="text-[0.87rem]" style={{ color: '#B8B2A8' }}>{text}</span>
@@ -65,7 +89,7 @@ export default function ContactPage() {
             <div className="rounded-[24px] p-10 md:p-12" style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.06)' }}>
               <h3 className="font-cormorant text-[1.6rem] font-semibold mb-1" style={{ color: '#E8E3D8' }}>Send Us a Message</h3>
               <p className="text-[0.85rem] mb-8" style={{ color: '#6B6860' }}>Or book a call directly below</p>
-              <form onSubmit={e => { e.preventDefault(); setConfettiTrigger(true); setSubmitted(true) }} className="flex flex-col gap-4">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   {[['firstName','First Name','Your first name'],['lastName','Last Name','Your last name']].map(([k,l,p]) => (
                     <div key={k} className="flex flex-col gap-2">
@@ -98,8 +122,9 @@ export default function ContactPage() {
                   <label className="text-[0.72rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#6B6860' }}>Your Goals</label>
                   <textarea rows={4} placeholder="What are your biggest growth challenges?" className="form-input resize-y" value={form.message} onChange={e => setForm({...form,message:e.target.value})} />
                 </div>
-                <button type="submit" className="btn-primary w-full justify-center mt-2 py-4 text-[0.9rem]">
-                  Send Message & Book a Call →
+                {error && <p className="text-red-400 text-[0.82rem]">⚠️ {error}</p>}
+                <button type="submit" disabled={loading} className="btn-primary w-full justify-center mt-2 py-4 text-[0.9rem] disabled:opacity-50 disabled:cursor-not-allowed">
+                  {loading ? 'Sending...' : 'Send Message & Book a Call →'}
                 </button>
                 <p className="text-[0.72rem] text-center tracking-[0.03em]" style={{ color: '#3A3830' }}>We respond within 24 hours. No spam, ever.</p>
               </form>

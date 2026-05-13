@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Confetti from './Confetti'
+import { downloadPDF } from '@/lib/pdf-export'
 
 interface QuoteFormData {
   businessName: string
@@ -80,6 +81,43 @@ export default function AIQuoteGenerator({
     URL.revokeObjectURL(url)
   }
 
+  const handleExportQuotePDF = async () => {
+    try {
+      const businessName = quoteData.businessName.substring(0, 30).replace(/\s+/g, '-')
+      const timestamp = new Date().toISOString().split('T')[0]
+      const filename = `eva-tech-quote-${businessName}-${timestamp}.pdf`
+
+      const response = await fetch('/api/export-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `Price Quote - ${quoteData.businessName}`,
+          content: quoteResult,
+          filename,
+          contentType: 'quote'
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF')
+      }
+
+      // Download the PDF
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('[AI-QUOTE] PDF export error:', err)
+      alert('Failed to export PDF. Please try again.')
+    }
+  }
+
   const handleNegotiate = () => {
     setStep('negotiate')
   }
@@ -135,7 +173,7 @@ Sent from Eva-Tech-Studio`
 
       setStep('success')
     } catch {
-      setError('Unable to send negotiation request. Please try again or contact us directly at stevezuluu@gmail.com')
+      setError('Unable to send negotiation request. Please try again or contact us directly at sales@eve-tech-studio.com')
       setStep('negotiate')
     }
   }
@@ -321,7 +359,14 @@ Sent from Eva-Tech-Studio`
             className="flex-1 py-3 rounded-full text-[0.85rem] font-medium transition-all cursor-pointer hover:border-[rgba(201,169,110,0.3)]"
             style={{ border: '1px solid rgba(232,227,216,0.08)', color: '#6B6860' }}
           >
-            📥 Download Quote
+            📥 Download as Text
+          </button>
+          <button
+            onClick={handleExportQuotePDF}
+            className="flex-1 py-3 rounded-full text-[0.85rem] font-medium transition-all cursor-pointer hover:border-[rgba(201,169,110,0.3)]"
+            style={{ border: '1px solid rgba(232,227,216,0.08)', color: '#6B6860' }}
+          >
+            📄 Export as PDF
           </button>
           <button
             onClick={handleNegotiate}

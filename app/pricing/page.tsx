@@ -5,7 +5,15 @@ import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 import CountUp from '@/components/CountUp'
 
-export const metadata: Metadata = { title: 'Pricing — Eva-Tech-Studio', description: 'Transparent pricing plans.' }
+export const metadata: Metadata = {
+  title: 'Pricing — Eva-Tech-Studio',
+  description: 'Transparent pricing plans for digital marketing services. No hidden fees, no confusing tiers.',
+  keywords: ['pricing', 'digital marketing costs', 'agency pricing', 'marketing budget', 'South Africa'],
+  openGraph: {
+    title: 'Pricing — Eva-Tech-Studio',
+    description: 'Transparent pricing plans for digital marketing services.',
+  },
+}
 
 const plans = [
   { name: 'Starter', price: 10000, desc: 'For businesses ready to establish a strong digital foundation.', features: ['Social media management (2 platforms)', '12 posts/month with graphics', 'Basic paid ads (up to R5K spend)', 'Monthly performance report', 'Email support within 24 hours', 'Onboarding strategy session'], cta: 'Get Started', popular: false },
