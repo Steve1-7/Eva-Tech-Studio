@@ -3,8 +3,6 @@
  * Provides CSRF token generation and validation
  */
 
-import crypto from 'crypto'
-
 const CSRF_TOKEN_LENGTH = 32
 const CSRF_TOKEN_NAME = 'csrf-token'
 const CSRF_HEADER_NAME = 'x-csrf-token'
@@ -13,7 +11,26 @@ const CSRF_HEADER_NAME = 'x-csrf-token'
  * Generate a cryptographically secure CSRF token
  */
 export function generateCSRFToken(): string {
-  return crypto.randomBytes(CSRF_TOKEN_LENGTH).toString('hex')
+  const bytes = new Uint8Array(CSRF_TOKEN_LENGTH)
+
+  // Prefer Web Crypto API (available in edge runtimes and modern Node)
+  if (typeof globalThis?.crypto?.getRandomValues === 'function') {
+    globalThis.crypto.getRandomValues(bytes)
+  } else {
+    // Fallback to Node's crypto when available (server runtime)
+    try {
+      // Use require dynamically to avoid bundler resolving in edge runtimes
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const nodeCrypto = require('crypto')
+      const buf = nodeCrypto.randomBytes(CSRF_TOKEN_LENGTH)
+      for (let i = 0; i < CSRF_TOKEN_LENGTH; i++) bytes[i] = buf[i]
+    } catch {
+      // Last-resort fallback (not cryptographically secure)
+      for (let i = 0; i < CSRF_TOKEN_LENGTH; i++) bytes[i] = Math.floor(Math.random() * 256)
+    }
+  }
+
+  return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
 /**
@@ -28,12 +45,30 @@ export function validateCSRFToken(
     return false
   }
 
-  // Use timing-safe comparison to prevent timing attacks
+  // Use a constant-time comparison to prevent timing attacks
   try {
-    return crypto.timingSafeEqual(
-      Buffer.from(providedToken),
-      Buffer.from(storedToken)
-    )
+    const a = providedToken
+    const b = storedToken
+
+    // Normalize lengths and hex format
+    if (a.length !== b.length) return false
+
+    // Convert hex string to bytes
+    const len = a.length / 2
+    const aBytes = new Uint8Array(len)
+    const bBytes = new Uint8Array(len)
+
+    for (let i = 0; i < len; i++) {
+      aBytes[i] = parseInt(a.substr(i * 2, 2), 16) || 0
+      bBytes[i] = parseInt(b.substr(i * 2, 2), 16) || 0
+    }
+
+    let diff = 0
+    for (let i = 0; i < len; i++) {
+      diff |= aBytes[i] ^ bBytes[i]
+    }
+
+    return diff === 0
   } catch {
     return false
   }

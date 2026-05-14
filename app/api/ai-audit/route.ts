@@ -57,8 +57,21 @@ function validateInput(body: AuditRequest): { valid: boolean; error?: string } {
     return { valid: false, error: 'Business description is required (min 5 characters)' }
   }
 
-  if (body.url && typeof body.url !== 'string') {
-    return { valid: false, error: 'Invalid URL format' }
+  if (body.url) {
+    if (typeof body.url !== 'string') {
+      return { valid: false, error: 'Invalid URL format' }
+    }
+    try {
+      // Basic URL validation
+      // Allow relative/hostless values but prefer absolute URLs
+      // eslint-disable-next-line no-new
+      new URL(body.url)
+    } catch {
+      // If URL constructor fails, still allow common hostless paths like 'example.com'
+      if (!/^[a-z0-9-]+\.[a-z]{2,}$/i.test(body.url)) {
+        return { valid: false, error: 'Invalid URL format' }
+      }
+    }
   }
 
   if (body.goal && typeof body.goal !== 'string') {
@@ -70,6 +83,11 @@ function validateInput(body: AuditRequest): { valid: boolean; error?: string } {
 
 export async function POST(request: NextRequest): Promise<NextResponse<AuditResponse>> {
   const startTime = Date.now()
+
+  // declare top-level vars so catch/fallback can access them
+  let url = ''
+  let biz = ''
+  let goal = 'Increase revenue and grow the business'
 
   try {
     // Get client IP for rate limiting
@@ -123,12 +141,18 @@ export async function POST(request: NextRequest): Promise<NextResponse<AuditResp
       )
     }
 
-    const { url = '', biz = '', goal = 'Increase revenue and grow the business' } = body
+    // Assign parsed values into top-level vars so fallback can reference them
+    ;({ url = '', biz = '', goal = 'Increase revenue and grow the business' } = body)
+
+    // Basic sanitization
+    biz = String(biz).trim()
+    goal = String(goal).trim()
+    url = url ? String(url).trim() : ''
 
     logAIOperation('ai-audit', 'start', {
       url: url || 'none',
-      bizPreview: biz.substring(0, 40),
-      goalPreview: goal.substring(0, 30)
+      bizPreview: biz.substring(0, 80),
+      goalPreview: goal.substring(0, 60)
     })
 
     const prompt = `You are a senior digital growth strategist at Eva-Tech-Studio. Write concise, expert growth audits. Format with emoji section headers. Be specific and action-oriented. Under 350 words.
@@ -145,7 +169,14 @@ Sections:
 💡 LONG-TERM STRATEGY
 ⚡ EVE-TECH-STUDIO RECOMMENDATION`
 
-    const text = await callGemini(prompt)
+    let text: string
+    try {
+      text = await callGemini(prompt)
+    } catch (aiError) {
+      // Rethrow to be handled by outer catch which will attempt fallback
+      throw aiError
+    }
+
     const textWithWatermark = addAIWatermark(text)
 
     const duration = Date.now() - startTime
@@ -164,17 +195,18 @@ Sections:
 
     // Classify and log error
     const errorType = classifyAIError(error)
+    // Keep logs concise and structured
     logAIOperation('ai-audit', 'error', {
       type: errorType,
-      message: error?.message,
+      message: error?.message?.toString?.() || String(error),
       duration: `${duration}ms`
     })
 
     // If it's a recoverable AI error, return fallback response
-    if (errorType === 'model_not_found' || errorType === 'rate_limit') {
+    if (errorType === 'model_not_found' || errorType === 'rate_limit' || errorType === 'config_missing') {
       try {
-        const body = await request.clone().json()
-        const fallbackResult = generateFallbackAudit(body.url || '', body.biz || '', body.goal || '')
+        const parsed = await request.clone().json().catch(() => ({}))
+        const fallbackResult = generateFallbackAudit(parsed.url || url || '', parsed.biz || biz || '', parsed.goal || goal || '')
 
         logAIOperation('ai-audit', 'fallback', { reason: errorType })
 
@@ -183,8 +215,9 @@ Sections:
           result: fallbackResult,
           fallback: true
         })
-      } catch {
-        // If we can't parse body for fallback, return error
+      } catch (fallbackErr) {
+        // If fallback generation fails, log and continue to return structured error
+        logAIOperation('ai-audit', 'error', { reason: 'fallback_failed', message: String(fallbackErr) })
       }
     }
 

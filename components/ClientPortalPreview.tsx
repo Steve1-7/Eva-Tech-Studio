@@ -28,6 +28,28 @@ const RECENT_ACTIVITY = [
 export default function ClientPortalPreview() {
   const [activeTab, setActiveTab] = useState('overview')
 
+  const ENABLE_DEMO = process.env.NEXT_PUBLIC_ENABLE_DEMO === 'true'
+
+  if (!ENABLE_DEMO) {
+    return (
+      <section className="py-[80px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
+        <div className="max-w-[1000px] mx-auto text-center">
+          <SectionLabel center>Client Portal</SectionLabel>
+          <h2 className="text-[clamp(1.6rem,3vw,2.2rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
+            Live client portals available for active clients
+          </h2>
+          <p className="font-light leading-[1.6] mb-6" style={{ color: '#6B6860' }}>
+            For production clients we provide a secure, white-labelled portal showing campaign performance and reports. Contact us to request access or a live demo.
+          </p>
+          <div className="flex items-center justify-center gap-4">
+            <Link href="/contact" className="btn-primary px-6 py-3">Request Portal Access</Link>
+            <Link href="/pricing" className="px-6 py-3 rounded-lg" style={{ background: 'transparent', color: '#B8B2A8', border: '1px solid rgba(232,227,216,0.05)' }}>See Plans</Link>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
       <div className="max-w-[1200px] mx-auto">

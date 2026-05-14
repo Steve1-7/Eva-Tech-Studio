@@ -4,8 +4,13 @@ import { Resend } from 'resend'
 // Initialize Resend with API key from environment
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
-const RECIPIENT_EMAIL = 'sales@eve-tech-studio.com'
-const FROM_EMAIL = 'Eva-Tech-Studio <quotes@eve-tech-studio.com>'
+const RECIPIENT_EMAILS = [
+  'info@eva-tech-studio.com',
+  'support@eva-tech-studio.com',
+  'sales@eva-tech-studio.com',
+  'marketing@eva-tech-studio.com'
+]
+const FROM_EMAIL = 'Eva-Tech-Studio <quotes@eva-tech-studio.com>'
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
@@ -55,7 +60,7 @@ export async function POST(request: NextRequest) {
       try {
         const emailResult = await resend.emails.send({
           from: FROM_EMAIL,
-          to: RECIPIENT_EMAIL,
+          to: RECIPIENT_EMAILS,
           subject: `💬 Negotiation Request from ${businessName || name}`,
           html: `
             <!DOCTYPE html>
@@ -152,7 +157,6 @@ export async function POST(request: NextRequest) {
 
                 <div class="footer">
                   <p>This request was submitted via the Eva-Tech-Studio website</p>
-                  <p style="margin-top: 5px;">🤖 Powered by Google Gemini AI + Resend</p>
                 </div>
               </div>
             </body>
@@ -168,7 +172,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({
           success: true,
-          message: 'Negotiation request sent successfully! You will receive a confirmation email shortly.',
+          message: 'Negotiation request sent successfully! Our team will review and be in touch within 24 hours.',
           emailId: emailResult.data?.id
         })
 

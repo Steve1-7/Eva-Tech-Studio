@@ -1,6 +1,6 @@
-# Peace of Pie — Digital Agency Website
+# Eva-Tech-Studio — Digital Agency Website
 
-A full Next.js 14 website for Peace of Pie, a growth-driven digital agency.
+A full Next.js 14 website for Eva-Tech-Studio, a growth-driven digital agency.
 
 ## Tech Stack
 
@@ -13,7 +13,7 @@ A full Next.js 14 website for Peace of Pie, a growth-driven digital agency.
 ## Project Structure
 
 ```
-peaceofpie/
+eva-tech-studio/
 ├── app/
 │   ├── layout.tsx          # Root layout (fonts, Navbar, Footer)
 │   ├── globals.css         # Global styles + custom utilities

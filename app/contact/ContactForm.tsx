@@ -1,10 +1,11 @@
-'use client'
+ 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 import Confetti from '@/components/Confetti'
+import { submitContact } from '@/lib/forms'
 
 const services = ['Social Media Marketing','Paid Ads Management','Website Development','E-commerce Development','SEO Optimisation','Business Automation / CRM','Full Growth Partnership','Other / Not Sure Yet']
 const budgets = ['Under R10,000/month','R10,000 – R25,000/month','R25,000 – R50,000/month','R50,000+/month','One-time project']
@@ -22,13 +23,16 @@ export default function ContactPage() {
     setError('')
 
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+      const data = await submitContact({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        service: form.service,
+        budget: form.budget,
+        message: form.message
       })
-      const data = await res.json()
-      if (!data.success) throw new Error(data.error || 'Failed to send message')
+      if (!data || !data.success) throw new Error((data && (data.error || data.message)) || 'Failed to send message')
       setConfettiTrigger(true)
       setSubmitted(true)
     } catch (err: any) {
@@ -72,7 +76,7 @@ export default function ContactPage() {
               <SectionLabel>Contact Details</SectionLabel>
               <h3 className="font-cormorant text-[1.8rem] font-semibold mt-1 mb-5" style={{ color: '#E8E3D8' }}>Free Audit — No Strings Attached</h3>
               <p className="text-[0.9rem] leading-[1.8] mb-8" style={{ color: '#6B6860' }}>Book a 30-minute strategy session. We will audit your digital presence, identify your growth levers, and share a custom roadmap — completely free.</p>
-              {[['📧','info@eve-tech-studio.com'],['�','sales@eve-tech-studio.com'],['🛟','support@eve-tech-studio.com'],['�📞','+27 67 628 3210'],['📍','Johannesburg, South Africa'],['🕐','Mon–Fri, 8am–6pm SAST']].map(([icon,text]) => (
+              {[['📧','info@eva-tech-studio.com'],['�','sales@eva-tech-studio.com'],['🛟','support@eva-tech-studio.com'],['�📞','+27 67 628 3210'],['📍','Johannesburg, South Africa'],['🕐','Mon–Fri, 8am–6pm SAST']].map(([icon,text]) => (
                 <div key={text} className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0 text-lg" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(201,169,110,0.12)' }}>{icon}</div>
                   <span className="text-[0.87rem]" style={{ color: '#B8B2A8' }}>{text}</span>

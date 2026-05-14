@@ -7,11 +7,20 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 
 // Model priority list for automatic fallback
 // Models are tried in order; if one fails, the next is attempted
-export const MODELS = [
-  'gemini-2.5-pro',           // Primary: Most capable
-  'gemini-flash-latest',      // Secondary: Fast and reliable
-  'gemini-flash-lite-latest', // Fallback: Lightweight
-]
+// Preferred model list. Keep small and use stable/pro models first.
+// Allow override with env var GOOGLE_AI_MODEL (comma-separated) for flexibility.
+const envModels = process.env.GOOGLE_AI_MODEL
+  ? process.env.GOOGLE_AI_MODEL.split(',').map(s => s.trim()).filter(Boolean)
+  : []
+
+export const MODELS = (
+  envModels.length > 0
+    ? envModels
+    : [
+        'gemini-1.5-pro', // Stable, production-ready high-capacity model
+        'gemini-2.5-pro', // Secondary: newer capability if available
+      ]
+)
 
 // Legacy single model reference (kept for compatibility)
 export const GEMINI_MODEL = MODELS[0]
@@ -65,16 +74,28 @@ export async function callGemini(
     try {
       console.log(`[AI-FALLBACK] Attempting model ${model} (${i + 1}/${MODELS.length})...`)
 
-      const aiModel = genAI.getGenerativeModel({ model })
+      // Defensive call: some SDK versions expose slightly different method names.
+      const aiModel = genAI.getGenerativeModel ? genAI.getGenerativeModel({ model }) : (genAI as any).model?.(model)
+
+      if (!aiModel || typeof aiModel.generateContent !== 'function') {
+        throw new Error(`Model interface not available for ${model}`)
+      }
+
       const result = await Promise.race([
-        aiModel.generateContent(prompt),
+        aiModel.generateContent(prompt, generationConfig),
         new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error('Request timeout')), REQUEST_TIMEOUT)
         )
       ])
 
-      const response = result.response
-      const text = response.text()
+      // Some SDK variants return the text directly, others wrap it.
+      let text: string | undefined
+      try {
+        const response = (result as any).response || result
+        text = typeof response.text === 'function' ? response.text() : response.text || response
+      } catch (ex) {
+        text = typeof result === 'string' ? result : undefined
+      }
 
       if (!text || text.trim().length === 0) {
         throw new Error('Empty response from model')
@@ -88,7 +109,7 @@ export async function callGemini(
       const errorMessage = error?.message || String(error)
       console.warn(`[AI-FALLBACK] Model ${model} failed:`, errorMessage)
 
-      // Continue to next model
+      // If the error clearly indicates model not found, try next one but surface later
       continue
     }
   }

@@ -4,8 +4,14 @@ import { Resend } from 'resend'
 // Initialize Resend with API key from environment
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
-const RECIPIENT_EMAILS = ['info@eve-tech-studio.com', 'sales@eve-tech-studio.com']
-const FROM_EMAIL = 'Eva-Tech-Studio <contact@eve-tech-studio.com>'
+// Production recipient list — ensure all key inboxes are included
+const RECIPIENT_EMAILS = [
+  'info@eva-tech-studio.com',
+  'support@eva-tech-studio.com',
+  'sales@eva-tech-studio.com',
+  'marketing@eva-tech-studio.com'
+]
+const FROM_EMAIL = 'Eva-Tech-Studio <contact@eva-tech-studio.com>'
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now()

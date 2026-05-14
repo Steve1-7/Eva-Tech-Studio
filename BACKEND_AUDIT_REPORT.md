@@ -328,7 +328,6 @@ POST /api/ai-audit
 - [ ] Authentication flow end-to-end
 - [ ] API rate limiting
 
-### Manual Testing Checklist
 - [ ] Test PDF export on all browsers
 - [ ] Verify Eva-Tech branding in PDFs
 - [ ] Test with long content (multi-page PDFs)
@@ -338,5 +337,5 @@ POST /api/ai-audit
 ---
 
 **Report Generated:** May 13, 2026  
-**Auditor:** GitHub Copilot  
+### Manual Testing Checklist
 **Status:** ✅ COMPLETE WITH RECOMMENDATIONS  

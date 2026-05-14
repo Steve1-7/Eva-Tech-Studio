@@ -12,15 +12,17 @@ interface LiveMetric {
   sparkline: number[]
 }
 
-// Simulated WebSocket connection for demo
+// Demo mode is opt-in via env: NEXT_PUBLIC_ENABLE_DEMO=true
+const ENABLE_DEMO = process.env.NEXT_PUBLIC_ENABLE_DEMO === 'true'
+
 export default function WebSocketMetrics() {
-  const [metrics, setMetrics] = useState<LiveMetric[]>([
+  const [metrics, setMetrics] = useState<LiveMetric[]>(ENABLE_DEMO ? [
     { id: '1', name: 'Active Users', value: 47, unit: '', trend: 12, color: '#4A7A64', sparkline: [20, 35, 45, 30, 55, 65, 80] },
     { id: '2', name: 'Revenue/Min', value: 120, unit: 'R', trend: 8, color: '#C9A96E', sparkline: [40, 30, 50, 45, 60, 55, 70] },
     { id: '3', name: 'Conversion', value: 2.8, unit: '%', trend: -2, color: '#6BA889', sparkline: [60, 55, 45, 50, 40, 55, 48] },
     { id: '4', name: 'Page Load', value: 0.8, unit: 's', trend: -15, color: '#E8C97A', sparkline: [80, 75, 70, 65, 60, 55, 50] },
-  ])
-  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>('connecting')
+  ] : [])
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'disconnected'>(ENABLE_DEMO ? 'connecting' : 'disconnected')
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const [isMounted, setIsMounted] = useState(false)
 
@@ -30,10 +32,10 @@ export default function WebSocketMetrics() {
     setLastUpdate(new Date())
   }, [])
 
-  // Simulate WebSocket updates
+  // Simulate WebSocket updates only in demo mode
   useEffect(() => {
-    if (!isMounted) return
-    
+    if (!isMounted || !ENABLE_DEMO) return
+
     // Simulate connection establishment
     const connectTimeout = setTimeout(() => {
       setConnectionStatus('connected')
@@ -41,16 +43,11 @@ export default function WebSocketMetrics() {
 
     // Simulate receiving data
     const interval = setInterval(() => {
-      setMetrics(prevMetrics => 
+      setMetrics(prevMetrics =>
         prevMetrics.map(metric => {
-          // Random fluctuation
           const fluctuation = (Math.random() - 0.5) * 0.1
           const newValue = metric.value * (1 + fluctuation)
-          
-          // Update sparkline
           const newSparkline = [...metric.sparkline.slice(1), Math.random() * 100]
-          
-          // Calculate trend
           const trend = ((newValue - metric.value) / metric.value) * 100
 
           return {
@@ -77,7 +74,7 @@ export default function WebSocketMetrics() {
       clearInterval(interval)
       clearInterval(disconnectInterval)
     }
-  }, [])
+  }, [isMounted])
 
   const formatValue = (value: number, unit: string) => {
     if (unit === 'R') return `R${Math.round(value).toLocaleString()}`
@@ -113,44 +110,50 @@ export default function WebSocketMetrics() {
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        {metrics.map((metric) => (
-          <div 
-            key={metric.id}
-            className="p-4 rounded-[16px] transition-all"
-            style={{ background: 'var(--obsidian-4)' }}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[0.7rem] font-medium" style={{ color: '#6B6860' }}>
-                {metric.name}
-              </span>
-              <div className={`flex items-center text-[0.65rem] font-bold ${
-                metric.trend > 0 ? 'text-emerald-400' : metric.trend < 0 ? 'text-red-400' : 'text-gray-400'
-              }`}>
-                {metric.trend > 0 ? '↑' : metric.trend < 0 ? '↓' : '→'}
-                {Math.abs(metric.trend).toFixed(1)}%
+        {(metrics.length > 0 ? metrics : [1, 2, 3, 4]).map((metric, idx) => {
+          const m = metrics.length > 0 ? (metric as LiveMetric) : null
+
+          return (
+            <div
+              key={m ? m.id : idx}
+              className="p-4 rounded-[16px] transition-all"
+              style={{ background: 'var(--obsidian-4)' }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[0.7rem] font-medium" style={{ color: '#6B6860' }}>
+                  {m ? m.name : '—'}
+                </span>
+                <div
+                  className={`flex items-center text-[0.65rem] font-bold ${
+                    m ? (m.trend > 0 ? 'text-emerald-400' : m.trend < 0 ? 'text-red-400' : 'text-gray-400') : 'text-gray-500'
+                  }`}
+                >
+                  {m ? (m.trend > 0 ? '↑' : m.trend < 0 ? '↓' : '→') : '—'}
+                  {m ? Math.abs(m.trend).toFixed(1) + '%' : ''}
+                </div>
+              </div>
+
+              <div className="font-cormorant text-[1.8rem] font-bold mb-3" style={{ color: m ? m.color : '#B8B2A8' }}>
+                {m ? formatValue(m.value, m.unit) : '—'}
+              </div>
+
+              {/* Sparkline (demo only) */}
+              <div className="h-8 flex items-end gap-[2px]">
+                {(m ? m.sparkline : [10, 20, 30, 40, 50, 60, 70]).map((value, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 rounded-sm transition-all duration-500"
+                    style={{
+                      height: `${Math.max(10, value)}%`,
+                      background: m ? m.color : '#6B6860',
+                      opacity: 0.2 + (i / 7) * 0.7,
+                    }}
+                  />
+                ))}
               </div>
             </div>
-
-            <div className="font-cormorant text-[1.8rem] font-bold mb-3" style={{ color: metric.color }}>
-              {formatValue(metric.value, metric.unit)}
-            </div>
-
-            {/* Sparkline */}
-            <div className="h-8 flex items-end gap-[2px]">
-              {metric.sparkline.map((value, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-sm transition-all duration-500"
-                  style={{
-                    height: `${Math.max(10, value)}%`,
-                    background: metric.color,
-                    opacity: 0.3 + (i / metric.sparkline.length) * 0.7,
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Footer */}

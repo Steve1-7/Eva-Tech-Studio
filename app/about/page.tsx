@@ -228,7 +228,7 @@ export default function AboutPage() {
               <h2 className="text-[clamp(2rem,4vw,3.2rem)] font-semibold mt-2" style={{ color: '#E8E3D8' }}>Who Drives Your Growth</h2>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 justify-items-center">
             {team.map((m, i) => (
               <ScrollReveal key={m.name} delay={i * 80}>
                 <div className="text-center group">

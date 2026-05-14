@@ -4,6 +4,7 @@ import SectionLabel from './SectionLabel'
 import Link from 'next/link'
 import Confetti from './Confetti'
 import { downloadPDF } from '@/lib/pdf-export'
+import { submitContact } from '@/lib/forms'
 
 interface AuditData {
   url: string
@@ -66,6 +67,9 @@ export default function AIAuditWidget() {
   const [error, setError] = useState('')
   const [confettiTrigger, setConfettiTrigger] = useState(false)
   const [isOffline, setIsOffline] = useState(false)
+  const [manualEmail, setManualEmail] = useState('')
+  const [manualLoading, setManualLoading] = useState(false)
+  const [manualSuccess, setManualSuccess] = useState(false)
 
   // Load saved audit from localStorage on mount
   useEffect(() => {
@@ -128,6 +132,31 @@ export default function AIAuditWidget() {
     } catch (err: any) {
       setError(err.message || 'Unable to generate audit. Please try again or contact us directly.')
       setStep('form')
+    }
+  }
+
+  const handleRequestManual = async () => {
+    setManualSuccess(false)
+    setManualLoading(true)
+    setError('')
+    try {
+      if (!manualEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(manualEmail)) {
+        throw new Error('Please enter a valid email address')
+      }
+
+      const message = `Manual audit request:\nWebsite: ${url || 'Not provided'}\nBusiness: ${biz}\nGoal: ${goal || 'Not specified'}`
+
+      await submitContact({
+        email: manualEmail,
+        message,
+      })
+
+      setManualSuccess(true)
+      setManualEmail('')
+    } catch (err: any) {
+      setError(err.message || 'Unable to request manual audit. Please try again.')
+    } finally {
+      setManualLoading(false)
     }
   }
 
@@ -221,8 +250,7 @@ export default function AIAuditWidget() {
               Get Your Free AI Growth Audit
             </h2>
             <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
-              Powered by Google Gemini AI. Enter your business details and get an instant, personalised
-              growth audit in seconds — no email required.
+              AI-assisted growth audits — enter your business details to generate a personalised audit. If automated generation is not available, request a manual audit via email below.
             </p>
           </div>
 
@@ -296,7 +324,19 @@ export default function AIAuditWidget() {
                   >
                     {!biz.trim() ? 'Enter Business Description' : biz.trim().length < 5 ? 'Description too short (min 5 chars)' : 'Generate My Free Audit ✨'}
                   </button>
-                  <p className="text-[0.72rem] text-center tracking-[0.04em]" style={{ color: '#3A3830' }}>Powered by Google Gemini AI · Instant results · No email required · Saved locally</p>
+
+                  <div className="mt-4 text-center">
+                    <p className="text-[0.72rem] text-center tracking-[0.04em]" style={{ color: '#3A3830' }}>Instant when available — otherwise request a manual audit via email</p>
+                    {manualSuccess && (
+                      <div className="mt-3 p-3 rounded-[10px]" style={{ background: 'rgba(201,169,110,0.08)', color: '#C9A96E' }}>
+                        Manual audit request sent. We'll email you within 24 hours.
+                      </div>
+                    )}
+                    <div className="mt-3 flex gap-2 justify-center">
+                      <input type="email" placeholder="Your email (to receive manual audit)" value={manualEmail} onChange={e => setManualEmail(e.target.value)} className="form-input" style={{ maxWidth: '360px' }} />
+                      <button onClick={handleRequestManual} disabled={manualLoading} className="px-4 py-3 rounded-full" style={{ background: 'var(--gold)', color: 'var(--obsidian)' }}>{manualLoading ? 'Sending...' : 'Request'}</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -307,7 +347,7 @@ export default function AIAuditWidget() {
                   <div className="w-7 h-7 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--gold)', borderTopColor: 'transparent' }} />
                 </div>
                 <h3 className="font-cormorant text-[1.7rem] font-semibold mb-3" style={{ color: '#E8E3D8' }}>Analysing Your Business...</h3>
-                <p className="text-[0.85rem]" style={{ color: '#6B6860' }}>Our AI is crafting personalised growth recommendations</p>
+                <p className="text-[0.85rem]" style={{ color: '#6B6860' }}>Generating personalised growth recommendations...</p>
                 <div className="mt-6 flex justify-center gap-2">
                   <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--gold)', animationDelay: '0ms' }}></span>
                   <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--gold)', animationDelay: '150ms' }}></span>
@@ -354,7 +394,7 @@ export default function AIAuditWidget() {
                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-[0.85rem] font-bold" style={{ background: 'rgba(201,169,110,0.12)', color: '#C9A96E' }}>AI</div>
                     <div>
                       <div className="font-semibold text-[0.95rem]" style={{ color: '#E8E3D8' }}>Your Personal Growth Audit</div>
-                      <div className="text-[0.75rem]" style={{ color: '#6B6860' }}>Generated by Google Gemini AI · Eva-Tech-Studio</div>
+                      <div className="text-[0.75rem]" style={{ color: '#6B6860' }}>Generated by Eva-Tech-Studio</div>
                     </div>
                   </div>
 

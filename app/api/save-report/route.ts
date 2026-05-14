@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { checkRateLimit, contactFormLimiter } from '@/lib/rate-limit'
+import { GEMINI_MODEL } from '@/lib/ai-config'
 import type { AIReport, CreateReportRequest, CreateReportResponse } from '@/lib/types/ai-reports'
 
 /**
@@ -101,7 +102,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<CreateRep
       business_description: body.businessDescription,
       user_email: body.userEmail,
       user_ip: clientIp,
-      model_used: 'gemini-pro',
+      model_used: GEMINI_MODEL || (process.env.GOOGLE_AI_MODEL || 'unknown'),
       fallback_used: false,
       metadata: body.metadata || {}
     }
