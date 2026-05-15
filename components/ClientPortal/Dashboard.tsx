@@ -106,43 +106,47 @@ export default function ClientDashboard() {
     }
 
     // Resolve current user (if signed in) and then load data
-    const { data: userData } = await supabase.auth.getUser()
-    const uid = userData?.user?.id || null
-    if (uid) setUserId(uid)
+      // Run async tasks inside an IIFE to allow await usage
+      let channel: any = null
+      ;(async () => {
+        const { data: userData } = await supabase.auth.getUser()
+        const uid = userData?.user?.id || null
+        if (uid) setUserId(uid)
 
-    await loadMetrics()
-    await loadPosts()
+        await loadMetrics()
+        await loadPosts()
 
-    // Realtime subscription for client_metrics (scoped by userId when available)
-    let channel: any = null
-    try {
-      const filter = userId ? `client_id=eq.${userId}` : undefined
-      channel = supabase.channel('realtime-client_metrics')
-      if (filter) {
-        channel = channel.on('postgres_changes', { event: '*', schema: 'public', table: 'client_metrics', filter }, (payload: any) => {
-          setMetrics(prev => {
-            const next = [...prev.filter((r:any)=>r.date !== payload.new.date), payload.new]
-            return next.sort((a:any,b:any)=>new Date(a.date).getTime() - new Date(b.date).getTime())
-          })
-        }).subscribe()
-      } else {
-        channel = channel.on('postgres_changes', { event: '*', schema: 'public', table: 'client_metrics' }, (payload: any) => {
-          setMetrics(prev => {
-            const next = [...prev.filter((r:any)=>r.date !== payload.new.date), payload.new]
-            return next.sort((a:any,b:any)=>new Date(a.date).getTime() - new Date(b.date).getTime())
-          })
-        }).subscribe()
+        // Realtime subscription for client_metrics (scoped by uid when available)
+        try {
+          const filter = uid ? `client_id=eq.${uid}` : undefined
+          const ch = supabase.channel('realtime-client_metrics')
+          if (filter) {
+            ch.on('postgres_changes', { event: '*', schema: 'public', table: 'client_metrics', filter }, (payload: any) => {
+              setMetrics(prev => {
+                const next = [...prev.filter((r: any) => r.date !== payload.new.date), payload.new]
+                return next.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
+              })
+            })
+          } else {
+            ch.on('postgres_changes', { event: '*', schema: 'public', table: 'client_metrics' }, (payload: any) => {
+              setMetrics(prev => {
+                const next = [...prev.filter((r: any) => r.date !== payload.new.date), payload.new]
+                return next.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
+              })
+            })
+          }
+          channel = ch.subscribe()
+        } catch (e) {
+          console.warn('[Dashboard] realtime subscribe failed', e)
+        }
+      })()
+
+      return () => {
+        mounted = false
+        if (channel) {
+          try { supabase.removeChannel(channel) } catch (e) { /* ignore */ }
+        }
       }
-    } catch (e) {
-      console.warn('[Dashboard] realtime subscribe failed', e)
-    }
-
-    return () => {
-      mounted = false
-      if (channel) {
-        try { supabase.removeChannel(channel) } catch (e) { /* ignore */ }
-      }
-    }
   }, [])
 
   // Convert metrics to chart-friendly series
@@ -154,6 +158,8 @@ export default function ClientDashboard() {
     uptime: m.uptime || 0,
   }))
 
+  const avgSpeed = series.length ? Math.round(series.reduce((acc:any, row:any) => acc + (row.speed || 0), 0) / series.length) : null
+
   return (
     <div className="space-y-8">
       {/* Performance Dashboard */}
@@ -161,7 +167,7 @@ export default function ClientDashboard() {
         <h3 className="font-semibold mb-4" style={{ color: '#E8E3D8' }}>Website Performance</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <StatCard title="Speed" value={loadingMetrics ? 'Loading…' : (metrics.length ? `${Math.round((speedSeries.reduce((a,b)=>a+b,0)/Math.max(1,speedSeries.length)))} ms` : '—')} subtitle={metrics.length ? 'Average (recent)' : 'No data'} />
+            <StatCard title="Speed" value={loadingMetrics ? 'Loading…' : (metrics.length ? `${avgSpeed} ms` : '—')} subtitle={metrics.length ? 'Average (recent)' : 'No data'} />
           </div>
           <div>
             <StatCard title="SEO Score" value={loadingMetrics ? 'Loading…' : (metrics.length ? `${Math.round((metrics.reduce((s,m)=>s+(m.seo_score||0),0)/Math.max(1,metrics.length)))}%` : '—')} subtitle={metrics.length ? 'Aggregate' : 'No data'} />
