@@ -19,7 +19,8 @@ export default function LoginForm() {
     setLoading(true)
     setMessage('')
     try {
-      const { error } = await supabase.auth.signInWithOtp({ email })
+      const redirectTo = `${window.location.origin}/auth/callback`
+      const { error } = await supabase.auth.signInWithOtp({ email }, { redirectTo })
       if (error) throw error
       setMessage('Magic link sent — check your email.')
       setEmail('')
