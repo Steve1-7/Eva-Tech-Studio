@@ -4,6 +4,7 @@ import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 import CountUp from '@/components/CountUp'
+import PricingGrid from '@/components/PricingGrid'
 
 export const metadata: Metadata = {
   title: 'Pricing — Eva-Tech-Studio',
@@ -45,40 +46,8 @@ export default function PricingPage() {
 
       <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
         <div className="max-w-[1200px] mx-auto">
-          <div className="grid md:grid-cols-3 gap-5">
-            {plans.map((p, i) => (
-              <ScrollReveal key={p.name} delay={i * 80}>
-                <div className={`rounded-[24px] p-10 relative h-full flex flex-col card ${p.popular ? 'border-[rgba(201,169,110,0.3)]' : ''}`}
-                  style={p.popular ? { background: 'linear-gradient(145deg, var(--obsidian-4), var(--obsidian-3))', boxShadow: '0 0 60px rgba(201,169,110,0.08)' } : { background: 'var(--obsidian-3)' }}>
-                  {p.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[0.68rem] font-bold tracking-[0.1em] uppercase px-4 py-1 rounded-full whitespace-nowrap"
-                      style={{ background: 'var(--gold)', color: 'var(--obsidian)' }}>
-                      Most Popular
-                    </div>
-                  )}
-                  <div className="font-syne text-[0.72rem] font-bold tracking-[0.14em] uppercase mb-3" style={{ color: p.popular ? '#C9A96E' : '#6B6860' }}>{p.name}</div>
-                  <div className="font-cormorant font-bold leading-none tracking-tight my-3" style={{ fontSize: 'clamp(2.5rem,5vw,3.5rem)', color: '#E8E3D8' }}>
-                    <sup className="text-[1.3rem] align-super" style={{ color: '#C9A96E' }}>R</sup>
-                    <CountUp end={p.price} duration={1500} />
-                    <sub className="text-[0.95rem] align-baseline font-dm font-light" style={{ color: '#6B6860' }}>/mo</sub>
-                  </div>
-                  <p className="text-[0.83rem] leading-[1.65] mb-6" style={{ color: '#6B6860' }}>{p.desc}</p>
-                  <div className="h-px mb-6" style={{ background: 'rgba(201,169,110,0.08)' }} />
-                  <ul className="flex flex-col gap-3 mb-8 flex-1">
-                    {p.features.map(f => (
-                      <li key={f} className="flex items-start gap-2.5 text-[0.83rem]" style={{ color: '#B8B2A8' }}>
-                        <span className="font-bold text-[0.75rem] mt-0.5 shrink-0" style={{ color: '#C9A96E' }}>✓</span>{f}
-                      </li>
-                    ))}
-                  </ul>
-                  <MagneticButton className="w-full">
-                    <Link href="/contact" className={p.popular ? 'btn-primary w-full justify-center text-center block' : 'btn-outline w-full justify-center text-center block'}>
-                      {p.cta}
-                    </Link>
-                  </MagneticButton>
-                </div>
-              </ScrollReveal>
-            ))}
+          <div>
+            <PricingGrid />
           </div>
 
           <p className="text-center text-[0.82rem] mt-8" style={{ color: '#6B6860' }}>

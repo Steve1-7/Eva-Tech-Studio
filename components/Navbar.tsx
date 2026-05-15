@@ -13,6 +13,7 @@ const links = [
   { href: '/about', label: 'About' },
   { href: '/work', label: 'Work' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/client-portal', label: 'Client Portal' },
 ]
 
 export default function Navbar() {

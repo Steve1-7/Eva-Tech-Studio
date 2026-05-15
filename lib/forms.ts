@@ -67,3 +67,27 @@ export async function submitContact(payload: ContactPayload) {
 }
 
 export default submitContact
+
+export async function submitPackageInquiry(payload: {
+  fullName: string
+  companyName?: string
+  email: string
+  phone?: string
+  selectedPackage: string
+  projectGoals?: string
+  budgetRange?: string
+  additionalNotes?: string
+}) {
+  const [firstName, ...rest] = (payload.fullName || '').trim().split(' ')
+  const lastName = rest.join(' ') || ''
+
+  return submitContact({
+    firstName,
+    lastName,
+    email: payload.email,
+    phone: payload.phone,
+    service: payload.selectedPackage,
+    budget: payload.budgetRange || '',
+    message: `Company: ${payload.companyName || 'N/A'}\n\nGoals: ${payload.projectGoals || ''}\n\nNotes: ${payload.additionalNotes || ''}`
+  })
+}

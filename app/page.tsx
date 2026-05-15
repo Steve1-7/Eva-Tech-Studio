@@ -9,11 +9,10 @@ import AIAuditWidget from '@/components/AIAuditWidget'
 import MagneticButton from '@/components/MagneticButton'
 import TiltCard from '@/components/TiltCard'
 import ParallaxLayer from '@/components/ParallaxLayer'
-import LiveDashboard from '@/components/LiveDashboard'
 import PricingCalculator from '@/components/PricingCalculator'
 import CaseStudySlider from '@/components/CaseStudySlider'
 import Hero3DObject from '@/components/Hero3DObject'
-import WebSocketMetrics from '@/components/WebSocketMetrics'
+
 import ClientPortalPreview from '@/components/ClientPortalPreview'
 
 const ParticleHero = dynamic(() => import('@/components/ParticleHero'), { ssr: false })
@@ -265,31 +264,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ LIVE DASHBOARD ══ */}
-      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
-        <div className="max-w-[1200px] mx-auto">
-          <ScrollReveal>
-            <div className="text-center max-w-[620px] mx-auto mb-12">
-              <SectionLabel center>Real-Time Results</SectionLabel>
-              <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
-                Live Campaign Performance
-              </h2>
-              <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
-                See our impact in real-time. These metrics update live as campaigns run across our client portfolio.
-              </p>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal delay={80}>
-            <LiveDashboard />
-          </ScrollReveal>
 
-          <div className="mt-12">
-            <ScrollReveal delay={120}>
-              <WebSocketMetrics />
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
 
       {/* ══ SERVICES PREVIEW ══ */}
       <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
