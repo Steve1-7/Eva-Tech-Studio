@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
+import { apiFetch } from '@/lib/api'
 
 interface BlogPost {
   id: number
@@ -29,7 +30,7 @@ export default function BlogPage() {
 
   const loadPosts = async () => {
     try {
-      const res = await fetch('/api/blog')
+      const res = await apiFetch('/api/blog')
       if (res.ok) {
         const data = await res.json()
         setPosts(data.posts || [])

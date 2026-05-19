@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import ScrollReveal from '@/components/ScrollReveal'
 import { useParams } from 'next/navigation'
+import apiFetch from '@/lib/api'
 
 interface BlogPost {
   id: number
@@ -33,7 +34,7 @@ export default function BlogPostPage() {
 
   const loadPost = async () => {
     try {
-      const res = await fetch(`/api/blog/${params.id}`)
+      const res = await apiFetch(`/api/blog/${params.id}`)
       if (res.ok) {
         const data = await res.json()
         setPost(data.post)

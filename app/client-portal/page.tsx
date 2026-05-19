@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 
-const ClientLogin = dynamic(() => import('@/components/ClientPortal/LoginForm'), { ssr: false })
+const PortalWrapper = dynamic(() => import('@/components/ClientPortal/PortalWrapper'), { ssr: false })
 const ClientDashboard = dynamic(() => import('@/components/ClientPortal/Dashboard'), { ssr: false })
 
 export const metadata = {
@@ -25,7 +25,7 @@ export default function ClientPortalPage() {
 
           <div className="max-w-[720px] mx-auto mt-8">
             <ScrollReveal>
-              <ClientLogin />
+              <PortalWrapper />
             </ScrollReveal>
           </div>
         </div>

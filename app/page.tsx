@@ -16,6 +16,7 @@ import Hero3DObject from '@/components/Hero3DObject'
 import ClientPortalPreview from '@/components/ClientPortalPreview'
 
 const ParticleHero = dynamic(() => import('@/components/ParticleHero'), { ssr: false })
+const HeroBackground = dynamic(() => import('@/components/HeroBackground'), { ssr: false })
 
 const services = [
   { icon: '📱', title: 'Social Media Marketing', desc: 'Scroll-stopping content and social strategies that turn followers into loyal, paying customers.', tags: ['Instagram', 'TikTok', 'LinkedIn', 'X'], featured: false },
@@ -58,6 +59,7 @@ export default function Home() {
     <>
       {/* ══ HERO ══ */}
       <section className="relative min-h-screen flex items-center pt-[130px] pb-24 px-6 md:px-[60px] overflow-hidden bg-[#07080F]">
+        <HeroBackground src="/vid/we.mp4" />
         {/* Aurora background - parallax layer */}
         <ParallaxLayer speed={0.3} className="absolute inset-0">
           <div className="aurora-bg">
@@ -74,7 +76,7 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: 'linear-gradient(rgba(232,227,216,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(232,227,216,0.5) 1px,transparent 1px)', backgroundSize: '80px 80px' }} />
 
-        <div className="max-w-[1200px] mx-auto w-full grid md:grid-cols-2 gap-16 items-center relative z-10">
+        <div className="max-w-[1200px] mx-auto w-full grid md:grid-cols-2 gap-16 items-center relative z-10 hero-content">
           {/* Left */}
           <div>
             <ScrollReveal>
@@ -85,7 +87,7 @@ export default function Home() {
             </ScrollReveal>
 
             <ScrollReveal delay={80}>
-              <h1 className="text-[clamp(3rem,6.5vw,6rem)] font-semibold leading-[1.0] mb-6" style={{ color: '#E8E3D8', letterSpacing: '-0.03em' }}>
+              <h1 className="hero-heading text-[clamp(3rem,6.5vw,6rem)] font-semibold leading-[1.0] mb-6" style={{ color: '#E8E3D8', letterSpacing: '-0.03em' }}>
                 Digital<br />
                 Solutions{' '}
                 <span className="text-shimmer italic font-light">Built</span>
@@ -106,7 +108,7 @@ export default function Home() {
             </ScrollReveal>
 
             <ScrollReveal delay={240}>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 hero-cta">
                 <MagneticButton>
                   <Link href="/contact" className="btn-primary">Book a Strategy Call →</Link>
                 </MagneticButton>

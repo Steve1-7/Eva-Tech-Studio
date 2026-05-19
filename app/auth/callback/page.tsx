@@ -10,15 +10,20 @@ export default function AuthCallbackPage() {
     let mounted = true
     ;(async () => {
       try {
-        const { data, error } = await supabase.auth.getSessionFromUrl({ storeSession: true })
-        if (error) console.warn('[auth/callback] getSessionFromUrl error', error)
-        if (!mounted) return
-        if (data?.session) {
-          // Signed in — send the user to the client portal
-          router.replace('/client-portal')
-        } else {
-          router.replace('/client-portal')
+        // supabase.auth.getSessionFromUrl may not be available in this client version.
+        // Parse the URL fragment (hash) that contains the magic-link tokens and set the session.
+        const hash = window.location.hash || ''
+        const params = new URLSearchParams(hash.replace(/^#/, ''))
+        const access_token = params.get('access_token')
+        const refresh_token = params.get('refresh_token')
+
+        if (access_token) {
+          // Set the session so supabase client can use it
+          await supabase.auth.setSession({ access_token, refresh_token: refresh_token ?? '' })
         }
+
+        if (!mounted) return
+        router.replace('/client-portal')
       } catch (e) {
         console.error('[auth/callback] error', e)
         router.replace('/')

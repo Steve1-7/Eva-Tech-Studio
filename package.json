@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "generate:video": "node ./scripts/generate-video.js",
+    "test": "vitest",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -32,6 +34,7 @@
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^1.0.0"
   }
 }

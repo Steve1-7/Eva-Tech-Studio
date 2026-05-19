@@ -390,6 +390,38 @@ select.form-input option { background: var(--obsidian-3); color: var(--platinum)
 .glow-gold { background: radial-gradient(circle, rgba(201,169,110,0.1) 0%, transparent 65%); }
 .glow-sage { background: radial-gradient(circle, rgba(74,122,100,0.1) 0%, transparent 65%); }
 
+/* ── HERO VIDEO OVERLAY & CONTENT ── */
+.hero-video-overlay {
+  background: linear-gradient(180deg, rgba(7,8,15,0.55) 0%, rgba(7,8,15,0.6) 40%, rgba(7,8,15,0.7) 100%);
+  mix-blend-mode: multiply;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 40;
+}
+
+.hero-heading {
+  text-shadow: 0 6px 30px rgba(0,0,0,0.6);
+}
+
+.hero-cta .btn-primary {
+  padding: 16px 34px;
+  font-size: 0.98rem;
+  box-shadow: 0 18px 50px rgba(201,169,110,0.12);
+}
+
+@media (max-width: 768px) {
+  .hero-video-overlay { background: linear-gradient(180deg, rgba(7,8,15,0.7) 0%, rgba(7,8,15,0.8) 100%); }
+  .hero-heading { text-shadow: 0 6px 24px rgba(0,0,0,0.75); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video-overlay { transition: none; }
+}
+
 /* ── MAGNETIC WRAP ── */
 .magnetic-wrap { display: inline-block; position: relative; }
 

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Confetti from './Confetti'
 import { downloadPDF } from '@/lib/pdf-export'
 import { submitContact } from '@/lib/forms'
+import { apiFetch } from '@/lib/api'
 
 interface QuoteFormData {
   businessName: string
@@ -50,7 +51,7 @@ export default function AIQuoteGenerator({
     setStep('loading')
     setError('')
     try {
-      const res = await fetch('/api/ai-quote', {
+      const res = await apiFetch('/api/ai-quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -88,7 +89,7 @@ export default function AIQuoteGenerator({
       const timestamp = new Date().toISOString().split('T')[0]
       const filename = `eva-tech-quote-${businessName}-${timestamp}.pdf`
 
-      const response = await fetch('/api/export-pdf', {
+      const response = await apiFetch('/api/export-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const AUTHORIZED_EMAIL = 'stevezuluu@gmail.com'
+const AUTHORIZED_EMAIL = process.env.AUTHORIZED_EMAIL || 'stevezuluu@gmail.com'
 
 export async function createSession(email: string): Promise<string> {
   const token = Buffer.from(`${email}:${Date.now()}`).toString('base64')

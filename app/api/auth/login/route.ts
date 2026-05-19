@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       name: 'admin_session',
       value: token,
       httpOnly: true,
-      secure: false, // Set to false for local development
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
       maxAge: 24 * 60 * 60 // 24 hours

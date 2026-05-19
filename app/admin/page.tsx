@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import SectionLabel from '@/components/SectionLabel'
+import { apiFetch } from '@/lib/api'
 import { generateLinkedInPost, formatLinkedInForCopy } from '@/lib/linkedin'
 
 const AUTHORIZED_EMAIL = 'stevezuluu@gmail.com'
@@ -52,7 +53,7 @@ export default function AdminDashboard() {
   // Load posts from backend API
   const loadPosts = async () => {
     try {
-      const res = await fetch('/api/blog?includeDrafts=true')
+      const res = await apiFetch('/api/blog?includeDrafts=true')
       const data = await res.json()
       if (data.posts) {
         setPosts(data.posts)
@@ -71,7 +72,7 @@ export default function AdminDashboard() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await apiFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -119,7 +120,7 @@ export default function AdminDashboard() {
   const handleDeletePost = async (id: number) => {
     if (confirm('Are you sure you want to delete this post?')) {
       try {
-        const res = await fetch(`/api/blog/${id}`, {
+        const res = await apiFetch(`/api/blog/${id}`, {
           method: 'DELETE'
         })
         if (res.ok) {
@@ -136,7 +137,7 @@ export default function AdminDashboard() {
     if (!post) return
 
     try {
-      const res = await fetch(`/api/blog/${id}`, {
+      const res = await apiFetch(`/api/blog/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -157,7 +158,7 @@ export default function AdminDashboard() {
       const url = updatedPost.id === 0 ? '/api/blog' : `/api/blog/${updatedPost.id}`
       const method = updatedPost.id === 0 ? 'POST' : 'PUT'
 
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json'

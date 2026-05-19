@@ -41,7 +41,9 @@ export async function submitContact(payload: ContactPayload) {
 
   inFlight.add(key)
   try {
-    const res = await fetch('/api/contact', {
+    // Use configurable API base so frontend can target different backends
+    const { apiFetch } = await import('./api')
+    const res = await apiFetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Confetti from './Confetti'
 import { downloadPDF } from '@/lib/pdf-export'
 import { submitContact } from '@/lib/forms'
+import { apiFetch } from '@/lib/api'
 
 interface AuditData {
   url: string
@@ -97,7 +98,7 @@ export default function AIAuditWidget() {
     setStep('loading'); setError(''); setIsOffline(false)
 
     try {
-      const res = await fetch('/api/ai-audit', {
+      const res = await apiFetch('/api/ai-audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, biz, goal }),
@@ -208,7 +209,7 @@ export default function AIAuditWidget() {
       const timestamp = new Date().toISOString().split('T')[0]
       const filename = `eva-tech-audit-${businessName}-${timestamp}.pdf`
 
-      const response = await fetch('/api/export-pdf', {
+      const response = await apiFetch('/api/export-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
