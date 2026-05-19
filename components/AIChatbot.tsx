@@ -1,12 +1,11 @@
  'use client'
 import { useState, useRef, useEffect } from 'react'
-import { submitContact } from '@/lib/forms'
+import { apiFetch } from '@/lib/api'
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState('')
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
+  // Chat is anonymous/quick — no name/email required by default
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
@@ -28,12 +27,17 @@ export default function AIChatbot() {
 
     setLoading(true)
     try {
-      await submitContact({
-        firstName: name || undefined,
-        lastName: undefined,
-        email: email || '',
-        message: input.trim(),
+      // Send to the lightweight chat endpoint — email is optional
+      const res = await apiFetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input.trim() })
       })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data?.error || 'Unable to send message')
+      }
       setSuccess(true)
       setInput('')
     } catch (err: any) {
@@ -85,12 +89,12 @@ export default function AIChatbot() {
 
           <div className="h-[340px] overflow-y-auto px-4 py-3" style={{ scrollbarWidth: 'thin' }}>
             <div className="mb-4 text-[0.92rem] leading-[1.6]" style={{ color: '#B8B2A8' }}>
-              Ask a question or send a quick brief — include your email so we can reply.
+              Ask a quick question about Eva-Tech-Studio. No name or email required — if you want a reply, include your email in the message body.
             </div>
 
             {success && (
               <div className="mb-4 p-3 rounded-[12px]" style={{ background: 'rgba(201,169,110,0.08)', color: '#C9A96E' }}>
-                Thanks — your message was sent. We'll be in touch within 24 hours.
+                Thanks — your message was received. Our team will review and respond if needed.
               </div>
             )}
 
@@ -99,26 +103,12 @@ export default function AIChatbot() {
             )}
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <input
-                ref={inputRef}
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your name (optional)"
-                className="form-input"
-              />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email (recommended)"
-                className="form-input"
-              />
               <textarea
-                rows={4}
+                ref={inputRef}
+                rows={6}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Write your message..."
+                placeholder="Ask a question about Eva-Tech-Studio..."
                 className="form-input resize-none"
               />
               <div className="flex items-center gap-3">
