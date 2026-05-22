@@ -17,6 +17,7 @@ import ClientPortalPreview from '@/components/ClientPortalPreview'
 
 const ParticleHero = dynamic(() => import('@/components/ParticleHero'), { ssr: false })
 const HeroBackground = dynamic(() => import('@/components/HeroBackground'), { ssr: false })
+import GoogleReviews from '@/components/GoogleReviews'
 
 const services = [
   { icon: '📱', title: 'Social Media Marketing', desc: 'Scroll-stopping content and social strategies that turn followers into loyal, paying customers.', tags: ['Instagram', 'TikTok', 'LinkedIn', 'X'], featured: false },
@@ -32,12 +33,6 @@ const steps = [
   { n: '02', title: 'Architect', desc: 'A custom growth roadmap prioritised by ROI potential, with clear KPIs for every initiative.' },
   { n: '03', title: 'Execute', desc: 'Our multi-disciplinary team launches, tests, and iterates at speed — moving fast without breaking what works.' },
   { n: '04', title: 'Scale', desc: 'Once we find what converts, we amplify. Winning campaigns get scaled, systems get automated, growth compounds.' },
-]
-
-const testimonials = [
-  { text: 'Working with Eva-Tech-Studio transformed our brand visibility across all digital channels. Their strategic approach to social media marketing drove unprecedented engagement and converted followers into paying customers. Exceptional team.', name: 'Micah Daniels', role: 'Founder', initials: 'MD', featured: false },
-  { text: 'Eva-Tech-Studio delivered a complete growth ecosystem. From paid ads to automation, their holistic approach generated 3× ROI within the first quarter. They think like true partners invested in our success.', name: 'Ryan Zulu', role: 'CEO', initials: 'RZ', featured: true },
-  { text: 'The website redesign and content strategy from Eva-Tech-Studio positioned us as industry leaders. Our conversion rate increased by 240% and our customer acquisition cost dropped dramatically. Highly recommended.', name: 'Cleansmith', role: 'Founder', initials: 'CS', featured: false },
 ]
 
 const marqueeItems = ['Social Media Marketing', 'Paid Ads Management', 'Website Development', 'SEO Optimisation', 'E-commerce Development', 'Brand Strategy', 'CRM Integration', 'Business Automation']
@@ -367,7 +362,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ TESTIMONIALS ══ */}
+      {/* ══ GOOGLE REVIEWS (Elfsight) ══ */}
       <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
         <div className="max-w-[1200px] mx-auto">
           <ScrollReveal>
@@ -376,43 +371,20 @@ export default function Home() {
               <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
                 Results Speak. Our Clients Agree.
               </h2>
+              <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
+                Live reviews from our Google Business Profile — updated automatically as clients share their experience.
+              </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-5">
-            {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 80}>
-                <div className={`rounded-[20px] p-9 h-full card ${t.featured ? 'border-[rgba(201,169,110,0.25)]' : ''}`}
-                  style={t.featured ? {
-                    background: 'linear-gradient(145deg, var(--obsidian-4), var(--obsidian-3))',
-                    boxShadow: '0 0 50px rgba(201,169,110,0.07)',
-                  } : { background: 'var(--obsidian-3)' }}>
-                  <div className="flex gap-0.5 mb-4">
-                    {Array(5).fill(0).map((_, i) => <span key={i} className="text-[0.85rem]" style={{ color: '#C9A96E' }}>★</span>)}
-                  </div>
-                  <div className="font-cormorant text-[3rem] leading-none mb-3" style={{ color: t.featured ? 'rgba(201,169,110,0.3)' : 'rgba(201,169,110,0.2)' }}>"</div>
-                  <p className="text-[0.88rem] leading-[1.8] font-light mb-7" style={{ color: t.featured ? '#B8B2A8' : '#6B6860' }}>{t.text}</p>
-                  <div className="flex items-center gap-3 pt-5 border-t border-[rgba(232,227,216,0.05)]">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-[0.82rem] font-bold flex-shrink-0"
-                      style={{ background: t.featured ? 'rgba(201,169,110,0.15)' : 'var(--obsidian-5)', color: '#C9A96E' }}>
-                      {t.initials}
-                    </div>
-                    <div>
-                      <div className="font-semibold text-[0.85rem]" style={{ color: '#E8E3D8' }}>{t.name}</div>
-                      <div className="text-[0.74rem] mt-0.5" style={{ color: '#6B6860' }}>{t.role}</div>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-
-          {/* Logo cloud */}
-          <div className="flex flex-wrap items-center justify-center gap-10 mt-16 pt-10 border-t border-[rgba(232,227,216,0.05)]">
-            {['Eva-Tech-Studio', 'Cleansmith', 'Kingsbarber', 'PromptlyOS', 'OmniCommut'].map(logo => (
-              <span key={logo} className="font-syne text-[0.8rem] font-bold tracking-[0.1em] transition-colors duration-200 cursor-default hover:text-[#C9A96E]"
-                style={{ color: '#232638' }}>{logo}</span>
-            ))}
+          <div
+            className="rounded-[20px] p-4 sm:p-6 md:p-8 w-full card"
+            style={{
+              background: 'var(--obsidian-3)',
+              border: '1px solid rgba(201,169,110,0.12)',
+            }}
+          >
+            <GoogleReviews />
           </div>
         </div>
       </section>

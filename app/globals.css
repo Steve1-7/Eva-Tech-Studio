@@ -425,3 +425,32 @@ select.form-input option { background: var(--obsidian-3); color: var(--platinum)
 /* ── MAGNETIC WRAP ── */
 .magnetic-wrap { display: inline-block; position: relative; }
 
+/* ── ELFSIGHT GOOGLE REVIEWS ── */
+.google-reviews-widget {
+  width: 100%;
+  max-width: 100%;
+  min-height: 280px;
+}
+
+.google-reviews-widget > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.google-reviews-widget iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 640px) {
+  .google-reviews-widget {
+    min-height: 320px;
+  }
+}
+
+/* Dark theme: site uses obsidian palette by default; Elfsight inherits page background */
+html.dark .google-reviews-widget,
+.google-reviews-widget {
+  color-scheme: dark;
+}
+

@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: 'Eva-Tech-Studio — Growth-Driven Digital Agency',
   description: 'We architect digital ecosystems that compound your growth — from performance marketing to scalable tech infrastructure.',
   openGraph: { title:'Eva-Tech-Studio', description:'Stop leaving revenue on the table. Build your growth engine.', type:'website' },
+  verification: {
+    google: 'jBzyTiwinkB8xrmVTBumdvCYjXIciqwlEmKZXwt3UrI',
+  },
   icons: { 
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',

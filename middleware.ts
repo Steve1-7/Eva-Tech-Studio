@@ -17,15 +17,17 @@ export function middleware(request: NextRequest) {
     // Default: only allow same-origin
     "default-src 'self'",
     // Scripts: same-origin + inline for Next.js + trusted CDNs
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com",
-    // Styles: same-origin + inline
-    "style-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://elfsightcdn.com https://static.elfsight.com https://apps.elfsight.com",
+    // Styles: same-origin + inline + Elfsight widget
+    "style-src 'self' 'unsafe-inline' https://elfsightcdn.com https://static.elfsight.com https://apps.elfsight.com",
     // Images: any source (CDN images)
-    "img-src 'self' data: https:",
-    // Fonts: same-origin
-    "font-src 'self' data:",
-    // Connect: APIs we use
-    "connect-src 'self' https://*.supabase.co https://api.google.com https://generativelanguage.googleapis.com https://www.google-analytics.com",
+    "img-src 'self' data: https: blob:",
+    // Fonts: same-origin + Google Fonts + Elfsight
+    "font-src 'self' data: https://fonts.gstatic.com https://elfsightcdn.com",
+    // Connect: APIs we use + Elfsight Google Reviews widget
+    "connect-src 'self' https://*.supabase.co https://api.google.com https://generativelanguage.googleapis.com https://www.google-analytics.com https://*.elfsight.com https://elfsightcdn.com https://static.elfsight.com https://apps.elfsight.com https://core.service.elfsight.com https://service-reviews.elfsight.com https://storage.elfsight.com",
+    // Embedded widget iframes
+    "frame-src 'self' https://*.elfsight.com https://apps.elfsight.com https://www.google.com",
     // Frames: none (prevent clickjacking)
     "frame-ancestors 'none'",
     // Form actions
