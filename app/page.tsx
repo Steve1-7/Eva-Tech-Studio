@@ -17,7 +17,7 @@ import ClientPortalPreview from '@/components/ClientPortalPreview'
 
 const ParticleHero = dynamic(() => import('@/components/ParticleHero'), { ssr: false })
 const HeroBackground = dynamic(() => import('@/components/HeroBackground'), { ssr: false })
-import GoogleReviews from '@/components/GoogleReviews'
+const GoogleReviews = dynamic(() => import('@/components/GoogleReviews'), { ssr: false })
 
 const services = [
   { icon: '📱', title: 'Social Media Marketing', desc: 'Scroll-stopping content and social strategies that turn followers into loyal, paying customers.', tags: ['Instagram', 'TikTok', 'LinkedIn', 'X'], featured: false },
@@ -363,31 +363,7 @@ export default function Home() {
       </section>
 
       {/* ══ GOOGLE REVIEWS (Elfsight) ══ */}
-      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
-        <div className="max-w-[1200px] mx-auto">
-          <ScrollReveal>
-            <div className="text-center max-w-[620px] mx-auto mb-16">
-              <SectionLabel center>Social Proof</SectionLabel>
-              <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
-                Results Speak. Our Clients Agree.
-              </h2>
-              <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
-                Live reviews from our Google Business Profile — updated automatically as clients share their experience.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div
-            className="rounded-[20px] p-4 sm:p-6 md:p-8 w-full card"
-            style={{
-              background: 'var(--obsidian-3)',
-              border: '1px solid rgba(201,169,110,0.12)',
-            }}
-          >
-            <GoogleReviews />
-          </div>
-        </div>
-      </section>
+      <GoogleReviews />
 
       {/* ══ ROI CALCULATOR ══ */}
       <ROICalculator />

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: 'We architect digital ecosystems that compound your growth — from performance marketing to scalable tech infrastructure.',
   openGraph: { title:'Eva-Tech-Studio', description:'Stop leaving revenue on the table. Build your growth engine.', type:'website' },
   verification: {
-    google: 'jBzyTiwinkB8xrmVTBumdvCYjXIciqwlEmKZXwt3UrI',
+    google: "jBzyTiwinkB8xrmVTBumdvCYjXIciqwlEmKZXwt3UrI",
   },
   icons: { 
     icon: '/favicon.svg',
@@ -29,6 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://elfsightcdn.com" />
+        <link rel="dns-prefetch" href="https://static.elfsight.com" />
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased">
