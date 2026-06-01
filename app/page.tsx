@@ -10,7 +10,6 @@ import MagneticButton from '@/components/MagneticButton'
 import TiltCard from '@/components/TiltCard'
 import ParallaxLayer from '@/components/ParallaxLayer'
 import PricingCalculator from '@/components/PricingCalculator'
-import CaseStudySlider from '@/components/CaseStudySlider'
 import Hero3DObject from '@/components/Hero3DObject'
 
 import ClientPortalPreview from '@/components/ClientPortalPreview'
@@ -323,8 +322,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ CASE STUDIES ══ */}
-      <CaseStudySlider />
+      {/* ══ PRICING CALCULATOR (moved from later) ══ */}
+      <PricingCalculator />
 
       {/* ══ PROCESS ══ */}
       <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
@@ -371,8 +370,7 @@ export default function Home() {
       {/* ══ AI AUDIT ══ */}
       <AIAuditWidget />
 
-      {/* ══ PRICING CALCULATOR ══ */}
-      <PricingCalculator />
+      {/* PRICING CALCULATOR removed from here (moved above next to case studies) */}
 
       {/* ══ CLIENT PORTAL PREVIEW ══ */}
       <ClientPortalPreview />

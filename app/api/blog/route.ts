@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authenticateRequest } from '@/lib/auth'
+import { authenticateRequest, getAuthInfo } from '@/lib/auth'
+import { requireAdmin, serviceClient } from '@/lib/rbac'
+import { withAdmin } from '@/lib/routeWrappers'
+import { supabaseAdmin } from '@/lib/supabase'
 import { supabase } from '@/lib/supabase'
 
 interface BlogPost {
@@ -21,8 +24,9 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const includeDrafts = searchParams.get('includeDrafts') === 'true'
 
-  // If requesting drafts, require authentication
-  if (includeDrafts && !(await authenticateRequest(request))) {
+  // If requesting drafts, require admin authentication
+  // require admin for draft listing
+  if (includeDrafts && !(await requireAdmin(request))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -33,6 +37,12 @@ export async function GET(request: NextRequest) {
 
   if (!includeDrafts) {
     query = query.eq('published', true)
+  }
+
+  // If non-admin and an ownerId is provided, scope posts to that owner
+  const ownerId = new URL(request.url).searchParams.get('ownerId')
+  if (!auth.isAdmin && ownerId) {
+    query = query.eq('owner_id', ownerId)
   }
 
   const { data: posts, error } = await query
@@ -60,28 +70,28 @@ export async function GET(request: NextRequest) {
 }
 
 // POST - Create new post (admin only)
-export async function POST(request: NextRequest) {
-  if (!(await authenticateRequest(request))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
+export const POST = withAdmin(async (request: Request) => {
   try {
     const body = await request.json()
 
-    const { data: post, error } = await supabase
+    const insertPayload: any = {
+      title: body.title,
+      excerpt: body.excerpt,
+      content: body.content,
+      author: body.author || 'Steve Zulu',
+      date: new Date().toISOString().split('T')[0],
+      cover_image: body.coverImage || '',
+      category: body.category || '',
+      published: body.published || false,
+      meta_description: body.metaDescription,
+      tags: body.tags || []
+    }
+
+    if (body.ownerId) insertPayload.owner_id = body.ownerId
+
+    const { data: post, error } = await supabaseAdmin
       .from('blog_posts')
-      .insert({
-        title: body.title,
-        excerpt: body.excerpt,
-        content: body.content,
-        author: body.author || 'Steve Zulu',
-        date: new Date().toISOString().split('T')[0],
-        cover_image: body.coverImage || '',
-        category: body.category || '',
-        published: body.published || false,
-        meta_description: body.metaDescription,
-        tags: body.tags || []
-      })
+      .insert(insertPayload)
       .select()
       .single()
 
@@ -89,7 +99,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    // Convert to camelCase
     const formattedPost = {
       id: post.id,
       title: post.title,
@@ -108,4 +117,4 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
-}
+}) as any

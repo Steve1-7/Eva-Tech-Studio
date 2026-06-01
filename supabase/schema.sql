@@ -15,6 +15,9 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Owner column for multi-tenant scoping
+ALTER TABLE IF EXISTS blog_posts ADD COLUMN IF NOT EXISTS owner_id UUID;
+
 -- Sessions Table
 CREATE TABLE IF NOT EXISTS admin_sessions (
   id BIGSERIAL PRIMARY KEY,
@@ -42,10 +45,36 @@ CREATE TABLE IF NOT EXISTS ai_reports (
   expires_at TIMESTAMP WITH TIME ZONE DEFAULT (NOW() + INTERVAL '30 days') -- Auto-delete after 30 days
 );
 
--- Disable RLS on tables for server-side operations
+-- Keep admin_sessions accessible server-side, but enable RLS for tenant data
 ALTER TABLE IF EXISTS admin_sessions DISABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS blog_posts DISABLE ROW LEVEL SECURITY;
+-- Enable RLS on blog_posts to enforce per-tenant access via policies
+ALTER TABLE IF EXISTS blog_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS ai_reports DISABLE ROW LEVEL SECURITY;
+
+-- Row Level Security policies for `blog_posts` (examples)
+-- Allow public SELECT only for published posts
+CREATE POLICY "public_select_published" ON blog_posts
+  FOR SELECT
+  USING (published = true OR owner_id = auth.uid());
+
+-- Allow clients to INSERT posts only where owner_id equals auth.uid()
+CREATE POLICY "client_insert_own" ON blog_posts
+  FOR INSERT
+  WITH CHECK (owner_id = auth.uid());
+
+-- Allow owners to UPDATE their own posts
+CREATE POLICY "owner_update" ON blog_posts
+  FOR UPDATE
+  USING (owner_id = auth.uid())
+  WITH CHECK (owner_id = auth.uid());
+
+-- Allow owners to DELETE their own posts
+CREATE POLICY "owner_delete" ON blog_posts
+  FOR DELETE
+  USING (owner_id = auth.uid());
+
+-- Note: Admins and server-side processes should use the Supabase service_role key
+-- to bypass RLS when performing global admin operations.
 
 -- Index for faster queries
 CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON blog_posts(published);

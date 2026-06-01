@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdmin } from '@/lib/rbac'
 import { checkRateLimit, contactFormLimiter } from '@/lib/rate-limit'
 import { GEMINI_MODEL } from '@/lib/ai-config'
 import type { AIReport, CreateReportRequest, CreateReportResponse } from '@/lib/types/ai-reports'
@@ -107,8 +109,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<CreateRep
       metadata: body.metadata || {}
     }
 
-    // Save to database
-    const { data, error } = await supabase
+    // Save to database using server-side service client (bypass RLS if enabled)
+    const { data, error } = await supabaseAdmin
       .from('ai_reports')
       .insert(report)
       .select('id')
@@ -166,6 +168,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<CreateRep
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
+    // Only admins can retrieve saved reports by arbitrary id
+    if (!(await requireAdmin(request))) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
     const { searchParams } = new URL(request.url)
     const reportId = searchParams.get('id')
 

@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { supabaseAdmin } from './supabase'
 
 const AUTHORIZED_EMAIL = process.env.AUTHORIZED_EMAIL || 'stevezuluu@gmail.com'
 
@@ -6,17 +6,9 @@ export async function createSession(email: string): Promise<string> {
   const token = Buffer.from(`${email}:${Date.now()}`).toString('base64')
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
 
-  console.log('[AUTH] Creating session for:', email)
-  console.log('[AUTH] Token:', token.substring(0, 30) + '...')
-  console.log('[AUTH] Expires at:', expiresAt.toISOString())
-
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('admin_sessions')
-    .insert({
-      token,
-      email,
-      expires_at: expiresAt.toISOString()
-    })
+    .insert({ token, email, expires_at: expiresAt.toISOString() })
     .select()
 
   if (error) {
@@ -24,41 +16,32 @@ export async function createSession(email: string): Promise<string> {
     throw new Error(`Failed to create session: ${error.message}`)
   }
 
-  console.log('[AUTH] Session saved to DB:', data)
-
-  // Verify the session was saved
-  const { data: verifyData, error: verifyError } = await supabase
-    .from('admin_sessions')
-    .select('*')
-    .eq('token', token)
-    .maybeSingle()
-
-  if (verifyError) {
-    console.error('[AUTH] Verification query error:', verifyError)
-  } else if (!verifyData) {
-    console.error('[AUTH] WARNING: Session not found immediately after insert!')
-  } else {
-    console.log('[AUTH] Session verified in DB:', verifyData.id)
-  }
-
   return token
 }
 
-export function validateSession(token: string): boolean {
-  supabase
-    .from('admin_sessions')
-    .select('*')
-    .eq('token', token)
-    .gt('expires_at', new Date().toISOString())
-    .single()
-    .then(({ data: session, error }) => {
-      if (error || !session) return false
-      return session.email.toLowerCase() === AUTHORIZED_EMAIL.toLowerCase()
-    })
+export async function validateSession(token: string): Promise<boolean> {
+  if (!token) return false
 
-  // For synchronous use, we'll do a quick check
-  // In production, this should be async
-  return true
+  try {
+    const { data: session, error } = await supabase
+      .from('admin_sessions')
+      .select('*')
+      .eq('token', token)
+      .gt('expires_at', new Date().toISOString())
+      .maybeSingle()
+
+    if (error) {
+      console.error('[AUTH] validateSession query error:', error)
+      return false
+    }
+
+    if (!session) return false
+
+    return session.email?.toLowerCase() === AUTHORIZED_EMAIL.toLowerCase()
+  } catch (e) {
+    console.error('[AUTH] validateSession unexpected error', e)
+    return false
+  }
 }
 
 export async function validateSessionAsync(token: string): Promise<boolean> {
@@ -66,43 +49,32 @@ export async function validateSessionAsync(token: string): Promise<boolean> {
   console.log('[AUTH] Token length:', token.length)
 
   // First check if any session exists with this token (without expiry filter)
-  const { data: anySession, error: anyError } = await supabase
+  const { data: anySession, error: anyError } = await supabaseAdmin
     .from('admin_sessions')
     .select('*')
     .eq('token', token)
     .maybeSingle()
 
-  console.log('[AUTH] Any session with this token:', { found: !!anySession, error: anyError?.message })
-
-  if (anySession) {
-    console.log('[AUTH] Found session expiry:', anySession.expires_at)
-    console.log('[AUTH] Current time:', new Date().toISOString())
-    console.log('[AUTH] Is expired?', new Date(anySession.expires_at) < new Date())
+  if (anyError) {
+    console.error('[AUTH] validateSessionAsync first-query error:', anyError)
   }
 
   // Now do the full validation with expiry check
-  const { data: session, error } = await supabase
+  const { data: session, error } = await supabaseAdmin
     .from('admin_sessions')
     .select('*')
     .eq('token', token)
     .gt('expires_at', new Date().toISOString())
     .maybeSingle()
 
-  console.log('[AUTH] Valid session query result:', { error: error?.message || null, session: !!session })
-
   if (error) {
     console.error('[AUTH] Session query error:', error)
     return false
   }
 
-  if (!session) {
-    console.log('[AUTH] No valid session found for token')
-    return false
-  }
+  if (!session) return false
 
-  const isValid = session.email.toLowerCase() === AUTHORIZED_EMAIL.toLowerCase()
-  console.log('[AUTH] Session email:', session.email, 'Authorized email:', AUTHORIZED_EMAIL, 'Valid:', isValid)
-  return isValid
+  return session.email?.toLowerCase() === AUTHORIZED_EMAIL.toLowerCase()
 }
 
 export function getSessionFromRequest(request: Request): string | null {
@@ -143,8 +115,24 @@ export function getSessionFromRequest(request: Request): string | null {
 export async function authenticateRequest(request: Request): Promise<boolean> {
   const token = getSessionFromRequest(request)
   if (!token) {
-    console.log('[AUTH] No token found in request')
     return false
   }
   return await validateSessionAsync(token)
+}
+
+export async function getAuthInfo(request: Request): Promise<{ isAdmin: boolean; userId?: string | null }> {
+  const token = getSessionFromRequest(request)
+  const isAdmin = token ? await validateSessionAsync(token) : false
+
+  // Try to infer a client user id from common headers or cookies
+  const headerUserId = request.headers.get('x-user-id')
+  const cookieHeader = request.headers.get('cookie') || ''
+  let cookieUserId: string | null = null
+  cookieHeader.split(';').forEach(c => {
+    const [k, ...v] = c.trim().split('=')
+    if (k === 'sb-user-id') cookieUserId = decodeURIComponent(v.join('='))
+  })
+
+  const userId = headerUserId || cookieUserId || null
+  return { isAdmin, userId }
 }

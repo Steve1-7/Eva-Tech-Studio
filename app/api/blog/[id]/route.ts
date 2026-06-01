@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authenticateRequest } from '@/lib/auth'
+import { authenticateRequest, getAuthInfo } from '@/lib/auth'
+import { requireAdmin } from '@/lib/rbac'
+import { withAdmin } from '@/lib/routeWrappers'
+import { supabaseAdmin } from '@/lib/supabase'
 import { supabase } from '@/lib/supabase'
 
 interface BlogPost {
@@ -31,9 +34,14 @@ export async function GET(
     return NextResponse.json({ error: 'Post not found' }, { status: 404 })
   }
 
-  // If post is draft, require authentication
-  if (!post.published && !(await authenticateRequest(request))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  // If post is draft, require admin or owner
+  const isAdmin = await requireAdmin(request)
+  const auth = await getAuthInfo(request)
+
+  if (!post.published && !isAdmin) {
+    if (!auth.userId || post.owner_id !== auth.userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
   }
 
   // Convert to camelCase
@@ -55,38 +63,32 @@ export async function GET(
 }
 
 // PUT - Update post (admin only)
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  if (!(await authenticateRequest(request))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
+export const PUT = withAdmin(async (request: Request, { params }: { params: { id: string } }) => {
   try {
     const body = await request.json()
 
-    const { data: post, error } = await supabase
+    const updatePayload: any = {
+      title: body.title,
+      excerpt: body.excerpt,
+      content: body.content,
+      cover_image: body.coverImage,
+      category: body.category,
+      published: body.published,
+      meta_description: body.metaDescription,
+      tags: body.tags
+    }
+
+    const { data: post, error: updateError } = await supabaseAdmin
       .from('blog_posts')
-      .update({
-        title: body.title,
-        excerpt: body.excerpt,
-        content: body.content,
-        cover_image: body.coverImage,
-        category: body.category,
-        published: body.published,
-        meta_description: body.metaDescription,
-        tags: body.tags
-      })
+      .update(updatePayload)
       .eq('id', parseInt(params.id))
       .select()
       .single()
 
-    if (error || !post) {
+    if (updateError || !post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
 
-    // Convert to camelCase
     const formattedPost = {
       id: post.id,
       title: post.title,
@@ -105,25 +107,22 @@ export async function PUT(
   } catch (error) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
-}
+}) as any
 
 // DELETE - Delete post (admin only)
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  if (!(await authenticateRequest(request))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+export const DELETE = withAdmin(async (request: Request, { params }: { params: { id: string } }) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from('blog_posts')
+      .delete()
+      .eq('id', parseInt(params.id))
+
+    if (error) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (e) {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
-
-  const { error } = await supabase
-    .from('blog_posts')
-    .delete()
-    .eq('id', parseInt(params.id))
-
-  if (error) {
-    return NextResponse.json({ error: 'Post not found' }, { status: 404 })
-  }
-
-  return NextResponse.json({ success: true })
-}
+}) as any

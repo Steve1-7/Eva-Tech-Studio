@@ -89,10 +89,17 @@ export default function ClientDashboard() {
   async function loadPosts() {
     setLoadingPosts(true)
     try {
+      // Only load posts for the signed-in client (owner). If no userId, return empty list.
+      if (!userId) {
+        setPosts([])
+        return
+      }
+
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id,title,date,published')
-        .eq('published', true)
+        // include owner_id when available; schema migration may be required server-side
+        .select('id,title,date,published,owner_id')
+        .eq('owner_id', userId)
         .order('date', { ascending: false })
         .limit(10)
 
@@ -130,26 +137,21 @@ export default function ClientDashboard() {
         await loadMetrics()
         await loadPosts()
 
-        // Realtime subscription for client_metrics (scoped by uid when available)
+        // Realtime subscription for client_metrics (only subscribe when uid available)
         try {
-          const filter = uid ? `client_id=eq.${uid}` : undefined
-          const ch = supabase.channel('realtime-client_metrics')
-          if (filter) {
+          if (uid) {
+            const filter = `client_id=eq.${uid}`
+            const ch = supabase.channel('realtime-client_metrics')
             ch.on('postgres_changes', { event: '*', schema: 'public', table: 'client_metrics', filter }, (payload: any) => {
               setMetrics(prev => {
                 const next = [...prev.filter((r: any) => r.date !== payload.new.date), payload.new]
                 return next.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
               })
             })
+            channel = ch.subscribe()
           } else {
-            ch.on('postgres_changes', { event: '*', schema: 'public', table: 'client_metrics' }, (payload: any) => {
-              setMetrics(prev => {
-                const next = [...prev.filter((r: any) => r.date !== payload.new.date), payload.new]
-                return next.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
-              })
-            })
+            console.warn('[Dashboard] No user id available — skipping realtime subscription')
           }
-          channel = ch.subscribe()
         } catch (e) {
           console.warn('[Dashboard] realtime subscribe failed', e)
         }
@@ -190,18 +192,40 @@ export default function ClientDashboard() {
   const saveEdit = async (updated: any) => {
     setSaving(true)
     try {
-      const res = await apiFetch(`/api/blog/${updated.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updated)
-      })
-      if (res.ok) {
+      // Client-side save: allow editing only if current user is the owner
+      if (!userId) {
+        alert('You must be signed in to save changes')
+        return
+      }
+
+      if (updated.owner_id && updated.owner_id !== userId) {
+        alert('You do not have permission to edit this post')
+        return
+      }
+
+      const { data: post, error } = await supabase
+        .from('blog_posts')
+        .update({
+          title: updated.title,
+          excerpt: updated.excerpt,
+          content: updated.content,
+          cover_image: updated.coverImage,
+          category: updated.category,
+          published: updated.published,
+          meta_description: updated.metaDescription,
+          tags: updated.tags
+        })
+        .eq('id', updated.id)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Supabase update error', error)
+        alert('Failed to save post')
+      } else {
         await loadMetrics()
         await loadPosts()
         closeEdit()
-      } else {
-        console.error('Edit save failed', await res.text())
-        alert('Failed to save post')
       }
     } catch (e) {
       console.error('Save error', e)
@@ -271,7 +295,11 @@ export default function ClientDashboard() {
                       <div className="text-[0.75rem]" style={{ color: '#6B6860' }}>{p.date}</div>
                     </div>
                     <div className="flex gap-2">
-                      <button className="btn-outline" onClick={() => startEdit(p)}>Edit</button>
+                      {p.owner_id && p.owner_id === userId ? (
+                        <button className="btn-outline" onClick={() => startEdit(p)}>Edit</button>
+                      ) : (
+                        <button className="btn-outline" disabled title="You don't have permission to edit">Edit</button>
+                      )}
                       <a href={`/blog/${p.id}`} className="btn-primary">View</a>
                     </div>
                   </li>
@@ -367,7 +395,11 @@ export default function ClientDashboard() {
                   <div className="text-[0.85rem]" style={{ color: '#6B6860' }}>{new Date(p.date).toLocaleDateString()}</div>
                 </div>
                 <div className="flex gap-2">
-                  <button className="btn-outline">Edit</button>
+                  {p.owner_id && p.owner_id === userId ? (
+                    <button className="btn-outline">Edit</button>
+                  ) : (
+                    <button className="btn-outline" disabled title="No edit permission">Edit</button>
+                  )}
                   <button className="btn-primary">View</button>
                 </div>
               </div>
