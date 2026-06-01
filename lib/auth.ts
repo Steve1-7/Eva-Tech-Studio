@@ -23,7 +23,7 @@ export async function validateSession(token: string): Promise<boolean> {
   if (!token) return false
 
   try {
-    const { data: session, error } = await supabase
+    const { data: session, error } = await supabaseAdmin
       .from('admin_sessions')
       .select('*')
       .eq('token', token)
