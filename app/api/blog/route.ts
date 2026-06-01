@@ -41,8 +41,18 @@ export async function GET(request: NextRequest) {
 
   // If non-admin and an ownerId is provided, scope posts to that owner
   const ownerId = new URL(request.url).searchParams.get('ownerId')
-  if (!auth.isAdmin && ownerId) {
-    query = query.eq('owner_id', ownerId)
+  const isAdmin = await requireAdmin(request)
+  const auth = await getAuthInfo(request)
+  if (!isAdmin && ownerId) {
+    // If a non-admin requests and supplies an ownerId, only allow if it matches their userId
+    if (auth.userId && auth.userId === ownerId) {
+      query = query.eq('owner_id', ownerId)
+    } else if (auth.userId == null) {
+      // no user id available — do not scope, return published only
+    } else {
+      // requested ownerId does not match requester — deny
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
   }
 
   const { data: posts, error } = await query
