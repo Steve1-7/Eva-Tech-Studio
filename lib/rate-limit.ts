@@ -116,6 +116,11 @@ export const contactFormLimiter = new RateLimiter({
   maxRequests: 3 // 3 contact forms per hour per IP
 })
 
+export const aiConsultantLimiter = new RateLimiter({
+  windowMs: 3600000, // 1 hour
+  maxRequests: 5 // 5 consultant requests per hour per IP
+})
+
 /**
  * Express/Next.js compatible rate limit check
  */

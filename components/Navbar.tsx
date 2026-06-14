@@ -11,7 +11,8 @@ const links = [
   { href: '/services', label: 'Services' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
-  { href: '/work', label: 'Work' },
+    { href: '/work', label: 'Work' },
+    { href: '/careers', label: 'Careers' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/client-portal', label: 'Client Portal' },
 ]

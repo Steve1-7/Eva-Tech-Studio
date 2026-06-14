@@ -150,6 +150,36 @@ export default function WorkPage() {
                 </div>
               </a>
             </ScrollReveal>
+
+            {/* Gold Coast Mining Review */}
+            <ScrollReveal delay={300}>
+              <a href="/work/gold-coast-mining-review" className="block group">
+                <div className="rounded-[24px] overflow-hidden transition-all duration-300 hover:-translate-y-1" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(232,227,216,0.06)' }}>
+                  <div className="h-[220px] flex items-center justify-center text-[4rem] relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#071322,#12304a)' }}>
+                    🪨
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{ background: 'linear-gradient(135deg, rgba(201,169,110,0.1), transparent)' }} />
+                    <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-[0.7rem] font-medium px-4 py-2 rounded-full" style={{ background: 'var(--gold)', color: '#07080F' }}>
+                        View Case Study ↗
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-8">
+                    <span className="inline-block text-[0.68rem] font-bold tracking-[0.1em] uppercase px-3 py-1 rounded-full mb-4" style={{ background: 'rgba(201,169,110,0.08)', color: '#C9A96E', border: '1px solid rgba(201,169,110,0.15)' }}>
+                      Publishing & Ads
+                    </span>
+                    <h3 className="font-cormorant text-[1.6rem] font-semibold mb-2" style={{ color: '#E8E3D8' }}>Gold Coast Mining Review</h3>
+                    <p className="text-[0.9rem] mb-6" style={{ color: '#6B6860' }}>Mining news & advertising platform with magazine downloads, ad inventory management, and enterprise SEO.</p>
+                    <div className="flex flex-wrap gap-3">
+                      {['Next.js', 'Supabase', 'SEO', 'Ad Inventory'].map(tag => (
+                        <span key={tag} className="text-[0.7rem] px-3 py-1.5 rounded-full" style={{ background: 'rgba(232,227,216,0.05)', color: '#6B6860', border: '1px solid rgba(232,227,216,0.08)' }}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </ScrollReveal>
           </div>
         </div>
       </section>
