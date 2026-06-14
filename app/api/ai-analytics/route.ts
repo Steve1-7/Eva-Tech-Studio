@@ -25,8 +25,8 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({ api_key: posthogKey, event: eventType, properties: { ...(properties || {}), ip, user_agent: userAgent } })
         })
       }
-    } catch (fwdErr) {
-      console.warn('[AI-ANALYTICS] PostHog forward failed:', fwdErr?.message || fwdErr)
+    } catch (fwdErr: any) {
+      console.warn('[AI-ANALYTICS] PostHog forward failed:', (fwdErr && fwdErr.message) || String(fwdErr))
     }
 
     return NextResponse.json({ success: true })

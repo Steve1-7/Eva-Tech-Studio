@@ -2,21 +2,23 @@
  * Optional Upstash-backed rate limiter helper.
  * Falls back to returning null if Upstash is not configured or the package is unavailable.
  */
-import type { Redis } from '@upstash/redis'
 
-let redisClient: Redis | null = null
+// Avoid top-level imports so builds don't fail when @upstash/redis isn't installed.
+let redisClient: any = null
 
 function getRedis() {
   if (redisClient) return redisClient
   try {
+    // require inside function so missing package won't break the build.
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { Redis: RedisLib } = require('@upstash/redis')
     const url = process.env.UPSTASH_REDIS_REST_URL
     const token = process.env.UPSTASH_REDIS_REST_TOKEN
     if (!url || !token) return null
     redisClient = new RedisLib({ url, token })
     return redisClient
-  } catch (err) {
-    console.warn('[Upstash] @upstash/redis not installed or failed to initialize:', err?.message || err)
+  } catch (err: any) {
+    console.warn('[Upstash] @upstash/redis not installed or failed to initialize:', (err && err.message) || String(err))
     return null
   }
 }
@@ -35,8 +37,8 @@ export async function upstashRateLimit(key: string, windowSeconds: number, maxRe
     const remaining = Math.max(0, maxRequests - current)
     const resetTime = Date.now() + (ttl || windowSeconds) * 1000
     return { allowed, remaining, resetTime }
-  } catch (err) {
-    console.warn('[Upstash] Rate limit check failed:', err?.message || err)
+  } catch (err: any) {
+    console.warn('[Upstash] Rate limit check failed:', (err && err.message) || String(err))
     return null
   }
 }
