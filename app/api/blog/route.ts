@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Convert snake_case to camelCase for frontend
-  const formattedPosts = posts?.map(post => ({
+  const formattedPosts = posts?.map((post: any) => ({
     id: post.id,
     title: post.title,
     excerpt: post.excerpt,

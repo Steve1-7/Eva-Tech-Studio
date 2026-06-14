@@ -25,7 +25,7 @@ export default function PortalWrapper() {
       }
     })()
 
-    const { data: { subscription } = {} as any } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } = {} as any } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       setUser(session?.user ?? null)
     })
 

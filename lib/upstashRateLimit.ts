@@ -10,15 +10,19 @@ function getRedis() {
   if (redisClient) return redisClient
   try {
     // require inside function so missing package won't break the build.
+    // Use dynamic require via eval to avoid static bundler resolution.
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { Redis: RedisLib } = require('@upstash/redis')
+    const requireFn: any = eval('require')
+    const { Redis: RedisLib } = requireFn('@upstash/redis')
     const url = process.env.UPSTASH_REDIS_REST_URL
     const token = process.env.UPSTASH_REDIS_REST_TOKEN
     if (!url || !token) return null
     redisClient = new RedisLib({ url, token })
     return redisClient
-  } catch (err: any) {
-    console.warn('[Upstash] @upstash/redis not installed or failed to initialize:', (err && err.message) || String(err))
+  } catch (err: unknown) {
+    const errMsg = err instanceof Error ? err.message : String(err)
+    console.warn('[Upstash] @upstash/redis not installed or failed to initialize:', errMsg)
     return null
   }
 }
@@ -37,8 +41,9 @@ export async function upstashRateLimit(key: string, windowSeconds: number, maxRe
     const remaining = Math.max(0, maxRequests - current)
     const resetTime = Date.now() + (ttl || windowSeconds) * 1000
     return { allowed, remaining, resetTime }
-  } catch (err: any) {
-    console.warn('[Upstash] Rate limit check failed:', (err && err.message) || String(err))
+  } catch (err: unknown) {
+    const errMsg = err instanceof Error ? err.message : String(err)
+    console.warn('[Upstash] Rate limit check failed:', errMsg)
     return null
   }
 }

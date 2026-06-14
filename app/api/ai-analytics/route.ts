@@ -25,13 +25,15 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({ api_key: posthogKey, event: eventType, properties: { ...(properties || {}), ip, user_agent: userAgent } })
         })
       }
-    } catch (fwdErr: any) {
-      console.warn('[AI-ANALYTICS] PostHog forward failed:', (fwdErr && fwdErr.message) || String(fwdErr))
+    } catch (fwdErr: unknown) {
+      const fwdMsg = fwdErr instanceof Error ? fwdErr.message : String(fwdErr)
+      console.warn('[AI-ANALYTICS] PostHog forward failed:', fwdMsg)
     }
 
     return NextResponse.json({ success: true })
-  } catch (err: any) {
-    console.error('[AI-ANALYTICS] Error:', err)
-    return NextResponse.json({ success: false, message: err?.message || 'Failed' }, { status: 500 })
+  } catch (err: unknown) {
+    const errMsg = err instanceof Error ? err.message : String(err)
+    console.error('[AI-ANALYTICS] Error:', errMsg)
+    return NextResponse.json({ success: false, message: errMsg || 'Failed' }, { status: 500 })
   }
 }
