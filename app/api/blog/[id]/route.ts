@@ -73,7 +73,7 @@ export const PUT = withAdmin(async (request: Request, { params }: { params: { id
       content: body.content,
       cover_image: body.coverImage,
       category: body.category,
-      published: body.published,
+      published: !!body.published,
       meta_description: body.metaDescription,
       tags: body.tags
     }

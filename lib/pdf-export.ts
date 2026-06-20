@@ -230,10 +230,21 @@ export function formatTextForPDF(text: string): string {
   // Remove HTML tags
   let cleaned = text.replace(/<[^>]*>/g, '')
 
-  // Decode HTML entities
-  const textarea = document.createElement('textarea')
-  textarea.innerHTML = cleaned
-  cleaned = textarea.value
+  // Decode basic HTML entities in environments without DOM (server-side)
+  if (typeof document !== 'undefined' && document.createElement) {
+    const textarea = document.createElement('textarea')
+    textarea.innerHTML = cleaned
+    cleaned = textarea.value
+  } else {
+    // Basic entity replacements sufficient for most content
+    cleaned = cleaned
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+  }
 
   // Normalize whitespace
   cleaned = cleaned.replace(/\n\s*\n/g, '\n\n').trim()

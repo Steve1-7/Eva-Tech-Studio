@@ -1,4 +1,5 @@
 import Button from '../../../components/Button'
+import CaseStudyDownload from '../../../components/CaseStudyDownload'
 
 export const metadata = {
   title: 'Gold Coast Mining Review — Case Study',
@@ -13,6 +14,11 @@ export default function Page() {
         <p className="text-gray-600">Mining News & Advertising Platform — Website, CMS, SEO, Advertising</p>
         <div className="mt-6">
           <Button href="https://www.goldcoastminingreview.com" variant="outline">Visit the site</Button>
+          <CaseStudyDownload
+            title="Gold Coast Mining Review — Case Study"
+            content={`Gold Coast Mining Review\n\nProject Overview:\nGold Coast Mining Review engaged Eva Tech Studio to build a modern publishing platform that supports news, magazine downloads, and advertising opportunities with enterprise-grade SEO and responsive design.\n\nClient Goals:\n- Launch a fast, searchable news site for mining industry audiences.\n- Provide downloadable magazines and gated content.\n- Offer advertising placements and sponsorship management.\n- Achieve strong SEO and performance on mobile.\n\nSolutions Delivered:\n- Custom CMS workflows for editorial publishing and magazine downloads.\n- Ad slots with flexible placements and tracking.\n- Responsive, accessibility-minded UI and image optimization pipeline.\n- SEO migration plan, structured data, and canonical mappings.\n\nResults:\nA measurable uplift in organic visibility, simplified ad management, and a modern publishing foundation enabling ongoing growth.`}
+            filename="gold-coast-mining-review-case-study.pdf"
+          />
         </div>
       </header>
 

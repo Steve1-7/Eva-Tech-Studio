@@ -6,11 +6,8 @@ class GoogleGenerativeAI {
   getGenerativeModel({ model }) {
     return {
       async generateContent(prompt, config) {
-        return {
-          response: {
-            text: () => `Fallback shim: AI service unavailable. Prompt preview: ${String(prompt).slice(0,200)}`
-          }
-        }
+        // In development shim, fail loudly without exposing prompts
+        throw new Error('AI service shim in use: service unavailable')
       }
     }
   }

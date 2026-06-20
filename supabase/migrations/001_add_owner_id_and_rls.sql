@@ -20,23 +20,27 @@ CREATE INDEX IF NOT EXISTS idx_blog_posts_owner_id ON blog_posts(owner_id);
 ALTER TABLE IF EXISTS blog_posts ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Allow public SELECT only for published posts or when owner matches auth.uid()
-CREATE POLICY IF NOT EXISTS public_select_published ON blog_posts
+DROP POLICY IF EXISTS public_select_published ON blog_posts;
+CREATE POLICY public_select_published ON blog_posts
   FOR SELECT
   USING (published = true OR owner_id = auth.uid());
 
 -- Policy: Allow clients to INSERT posts only where owner_id equals auth.uid()
-CREATE POLICY IF NOT EXISTS client_insert_own ON blog_posts
+DROP POLICY IF EXISTS client_insert_own ON blog_posts;
+CREATE POLICY client_insert_own ON blog_posts
   FOR INSERT
   WITH CHECK (owner_id = auth.uid());
 
 -- Policy: Allow owners to UPDATE their own posts
-CREATE POLICY IF NOT EXISTS owner_update ON blog_posts
+DROP POLICY IF EXISTS owner_update ON blog_posts;
+CREATE POLICY owner_update ON blog_posts
   FOR UPDATE
   USING (owner_id = auth.uid())
   WITH CHECK (owner_id = auth.uid());
 
 -- Policy: Allow owners to DELETE their own posts
-CREATE POLICY IF NOT EXISTS owner_delete ON blog_posts
+DROP POLICY IF EXISTS owner_delete ON blog_posts;
+CREATE POLICY owner_delete ON blog_posts
   FOR DELETE
   USING (owner_id = auth.uid());
 

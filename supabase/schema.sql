@@ -53,22 +53,26 @@ ALTER TABLE IF EXISTS ai_reports DISABLE ROW LEVEL SECURITY;
 
 -- Row Level Security policies for `blog_posts` (examples)
 -- Allow public SELECT only for published posts
+DROP POLICY IF EXISTS "public_select_published" ON blog_posts;
 CREATE POLICY "public_select_published" ON blog_posts
   FOR SELECT
   USING (published = true OR owner_id = auth.uid());
 
 -- Allow clients to INSERT posts only where owner_id equals auth.uid()
+DROP POLICY IF EXISTS "client_insert_own" ON blog_posts;
 CREATE POLICY "client_insert_own" ON blog_posts
   FOR INSERT
   WITH CHECK (owner_id = auth.uid());
 
 -- Allow owners to UPDATE their own posts
+DROP POLICY IF EXISTS "owner_update" ON blog_posts;
 CREATE POLICY "owner_update" ON blog_posts
   FOR UPDATE
   USING (owner_id = auth.uid())
   WITH CHECK (owner_id = auth.uid());
 
 -- Allow owners to DELETE their own posts
+DROP POLICY IF EXISTS "owner_delete" ON blog_posts;
 CREATE POLICY "owner_delete" ON blog_posts
   FOR DELETE
   USING (owner_id = auth.uid());

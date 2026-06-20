@@ -92,7 +92,7 @@ export const POST = withAdmin(async (request: Request) => {
       date: new Date().toISOString().split('T')[0],
       cover_image: body.coverImage || '',
       category: body.category || '',
-      published: body.published || false,
+      published: !!body.published,
       meta_description: body.metaDescription,
       tags: body.tags || []
     }

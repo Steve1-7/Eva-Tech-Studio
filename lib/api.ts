@@ -6,7 +6,8 @@ export function apiUrl(path: string) {
 }
 
 export function apiFetch(path: string, init?: RequestInit) {
-  return fetch(apiUrl(path), init)
+  const finalInit: RequestInit = Object.assign({ credentials: 'include' }, init || {})
+  return fetch(apiUrl(path), finalInit)
 }
 
 export default apiFetch

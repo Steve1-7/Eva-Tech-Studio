@@ -202,31 +202,15 @@ Sections:
       duration: `${duration}ms`
     })
 
-    // If it's a recoverable AI error, return fallback response
-    if (errorType === 'model_not_found' || errorType === 'rate_limit' || errorType === 'config_missing') {
-      try {
-        const parsed = await request.clone().json().catch(() => ({}))
-        const fallbackResult = generateFallbackAudit(parsed.url || url || '', parsed.biz || biz || '', parsed.goal || goal || '')
+    // Log error details server-side but do NOT expose internals to the client
+    logAIOperation('ai-audit', 'error', { type: errorType, message: error?.message?.toString?.() || String(error), duration: `${duration}ms` })
 
-        logAIOperation('ai-audit', 'fallback', { reason: errorType })
-
-        return NextResponse.json({
-          success: true,
-          result: fallbackResult,
-          fallback: true
-        })
-      } catch (fallbackErr) {
-        // If fallback generation fails, log and continue to return structured error
-        logAIOperation('ai-audit', 'error', { reason: 'fallback_failed', message: String(fallbackErr) })
-      }
-    }
-
-    // Return structured error response
-    let errorMessage = getAIErrorMessage(errorType)
+    // Return a professional, non-technical message to the user
+    const publicErrorMessage = 'Unable to generate audit at the moment. Please try again shortly.'
 
     return NextResponse.json(
-      { success: false, message: errorMessage },
-      { status: 500 }
+      { success: false, message: publicErrorMessage },
+      { status: 503 }
     )
   }
 }

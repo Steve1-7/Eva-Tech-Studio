@@ -125,10 +125,7 @@ export default function AIAuditWidget() {
       }
       localStorage.setItem('ai_audit_data', JSON.stringify(auditData))
 
-      // Track if it was a fallback response
-      if (data.fallback) {
-        setIsOffline(true)
-      }
+      // No longer rely on fallback flags — show error messages when generation fails
 
     } catch (err: any) {
       setError(err.message || 'Unable to generate audit. Please try again or contact us directly.')
@@ -363,11 +360,7 @@ export default function AIAuditWidget() {
                 <div className="rounded-[20px] p-6 mb-5" style={{ background: 'rgba(201,169,110,0.05)', border: '1px solid rgba(201,169,110,0.15)' }}>
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-[0.8rem] font-bold uppercase tracking-[0.1em]" style={{ color: '#C9A96E' }}>📋 Audit Input Summary</h4>
-                    {isOffline && (
-                      <span className="px-3 py-1 rounded-full text-[0.7rem] font-medium" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
-                        ⚡ Offline Mode
-                      </span>
-                    )}
+                    {/* Offline/fallback indicator removed — system now returns professional errors instead */}
                   </div>
                   <div className="grid md:grid-cols-3 gap-4 text-[0.85rem]">
                     {url && (

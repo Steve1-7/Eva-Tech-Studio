@@ -221,35 +221,15 @@ Be specific about what's included in each service. Provide realistic pricing bas
       duration: `${duration}ms`
     })
 
-    // If it's a recoverable AI error, return fallback response
-    if (errorType === 'model_not_found' || errorType === 'rate_limit') {
-      try {
-        const body = await request.clone().json()
-        const services = body.services || []
-        const tier = body.tier || 'growth'
-        const businessName = body.businessName || ''
-        const industry = body.industry || ''
+    // Log error details server-side but do NOT expose internals to the client
+    logAIOperation('ai-quote', 'error', { type: errorType, message: error?.message, duration: `${duration}ms` })
 
-        const fallbackResult = generateFallbackQuote(services, tier, businessName, industry)
-
-        logAIOperation('ai-quote', 'fallback', { reason: errorType })
-
-        return NextResponse.json({
-          success: true,
-          result: fallbackResult,
-          fallback: true
-        })
-      } catch {
-        // If we can't parse body for fallback, return error
-      }
-    }
-
-    // Return structured error response
-    let errorMessage = getAIErrorMessage(errorType)
+    // For any AI failure, return a professional, non-technical message to the user
+    const publicErrorMessage = 'Unable to generate quotation at the moment. Please try again shortly.'
 
     return NextResponse.json(
-      { success: false, message: errorMessage },
-      { status: 500 }
+      { success: false, message: publicErrorMessage },
+      { status: 503 }
     )
   }
 }

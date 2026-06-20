@@ -8,7 +8,7 @@ export default function AIChatbot() {
   // Chat is anonymous/quick — no name/email required by default
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
+  const [reply, setReply] = useState('')
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function AIChatbot() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-    setSuccess(false)
+    setReply('')
 
     if (!input.trim()) {
       setError('Please enter a message')
@@ -33,12 +33,12 @@ export default function AIChatbot() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: input.trim() })
       })
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data?.error || 'Unable to send message')
+      const data = await res.json()
+      if (!data || !data.success) {
+        throw new Error(data?.error || 'Unable to get assistant response')
       }
-      setSuccess(true)
+
+      setReply(data.reply || data.message || 'Sorry, I could not generate a response.')
       setInput('')
     } catch (err: any) {
       setError(err.message || 'Unable to send message. Please try again.')
@@ -77,13 +77,13 @@ export default function AIChatbot() {
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(201, 169, 110, 0.1)',
           }}
         >
-          <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))' }}>
+            <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))' }}>
             <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(201, 169, 110, 0.15)' }}>
               <span className="text-lg">💬</span>
             </div>
             <div>
-              <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>Talk to the Team</div>
-              <div className="text-[0.65rem]" style={{ color: '#6B6860' }}>Quick messages go to our inbox; we'll reply within 24 hours.</div>
+              <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>Eva AI — Digital Consultant</div>
+              <div className="text-[0.65rem]" style={{ color: '#6B6860' }}>Ask about services, pricing, audits, or proposals. I'll help you decide next steps.</div>
             </div>
           </div>
 
@@ -92,9 +92,9 @@ export default function AIChatbot() {
               Ask a quick question about Eva-Tech-Studio. No name or email required — if you want a reply, include your email in the message body.
             </div>
 
-            {success && (
+            {reply && (
               <div className="mb-4 p-3 rounded-[12px]" style={{ background: 'rgba(201,169,110,0.08)', color: '#C9A96E' }}>
-                Thanks — your message was received. Our team will review and respond if needed.
+                {reply}
               </div>
             )}
 
@@ -108,7 +108,7 @@ export default function AIChatbot() {
                 rows={6}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a question about Eva-Tech-Studio..."
+                placeholder="Ask Eva AI — e.g. How much does a business website cost?"
                 className="form-input resize-none"
               />
               <div className="flex items-center gap-3">
@@ -117,9 +117,9 @@ export default function AIChatbot() {
                   disabled={loading}
                   className="btn-primary flex-1 py-3"
                 >
-                  {loading ? 'Sending...' : 'Send Message'}
+                  {loading ? 'Thinking...' : 'Ask Eva AI'}
                 </button>
-                <button type="button" onClick={() => { setIsOpen(false); setError(''); setSuccess(false) }} className="px-4 py-3 rounded-full" style={{ border: '1px solid rgba(232,227,216,0.06)' }}>
+                <button type="button" onClick={() => { setIsOpen(false); setError(''); setReply('') }} className="px-4 py-3 rounded-full" style={{ border: '1px solid rgba(232,227,216,0.06)' }}>
                   Close
                 </button>
               </div>
