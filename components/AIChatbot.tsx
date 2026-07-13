@@ -70,7 +70,7 @@ export default function AIChatbot() {
 
       {isOpen && (
         <div
-          className="fixed bottom-24 right-6 z-50 w-[360px] h-[500px] rounded-[24px] overflow-hidden shadow-2xl animate-fade-up"
+          className="fixed bottom-24 right-6 z-50 w-[min(360px,calc(100vw-3rem))] max-h-[calc(100vh-4rem)] rounded-[24px] overflow-hidden shadow-2xl animate-fade-up"
           style={{
             background: 'var(--obsidian-3)',
             border: '1px solid rgba(201, 169, 110, 0.2)',

@@ -330,9 +330,9 @@ export default function AIAuditWidget() {
                         Manual audit request sent. We'll email you within 24 hours.
                       </div>
                     )}
-                    <div className="mt-3 flex gap-2 justify-center">
-                      <input type="email" placeholder="Your email (to receive manual audit)" value={manualEmail} onChange={e => setManualEmail(e.target.value)} className="form-input" style={{ maxWidth: '360px' }} />
-                      <button onClick={handleRequestManual} disabled={manualLoading} className="px-4 py-3 rounded-full" style={{ background: 'var(--gold)', color: 'var(--obsidian)' }}>{manualLoading ? 'Sending...' : 'Request'}</button>
+                    <div className="mt-3 flex flex-col sm:flex-row gap-2 justify-center">
+                      <input type="email" placeholder="Your email (to receive manual audit)" value={manualEmail} onChange={e => setManualEmail(e.target.value)} className="form-input flex-1 sm:max-w-[360px]" />
+                      <button onClick={handleRequestManual} disabled={manualLoading} className="px-4 py-3 rounded-full whitespace-nowrap" style={{ background: 'var(--gold)', color: 'var(--obsidian)' }}>{manualLoading ? 'Sending...' : 'Request'}</button>
                     </div>
                   </div>
                 </div>

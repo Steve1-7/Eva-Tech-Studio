@@ -55,6 +55,21 @@ body {
   font-family: 'DM Sans', sans-serif;
   overflow-x: hidden;
   line-height: 1.6;
+  min-width: 0;
+}
+
+html, body {
+  min-width: 0;
+}
+
+img, picture, video, canvas, svg, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+* {
+  min-width: 0;
 }
 
 /* ── TYPOGRAPHY ── */
@@ -416,6 +431,21 @@ select.form-input option { background: var(--obsidian-3); color: var(--platinum)
 @media (max-width: 768px) {
   .hero-video-overlay { background: linear-gradient(180deg, rgba(7,8,15,0.7) 0%, rgba(7,8,15,0.8) 100%); }
   .hero-heading { text-shadow: 0 6px 24px rgba(0,0,0,0.75); }
+
+  .hero-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .hero-cta > * {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-cta > *:not(:last-child) {
+    margin-bottom: 0.35rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -452,5 +482,306 @@ select.form-input option { background: var(--obsidian-3); color: var(--platinum)
 html.dark .google-reviews-widget,
 .google-reviews-widget {
   color-scheme: dark;
+}
+
+/* ═══════════════════════════════════════════════════
+   COMPREHENSIVE MOBILE RESPONSIVENESS (< 768px)
+═══════════════════════════════════════════════════ */
+
+/* Prevent overflow on all devices */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ── SMALL MOBILE (< 640px) ── */
+@media (max-width: 640px) {
+  /* Aggressive padding reduction on very small screens */
+  section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Ensure all sections respect viewport width */
+  section[class*="px-6"],
+  section[class*="px-\[60px\]"] {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  /* Button responsiveness */
+  .btn-primary, .btn-outline, .btn-ghost {
+    padding: 12px 20px;
+    font-size: 0.8rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button.btn-primary:not([class*="w-"]) {
+    width: auto;
+    max-width: 100%;
+  }
+
+  /* Form elements */
+  .form-input {
+    padding: 12px 14px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Remove fixed max-width from form groups */
+  input[style*="maxWidth"],
+  textarea[style*="maxWidth"] {
+    max-width: 100% !important;
+  }
+
+  /* Grid adjustments */
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .grid[class*="grid-cols"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Flex wrapping for horizontal layouts */
+  .flex[class*="gap-"] {
+    flex-wrap: wrap;
+  }
+
+  /* Text responsiveness */
+  h1 { font-size: clamp(1.5rem, 5vw, 3rem); }
+  h2 { font-size: clamp(1.25rem, 4vw, 2.5rem); }
+  h3 { font-size: clamp(1.1rem, 3.5vw, 2rem); }
+
+  /* Ensure no absolute overlapping */
+  .absolute {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Card padding adjustment */
+  .card {
+    padding: 1.5rem;
+  }
+
+  .rounded-\[24px\],
+  .rounded-\[20px\] {
+    border-radius: 12px;
+  }
+
+  /* Modal responsiveness */
+  .fixed[class*="inset-0"] {
+    padding: 1rem;
+  }
+
+  /* Chatbot responsiveness */
+  .fixed.bottom-6.right-6 {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  /* Min/max width utilities */
+  .max-w-\[1200px\],
+  .max-w-\[900px\],
+  .max-w-\[620px\] {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* List and item spacing */
+  li {
+    word-break: break-word;
+  }
+
+  /* Table-like content */
+  [role="table"] {
+    font-size: 0.875rem;
+  }
+
+  /* Horizontal scroll containers */
+  [class*="overflow-x-auto"] {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Marquee adjustment */
+  .marquee-item {
+    padding: 0 1.5rem;
+    font-size: 0.65rem;
+  }
+}
+
+/* ── EXTRA SMALL (< 375px) ── */
+@media (max-width: 375px) {
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .btn-primary, .btn-outline, .btn-ghost {
+    padding: 10px 16px;
+    font-size: 0.75rem;
+  }
+
+  .form-input {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  h1 { font-size: clamp(1.25rem, 4vw, 2.5rem); }
+  h2 { font-size: clamp(1.1rem, 3vw, 2rem); }
+  h3 { font-size: clamp(1rem, 2.5vw, 1.5rem); }
+
+  /* Tighter spacing for very small devices */
+  .gap-4 { gap: 1rem !important; }
+  .gap-6 { gap: 1.25rem !important; }
+  .gap-8 { gap: 1.5rem !important; }
+
+  /* Text overflow prevention */
+  p, span, div {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Reduce padding in nested containers */
+  .p-10, .p-12, .p-16 {
+    padding: 1rem !important;
+  }
+
+  .px-10, .px-12, .px-16 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* ── TABLET & RESPONSIVE (640px - 1024px) ── */
+@media (min-width: 640px) and (max-width: 1024px) {
+  section {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .btn-primary, .btn-outline, .btn-ghost {
+    padding: 13px 26px;
+    font-size: 0.85rem;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+
+  /* Two-column grids stay responsive */
+  .grid-cols-2 {
+    gap: 1.5rem;
+  }
+}
+
+/* ── ENSURE FLEX ITEMS DON'T OVERFLOW ── */
+.flex > * {
+  min-width: 0;
+}
+
+.flex-1 {
+  min-width: 0;
+}
+
+/* ── ENSURE NO HERO BUTTON OVERFLOW ── */
+.hero-cta {
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hero-cta > * {
+  min-width: 0;
+  flex: 1;
+  min-width: auto;
+}
+
+@media (max-width: 640px) {
+  .hero-cta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .hero-cta > * {
+    width: 100%;
+    flex: unset;
+  }
+
+  .hero-cta .btn-primary,
+  .hero-cta .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── MODAL/OVERLAY MOBILE FIX ── */
+@media (max-width: 768px) {
+  .fixed[class*="z-60"],
+  .fixed[class*="z-50"] {
+    padding: 1rem;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  /* Ensure modals fit the screen */
+  .max-w-2xl,
+  .max-w-lg,
+  [class*="max-w-"] {
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Modal content scrolling on small screens */
+  [role="dialog"],
+  .rounded-\[16px\][class*="relative"] {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* ── PREVENT CHATBOT OVERFLOW ── */
+@media (max-width: 640px) {
+  /* AI Chatbot container */
+  .fixed[class*="bottom"] {
+    max-width: calc(100vw - 2rem);
+    right: 1rem !important;
+    left: auto !important;
+  }
+
+  /* Ensure chatbot chat window fits */
+  .fixed[class*="w-\["] {
+    width: calc(100vw - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+  }
+}
+
+/* ── LINK AND TEXT HANDLING ── */
+a, button {
+  word-break: break-word;
+}
+
+/* ── ENSURE GRID ITEMS RESPECT WIDTH ── */
+@media (max-width: 768px) {
+  .grid > * {
+    min-width: 0;
+    word-break: break-word;
+  }
+
+  /* Stat cards and special layouts */
+  .grid-cols-2 > * {
+    min-width: 0;
+  }
 }
 

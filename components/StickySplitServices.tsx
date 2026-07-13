@@ -1,44 +1,46 @@
 'use client'
 
+import Image from 'next/image'
+
 const services = [
   {
-    n: '01', icon: '📱', title: 'Social Media Marketing',
+    n: '01', icon: '/icons/social-media.webp', title: 'Social Media Marketing',
     desc: 'Platform-native content strategies that grow your audience, build community, and turn passive scrollers into active buyers.',
     features: ['Full social media management (4 platforms)', 'Content creation, shooting & editing', 'Community management & engagement', 'Monthly analytics & optimisation', 'Influencer partnership sourcing', 'Social commerce setup'],
     stat: '8.4×', statLabel: 'avg engagement increase',
   },
   {
-    n: '02', icon: '🎯', title: 'Paid Ads Management',
+    n: '02', icon: '/icons/target.webp', title: 'Paid Ads Management',
     desc: 'Data-driven paid media across Google, Meta, and beyond — engineered for maximum ROAS. We find your ideal customers and bring them to you, profitably.',
     features: ['Google Ads (Search, Display, Performance Max)', 'Meta Ads (Facebook & Instagram)', 'Full funnel: awareness → retargeting → conversion', 'Creative testing (copy, visuals, formats)', 'Pixel setup & attribution modelling', 'Weekly optimisation & reporting'],
     stat: '5.1×', statLabel: 'average ROAS delivered',
   },
   {
-    n: '03', icon: '🎨', title: 'Branding & Content',
+    n: '03', icon: '/icons/social-media.webp', title: 'Branding & Content',
     desc: 'Visual identities and messaging frameworks that command premium positioning and resonate deeply with your target audience.',
     features: ['Brand identity design', 'Brand voice & messaging framework', 'Content strategy & editorial calendars', 'Copywriting: web, ads, email & campaigns', 'Photography & videography direction', 'Competitor positioning analysis'],
     stat: '3.2×', statLabel: 'brand recognition increase',
   },
   {
-    n: '04', icon: '💻', title: 'Website Development',
+    n: '04', icon: '/icons/website.webp', title: 'Website Development',
     desc: 'Conversion-obsessed websites on modern stacks — lightning-fast, beautifully designed, and architected to rank on Google.',
     features: ['Next.js, React & headless architecture', 'Custom UI/UX design (mobile-first)', 'CMS integration (Sanity, Contentful)', 'Core Web Vitals & performance optimisation', 'Conversion rate optimisation (CRO)', 'Ongoing maintenance & improvements'],
     stat: '94%', statLabel: 'Core Web Vitals score avg',
   },
   {
-    n: '05', icon: '🛒', title: 'E-commerce Development',
+    n: '05', icon: '/icons/shopping.webp', title: 'E-commerce Development',
     desc: 'Stores built to maximise AOV, reduce abandonment, and deliver exceptional shopping experiences that bring customers back.',
     features: ['Shopify & Shopify Plus builds', 'WooCommerce custom development', 'Payment gateway integration', 'Abandoned cart & email automation', 'Product page CRO', 'Analytics & revenue attribution'],
     stat: '41%', statLabel: 'avg cart abandonment reduction',
   },
   {
-    n: '06', icon: '🔍', title: 'SEO Optimisation',
+    n: '06', icon: '/icons/seo.webp', title: 'SEO Optimisation',
     desc: 'Sustainable, compounding organic growth that keeps working 24/7 — without relying entirely on paid spend.',
     features: ['Technical SEO audit & implementation', 'Keyword research & content roadmap', 'On-page & schema optimisation', 'Link building & domain authority', 'Local SEO & Google Business Profile', 'Monthly rank tracking & reporting'],
     stat: '340%', statLabel: 'avg organic traffic growth',
   },
   {
-    n: '07', icon: '⚙️', title: 'Automation & CRM',
+    n: '07', icon: '/icons/crm.webp', title: 'Automation & CRM',
     desc: 'Replace manual effort with intelligent automation. Systems that nurture leads, close sales, and manage relationships — on autopilot.',
     features: ['CRM setup (HubSpot, Salesforce, GoHighLevel)', 'Lead nurture email & SMS sequences', 'Zapier / Make workflow automation', 'Booking & appointment funnel setup', 'Customer onboarding automation', 'Sales pipeline & reporting dashboards'],
     stat: '22hrs', statLabel: 'saved per week on average',
@@ -62,10 +64,10 @@ export default function StickySplitServices() {
             >
               <div>
                 <div
-                  className="w-14 h-14 rounded-[16px] flex items-center justify-center text-[1.9rem] mb-6"
+                  className="w-14 h-14 rounded-[16px] flex items-center justify-center mb-6 overflow-hidden"
                   style={{ background: 'rgba(201,169,110,0.1)', border: '1px solid rgba(201,169,110,0.15)' }}
                 >
-                  {sv.icon}
+                  <Image src={sv.icon} alt={sv.title} width={44} height={44} className="object-contain" />
                 </div>
                 <div className="font-syne text-[0.68rem] font-bold uppercase tracking-[0.14em] mb-2" style={{ color: '#C9A96E' }}>
                   Service {sv.n}

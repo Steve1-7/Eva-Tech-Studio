@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -19,12 +20,12 @@ const HeroBackground = dynamic(() => import('@/components/HeroBackground'), { ss
 const GoogleReviews = dynamic(() => import('@/components/GoogleReviews'), { ssr: false })
 
 const services = [
-  { icon: '📱', title: 'Social Media Marketing', desc: 'Scroll-stopping content and social strategies that turn followers into loyal, paying customers.', tags: ['Instagram', 'TikTok', 'LinkedIn', 'X'], featured: false },
-  { icon: '🎯', title: 'Paid Ads Management', desc: 'High-performance campaigns engineered for maximum ROAS. Every rand earns its place.', tags: ['Google Ads', 'Meta', 'Programmatic'], featured: true },
-  { icon: '🎨', title: 'Branding & Content', desc: 'Visual identities and content ecosystems that build authority and desire at every touchpoint.', tags: ['Brand Design', 'Copywriting', 'Strategy'], featured: false },
-  { icon: '💻', title: 'Website Development', desc: 'Blazing-fast, conversion-obsessed websites on Next.js and React that impress and convert.', tags: ['Next.js', 'React', 'Headless'], featured: false },
-  { icon: '🛒', title: 'E-commerce', desc: 'Online stores built to sell — optimising every step of the purchase journey for maximum AOV.', tags: ['Shopify', 'WooCommerce', 'Custom'], featured: false },
-  { icon: '⚙️', title: 'SEO & Automation', desc: 'Compound organic growth and automated pipelines that work while you sleep.', tags: ['Technical SEO', 'CRM', 'Automation'], featured: false },
+  { icon: '/icons/social-media.webp', title: 'Social Media Marketing', desc: 'Scroll-stopping content and social strategies that turn followers into loyal, paying customers.', tags: ['Instagram', 'TikTok', 'LinkedIn', 'X'], featured: false },
+  { icon: '/icons/target.webp', title: 'Paid Ads Management', desc: 'High-performance campaigns engineered for maximum ROAS. Every rand earns its place.', tags: ['Google Ads', 'Meta', 'Programmatic'], featured: true },
+  { icon: '/icons/social-media.webp', title: 'Branding & Content', desc: 'Visual identities and content ecosystems that build authority and desire at every touchpoint.', tags: ['Brand Design', 'Copywriting', 'Strategy'], featured: false },
+  { icon: '/icons/website.webp', title: 'Website Development', desc: 'Blazing-fast, conversion-obsessed websites on Next.js and React that impress and convert.', tags: ['Next.js', 'React', 'Headless'], featured: false },
+  { icon: '/icons/shopping.webp', title: 'E-commerce', desc: 'Online stores built to sell — optimising every step of the purchase journey for maximum AOV.', tags: ['Shopify', 'WooCommerce', 'Custom'], featured: false },
+  { icon: '/icons/seo.webp', title: 'SEO & Automation', desc: 'Compound organic growth and automated pipelines that work while you sleep.', tags: ['Technical SEO', 'CRM', 'Automation'], featured: false },
 ]
 
 const steps = [
@@ -290,9 +291,9 @@ export default function Home() {
                       background: 'linear-gradient(145deg, var(--obsidian-4), var(--obsidian-3))',
                       boxShadow: '0 0 40px rgba(201,169,110,0.06), inset 0 1px 0 rgba(201,169,110,0.1)',
                     } : { background: 'var(--obsidian-3)' }}>
-                    <div className="w-[50px] h-[50px] rounded-[12px] flex items-center justify-center text-[1.3rem] mb-5 transition-transform duration-300 group-hover:scale-110"
+                    <div className="w-[50px] h-[50px] rounded-[12px] flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 overflow-hidden"
                       style={{ background: s.featured ? 'rgba(201,169,110,0.12)' : 'var(--obsidian-5)' }}>
-                      {s.icon}
+                      <Image src={s.icon} alt={s.title} width={40} height={40} className="object-contain" />
                     </div>
                     <h3 className="font-cormorant text-[1.35rem] font-semibold mb-3" style={{ color: '#E8E3D8' }}>{s.title}</h3>
                     <p className="text-[0.85rem] leading-[1.72] mb-5" style={{ color: '#6B6860' }}>{s.desc}</p>

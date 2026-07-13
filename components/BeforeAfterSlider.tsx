@@ -51,8 +51,7 @@ export default function BeforeAfterSlider({
 
       {/* After layer — clipped */}
       <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>
-        {afterContent}
-        <div style={{ position: 'absolute', inset: 0, width: '100vw' }}>{afterContent}</div>
+        <div style={{ position: 'absolute', inset: 0, width: '100%' }}>{afterContent}</div>
       </div>
 
       {/* Labels */}
