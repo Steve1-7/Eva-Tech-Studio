@@ -14,6 +14,7 @@
     "@google/generative-ai": "file:./shims/google-generative-ai",
     "@supabase/supabase-js": "^2.105.1",
     "@types/file-saver": "^2.0.7",
+    "ai": "^7.0.37",
     "clsx": "^2.1.1",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.3.0",

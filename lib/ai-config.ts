@@ -3,11 +3,12 @@
  * Centralizes model names, error handling, and common functions
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { generateText } from 'ai'
 
 // Model priority list for automatic fallback
-// Models are tried in order; if one fails, the next is attempted
-// Preferred model list. Keep small and use stable/pro models first.
+// Models are tried in order; if one fails, the next is attempted.
+// Requests are routed through the Vercel AI Gateway (uses AI_GATEWAY_API_KEY),
+// so models are referenced with `provider/model` strings.
 // Allow override with env var GOOGLE_AI_MODEL (comma-separated) for flexibility.
 const envModels = process.env.GOOGLE_AI_MODEL
   ? process.env.GOOGLE_AI_MODEL.split(',').map(s => s.trim()).filter(Boolean)
@@ -17,8 +18,8 @@ export const MODELS = (
   envModels.length > 0
     ? envModels
     : [
-        'gemini-1.5-pro', // Stable, production-ready high-capacity model
-        'gemini-2.5-pro', // Secondary: newer capability if available
+        'google/gemini-2.5-flash', // Fast, stable, production-ready
+        'google/gemini-2.5-pro', // Secondary: higher-capacity fallback
       ]
 )
 
@@ -51,13 +52,13 @@ export async function callGemini(
   apiKey?: string,
   config: Partial<typeof DEFAULT_GENERATION_CONFIG> = {}
 ): Promise<string> {
-  const effectiveApiKey = apiKey || process.env.GOOGLE_GENERATIVE_AI_API_KEY
-
-  if (!effectiveApiKey) {
-    throw new Error('GOOGLE_GENERATIVE_AI_API_KEY is not set')
+  // Requests are routed through the Vercel AI Gateway, which authenticates via
+  // the AI_GATEWAY_API_KEY environment variable. The optional apiKey argument is
+  // kept for backwards compatibility but is no longer required.
+  if (!apiKey && !process.env.AI_GATEWAY_API_KEY) {
+    throw new Error('AI_GATEWAY_API_KEY is not set')
   }
 
-  const genAI = new GoogleGenerativeAI(effectiveApiKey)
   const generationConfig = { ...DEFAULT_GENERATION_CONFIG, ...config }
 
   let lastError: Error | null = null
@@ -74,28 +75,14 @@ export async function callGemini(
     try {
       console.log(`[AI-FALLBACK] Attempting model ${model} (${i + 1}/${MODELS.length})...`)
 
-      // Defensive call: some SDK versions expose slightly different method names.
-      const aiModel = genAI.getGenerativeModel ? genAI.getGenerativeModel({ model }) : (genAI as any).model?.(model)
-
-      if (!aiModel || typeof aiModel.generateContent !== 'function') {
-        throw new Error(`Model interface not available for ${model}`)
-      }
-
-      const result = await Promise.race([
-        aiModel.generateContent(prompt, generationConfig),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Request timeout')), REQUEST_TIMEOUT)
-        )
-      ])
-
-      // Some SDK variants return the text directly, others wrap it.
-      let text: string | undefined
-      try {
-        const response = (result as any).response || result
-        text = typeof response.text === 'function' ? response.text() : response.text || response
-      } catch (ex) {
-        text = typeof result === 'string' ? result : undefined
-      }
+      const { text } = await generateText({
+        model,
+        prompt,
+        temperature: generationConfig.temperature,
+        maxOutputTokens: generationConfig.maxOutputTokens,
+        timeout: REQUEST_TIMEOUT,
+        ...(apiKey ? { headers: { Authorization: `Bearer ${apiKey}` } } : {}),
+      })
 
       if (!text || text.trim().length === 0) {
         throw new Error('Empty response from model')
@@ -109,7 +96,7 @@ export async function callGemini(
       const errorMessage = error?.message || String(error)
       console.warn(`[AI-FALLBACK] Model ${model} failed:`, errorMessage)
 
-      // If the error clearly indicates model not found, try next one but surface later
+      // Try the next model in the priority list; surface the error later if all fail.
       continue
     }
   }
@@ -158,7 +145,7 @@ export function classifyAIError(error: any): AIErrorType {
     return 'timeout'
   }
 
-  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+  if (!process.env.AI_GATEWAY_API_KEY) {
     return 'config_missing'
   }
 
@@ -208,29 +195,10 @@ export function logAIOperation(
 }
 
 /**
- * Initialize Gemini AI with proper configuration
- */
-export function initializeGeminiAI(): GoogleGenerativeAI | null {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY
-
-  if (!apiKey) {
-    console.error('[AI-CONFIG] GOOGLE_GENERATIVE_AI_API_KEY not configured')
-    return null
-  }
-
-  try {
-    return new GoogleGenerativeAI(apiKey)
-  } catch (error) {
-    console.error('[AI-CONFIG] Failed to initialize Gemini AI:', error)
-    return null
-  }
-}
-
-/**
- * Check if API key is configured
+ * Check if the AI Gateway is configured
  */
 export function isAIConfigured(): boolean {
-  return !!process.env.GOOGLE_GENERATIVE_AI_API_KEY
+  return !!process.env.AI_GATEWAY_API_KEY
 }
 
 /**

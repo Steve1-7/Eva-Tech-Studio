@@ -114,7 +114,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<AuditResp
     }
 
     // Check API key
-    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    if (!process.env.AI_GATEWAY_API_KEY) {
       logAIOperation('ai-audit', 'error', { reason: 'API_KEY_MISSING' })
       return NextResponse.json(
         { success: false, message: 'AI service not configured' },

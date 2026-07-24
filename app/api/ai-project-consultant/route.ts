@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     if (!rlResult.allowed) {
       return NextResponse.json({ success: false, message: 'Rate limit exceeded. Try again later.' }, { status: 429 })
     }
-    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    if (!process.env.AI_GATEWAY_API_KEY) {
       return NextResponse.json({ success: false, message: 'AI service not configured' }, { status: 503 })
     }
 
