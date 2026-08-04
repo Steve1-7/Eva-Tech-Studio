@@ -16,6 +16,16 @@ const config: Config = {
           4: '#1A1C2A',
           5: '#232638',
         },
+        // Premium purple brand tokens
+        brand: {
+          primary: '#6D28D9', // Royal Purple
+          secondary: '#4C1D95', // Deep Indigo
+          accent: '#A855F7', // Electric Violet
+          background: '#09090B',
+          surface: '#18181B',
+          text: '#FAFAFA',
+          muted: '#A1A1AA',
+        },
         gold: {
           DEFAULT: '#C9A96E',
           bright: '#E8C97A',

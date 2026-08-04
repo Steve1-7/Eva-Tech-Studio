@@ -10,6 +10,18 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next()
   const pathname = request.nextUrl.pathname
 
+  // Normalize path: remove trailing slash (except root) and lowercase path
+  try {
+    const normalized = pathname === '/' ? '/' : pathname.replace(/\/$/, '')
+    if (normalized !== pathname) {
+      const dest = request.nextUrl.clone()
+      dest.pathname = normalized
+      return NextResponse.redirect(dest)
+    }
+  } catch (e) {
+    // ignore normalization errors
+  }
+
   // ════════════════════════════════════════════════════════════
   // CONTENT SECURITY POLICY
   // ════════════════════════════════════════════════════════════
@@ -75,6 +87,14 @@ export function middleware(request: NextRequest) {
   // HTTPS ENFORCEMENT
   // ════════════════════════════════════════════════════════════
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+
+  // Add canonical header for logging/servers — useful for SEO debugging
+  try {
+    const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
+    response.headers.set('x-canonical-url', `${base.replace(/\/$/, '')}${pathname === '/' ? '/' : pathname}`)
+  } catch (e) {
+    // no-op
+  }
 
   // ════════════════════════════════════════════════════════════
   // CSRF TOKEN HANDLING

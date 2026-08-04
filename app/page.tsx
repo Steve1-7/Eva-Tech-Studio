@@ -319,6 +319,145 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ══ AI TOOLS PREVIEW ══ */}
+      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
+        <div className="max-w-[1200px] mx-auto">
+          <ScrollReveal>
+            <div className="text-center max-w-[620px] mx-auto mb-16">
+              <SectionLabel center>AI Tools</SectionLabel>
+              <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
+                AI workflows designed to speed strategy, quoting, and growth.
+              </h2>
+              <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
+                Use AI where it adds clarity and momentum: fast audits, tailored project consulting, and quote-ready proposals to keep deals moving.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                title: 'Project Consultant',
+                subtitle: 'Turn your brief into a sharp plan, investment breakdown, and next-step roadmap.',
+                href: '/ai-consultant',
+                icon: '📌'
+              },
+              {
+                title: 'Growth Audit',
+                subtitle: 'Generate a fast, useful audit that identifies gaps, quick wins, and long-term strategy.',
+                href: '/ai-audit',
+                icon: '🔍'
+              },
+              {
+                title: 'Quote Generator',
+                subtitle: 'Create a polished AI-powered quote with pricing, timeline, and deliverables.',
+                href: '/ai-quote',
+                icon: '💡'
+              },
+            ].map((tool, i) => (
+              <ScrollReveal key={tool.title} delay={i * 80}>
+                <div className="rounded-[24px] p-8 h-full border border-[rgba(232,227,216,0.08)] bg-[var(--obsidian-3)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(201,169,110,0.16)]">
+                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full text-2xl" style={{ background: 'rgba(201,169,110,0.12)', color: '#C9A96E' }}>
+                    {tool.icon}
+                  </div>
+                  <h3 className="font-cormorant text-[1.45rem] font-semibold mb-4" style={{ color: '#E8E3D8' }}>{tool.title}</h3>
+                  <p className="text-[0.95rem] leading-[1.8] text-[#B8B2A8] mb-8">{tool.subtitle}</p>
+                  <MagneticButton>
+                    <Link href={tool.href} className="btn-primary">Open {tool.title}</Link>
+                  </MagneticButton>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <MagneticButton>
+              <Link href="/ai" className="btn-outline">Explore All AI Tools →</Link>
+            </MagneticButton>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ TRUST & TESTIMONIALS ══ */}
+      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
+        <div className="max-w-[1200px] mx-auto">
+          <ScrollReveal>
+            <div className="text-center max-w-[640px] mx-auto mb-16">
+              <SectionLabel center>Trusted by growth teams</SectionLabel>
+              <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
+                The right strategy, results and proof points that make decisions easy.
+              </h2>
+              <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
+                From bold startups to established brands, teams choose Eva-Tech-Studio when they need measurable growth and a partner that moves fast.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <div className="grid gap-4 sm:grid-cols-3 mb-12">
+              {[
+                { value: '250%', label: 'Average revenue lift' },
+                { value: '82%', label: 'Client retention' },
+                { value: '30d', label: 'Fastest campaign launch' },
+              ].map((metric) => (
+                <div key={metric.label} className="rounded-[24px] p-8" style={{ background: 'var(--obsidian-2)', border: '1px solid rgba(232,227,216,0.08)' }}>
+                  <div className="text-[2.3rem] font-cormorant font-bold mb-3 text-shimmer" style={{ color: '#E8E3D8' }}>{metric.value}</div>
+                  <div className="text-[0.95rem]" style={{ color: '#B8B2A8' }}>{metric.label}</div>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <div className="grid gap-6 lg:grid-cols-3 mb-12">
+              {[
+                {
+                  quote: 'Eva-Tech turned our launch into a revenue engine in 90 days — the confidence and clarity were game-changing.',
+                  name: 'Nandi S.',
+                  role: 'Founder, Fintech Startup',
+                },
+                {
+                  quote: 'The audit exposed wasted spend and gave us an immediate plan that actually scaled our sales.',
+                  name: 'Lebohang M.',
+                  role: 'Marketing Director, E-commerce',
+                },
+                {
+                  quote: 'Fast proposals, sharp scope and a growth roadmap that made the internal decision simple.',
+                  name: 'Claire R.',
+                  role: 'Operations Lead, Professional Services',
+                },
+              ].map((item) => (
+                <div key={item.name} className="rounded-[24px] p-8 h-full border border-[rgba(232,227,216,0.08)] bg-[var(--obsidian-2)]">
+                  <p className="text-[0.95rem] leading-[1.85] mb-8" style={{ color: '#B8B2A8' }}>
+                    “{item.quote}”
+                  </p>
+                  <div className="text-[0.88rem] font-semibold" style={{ color: '#E8E3D8' }}>{item.name}</div>
+                  <div className="text-[0.82rem]" style={{ color: '#6B6860' }}>{item.role}</div>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <div className="rounded-[24px] p-8" style={{ background: 'var(--obsidian-2)', border: '1px solid rgba(232,227,216,0.06)' }}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <div className="text-sm font-semibold uppercase tracking-[0.18em] mb-3" style={{ color: '#C9A96E' }}>Industries</div>
+                  <div className="flex flex-wrap gap-3">
+                    {['Fintech', 'SaaS', 'E-commerce', 'Healthcare', 'Professional Services', 'Luxury Retail'].map((label) => (
+                      <span key={label} className="text-[0.78rem] font-medium px-4 py-2 rounded-full" style={{ background: 'rgba(201,169,110,0.08)', color: '#E8E3D8' }}>{label}</span>
+                    ))}
+                  </div>
+                </div>
+                <MagneticButton>
+                  <Link href="/contact" className="btn-primary">Start Your Growth Project →</Link>
+                </MagneticButton>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* ══ PRICING CALCULATOR (moved from later) ══ */}
       <PricingCalculator />
 

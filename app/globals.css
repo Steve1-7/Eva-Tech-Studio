@@ -10,37 +10,47 @@
 ═══════════════════════════════════════════════════ */
 
 :root {
-  /* Core palette */
-  --obsidian:       #07080F;
-  --obsidian-2:     #0D0E18;
-  --obsidian-3:     #12141F;
-  --obsidian-4:     #1A1C2A;
-  --obsidian-5:     #232638;
+  /* Core palette — Premium Purple Refresh */
+  --primary-purple:  #6D28D9; /* Royal Purple */
+  --secondary-indigo: #4C1D95; /* Deep Indigo */
+  --accent-violet:   #A855F7; /* Electric Violet */
 
-  --gold:           #C9A96E;
-  --gold-bright:    #E8C97A;
-  --gold-dim:       #8B6F3A;
-  --gold-glow:      rgba(201,169,110,0.15);
+  /* Background & surfaces */
+  --bg-base:         #09090B;
+  --bg-surface:      #18181B;
+  --bg-card:         #1F1F23;
+  --bg-card-hover:   #242427;
 
-  --sage:           #4A7A64;
-  --sage-light:     #6BA889;
-  --sage-glow:      rgba(74,122,100,0.15);
+  /* Text */
+  --text-primary:    #FAFAFA;
+  --text-secondary:  #E6E6E9;
+  --text-muted:      #A1A1AA;
 
-  --platinum:       #E8E3D8;
-  --platinum-dim:   #B8B2A8;
-  --platinum-muted: #6B6860;
+  /* Mapped legacy tokens (keep existing usages working) */
+  --obsidian:        var(--bg-base);
+  --obsidian-2:      var(--bg-surface);
+  --obsidian-3:      var(--bg-card);
+  --obsidian-4:      var(--bg-card-hover);
+  --obsidian-5:      #121217;
 
-  --border:         rgba(201,169,110,0.12);
-  --border-subtle:  rgba(232,227,216,0.06);
+  /* Map old 'gold' accent tokens to the purple brand (so existing styles convert to purple)
+     --gold maps to primary purple, --gold-bright to electric violet, --gold-dim to deep indigo */
+  --gold:            var(--primary-purple);
+  --gold-bright:     var(--accent-violet);
+  --gold-dim:        var(--secondary-indigo);
+  --gold-glow:       rgba(168,85,247,0.12);
 
-  /* Semantic mappings */
-  --bg-base:        var(--obsidian);
-  --bg-surface:     var(--obsidian-2);
-  --bg-card:        var(--obsidian-3);
-  --bg-card-hover:  var(--obsidian-4);
-  --text-primary:   var(--platinum);
-  --text-secondary: var(--platinum-dim);
-  --text-muted:     var(--platinum-muted);
+  /* Preserve other semantic tokens for compatibility */
+  --sage:            #4A7A64;
+  --sage-light:      #6BA889;
+  --sage-glow:       rgba(74,122,100,0.08);
+
+  --platinum:        #FAFAFA;
+  --platinum-dim:    #E6E6E9;
+  --platinum-muted:  #A1A1AA;
+
+  --border:          rgba(255,255,255,0.04);
+  --border-subtle:   rgba(255,255,255,0.02);
 }
 
 /* ── BASE ── */
@@ -50,9 +60,9 @@ html.lenis { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
 body {
-  background-color: var(--obsidian);
-  color: var(--platinum);
-  font-family: 'DM Sans', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-dm, 'DM Sans', sans-serif);
   overflow-x: hidden;
   line-height: 1.6;
   min-width: 0;
@@ -74,10 +84,18 @@ img, picture, video, canvas, svg, iframe {
 
 /* ── TYPOGRAPHY ── */
 h1, h2, h3 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-cormorant, 'Cormorant Garamond'), Georgia, serif;
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--platinum);
+}
+
+.section-label,
+.btn-primary,
+.btn-outline,
+.footer-link,
+.footer-legal-link {
+  font-family: var(--font-dm, 'DM Sans'), sans-serif;
 }
 
 /* ── CUSTOM CURSOR ── */
@@ -404,6 +422,28 @@ select.form-input option { background: var(--obsidian-3); color: var(--platinum)
 /* ── GLOWS ── */
 .glow-gold { background: radial-gradient(circle, rgba(201,169,110,0.1) 0%, transparent 65%); }
 .glow-sage { background: radial-gradient(circle, rgba(74,122,100,0.1) 0%, transparent 65%); }
+
+/* ── GLASSMORPHISM UTILITIES (Premium purple) ── */
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  box-shadow: 0 8px 30px rgba(13,10,28,0.6);
+  border-radius: 16px;
+}
+.glass-accent {
+  background: linear-gradient(180deg, rgba(168,85,247,0.06), rgba(109,40,217,0.03));
+  border: 1px solid rgba(168,85,247,0.12);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 12px 40px rgba(109,40,217,0.08), 0 0 60px rgba(168,85,247,0.04);
+  border-radius: 18px;
+}
+.glow-purple {
+  box-shadow: 0 10px 40px rgba(109,40,217,0.14), 0 0 48px rgba(168,85,247,0.06);
+}
+
 
 /* ── HERO VIDEO OVERLAY & CONTENT ── */
 .hero-video-overlay {

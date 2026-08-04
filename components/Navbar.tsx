@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
@@ -9,6 +10,7 @@ const AmbientSound = dynamic(() => import('@/components/AmbientSound'), { ssr: f
 const links = [
   { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
+  { href: '/ai', label: 'AI Tools' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
     { href: '/work', label: 'Work' },
@@ -38,7 +40,7 @@ export default function Navbar() {
           : 'py-5'
       }`}>
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo5.webp" alt="Eva-Tech-Studio" className="h-24 w-auto max-w-[300px] object-contain" />
+          <Image src="/logo5.webp" alt="Eva-Tech-Studio" width={176} height={44} className="h-24 w-auto object-contain" priority />
         </Link>
 
         {/* Desktop */}

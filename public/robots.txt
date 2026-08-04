@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Sitemap: https://eva-tech-studio.com/api/sitemap
+
+# Crawl-delay can be added for specific bots
+# Crawl-delay: 10
+
+User-agent: Googlebot
+Disallow:
+
+User-agent: Bingbot
+Disallow:
+
+# Prevent indexing of dev or staging paths
+Disallow: /_next/
+Disallow: /api/
+
+# Host
+Host: eva-tech-studio.com

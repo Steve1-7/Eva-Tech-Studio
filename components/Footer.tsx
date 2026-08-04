@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Footer() {
@@ -18,7 +19,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <img src="/logo5.webp" alt="Eva-Tech-Studio" className="h-16 w-auto max-w-[210px] object-contain" />
+              <Image src="/logo5.webp" alt="Eva-Tech-Studio" width={210} height={56} className="h-16 w-auto max-w-[210px] object-contain" priority />
             </Link>
             <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#6B6860' }}>
               A growth-driven digital agency helping ambitious brands scale through smart marketing,

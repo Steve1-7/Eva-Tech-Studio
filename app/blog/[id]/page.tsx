@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter, useParams } from 'next/navigation'
 import ScrollReveal from '@/components/ScrollReveal'
-import { useParams } from 'next/navigation'
 import apiFetch from '@/lib/api'
 
 interface BlogPost {
@@ -104,6 +104,16 @@ export default function BlogPostPage() {
                 <div className="text-[0.72rem]" style={{ color: '#3A3830' }}>{new Date(post.date).toLocaleDateString('en-ZA', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
               </div>
             </div>
+
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-8">
+                {post.tags.map((tag) => (
+                  <span key={tag} className="text-[0.75rem] font-medium px-3 py-2 rounded-full" style={{ background: 'rgba(201,169,110,0.08)', color: '#E8E3D8' }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </ScrollReveal>
         </div>
       </section>
@@ -130,6 +140,11 @@ export default function BlogPostPage() {
         <div className="max-w-[800px] mx-auto">
           <ScrollReveal delay={80}>
             <article className="prose prose-invert max-w-none" style={{ color: '#B8B2A8' }}>
+              {post.metaDescription ? (
+                <p className="text-[1rem] leading-[1.8] font-light mb-8" style={{ color: '#B8B2A8' }}>
+                  {post.metaDescription}
+                </p>
+              ) : null}
               <div className="whitespace-pre-wrap leading-[1.8] font-light">
                 {post.content}
               </div>

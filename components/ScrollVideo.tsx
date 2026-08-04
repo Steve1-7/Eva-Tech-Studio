@@ -78,7 +78,7 @@ export default function ScrollVideo({ src, poster, className = '' }: Props) {
         poster={poster}
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         className="w-full h-full object-cover"
         style={{
           filter: isInView ? 'none' : 'blur(10px)',

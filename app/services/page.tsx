@@ -4,6 +4,8 @@ import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 import StickySplitServices from '@/components/StickySplitServices'
+import { canonicalUrl } from '@/lib/metadata'
+import { ogUrl } from '@/lib/og'
 
 export const metadata: Metadata = {
   title: 'Services — Eva-Tech-Studio',
@@ -12,6 +14,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Services — Eva-Tech-Studio',
     description: 'Every digital service your brand needs to win.',
+    url: canonicalUrl('/services'),
+    images: [
+      {
+        url: ogUrl('Services — Eva-Tech-Studio', 'Every digital service your brand needs to win. Social media, paid ads, web development, SEO, and more.'),
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 }
 
@@ -54,3 +64,4 @@ export default function ServicesPage() {
     </>
   )
 }
+
