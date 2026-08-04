@@ -17,17 +17,17 @@ export const metadata: Metadata = {
 }
 
 const plans = [
-  { name: 'Starter', price: 10000, desc: 'For businesses ready to establish a strong digital foundation.', features: ['Social media management (2 platforms)', '12 posts/month with graphics', 'Basic paid ads (up to R5K spend)', 'Monthly performance report', 'Email support within 24 hours', 'Onboarding strategy session'], cta: 'Get Started', popular: false },
-  { name: 'Growth', price: 20000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', features: ['Full social media management (4 platforms)', '24 posts/month + Stories & Reels', 'Paid ads management (up to R25K spend)', 'SEO optimisation (on-page & technical)', 'Email marketing (2 campaigns/month)', 'Bi-weekly strategy calls', 'CRO & landing page optimisation', 'Priority Slack support'], cta: 'Start Growing →', popular: true },
-  { name: 'Scale', price: 35000, desc: 'Full-service partnership for established brands ready to dominate their market.', features: ['Everything in Growth, plus:', 'Dedicated account director', 'Unlimited paid ads management', 'Website development & CRO (ongoing)', 'Full CRM & automation setup', 'Video & photography production', 'Weekly strategy sessions', 'Brand strategy & positioning'], cta: "Let's Talk", popular: false },
+  { name: 'Starter', price: 5000, desc: 'For businesses ready to establish a strong digital foundation.', features: ['Social media management (2 platforms)', '12 posts/month with graphics', 'Basic paid ads (up to R5K spend)', 'Monthly performance report', 'Email support within 24 hours', 'Onboarding strategy session'], cta: 'Get Started', popular: false },
+  { name: 'Growth', price: 10000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', features: ['Full social media management (4 platforms)', '24 posts/month + Stories & Reels', 'Paid ads management (up to R25K spend)', 'SEO optimisation (on-page & technical)', 'Email marketing (2 campaigns/month)', 'Bi-weekly strategy calls', 'CRO & landing page optimisation', 'Priority Slack support'], cta: 'Start Growing →', popular: true },
+  { name: 'Scale', price: 17500, desc: 'Full-service partnership for established brands ready to dominate their market.', features: ['Everything in Growth, plus:', 'Dedicated account director', 'Unlimited paid ads management', 'Website development & CRO (ongoing)', 'Full CRM & automation setup', 'Video & photography production', 'Weekly strategy sessions', 'Brand strategy & positioning'], cta: "Let's Talk", popular: false },
 ]
 
 const oneTime = [
-  { icon: '💻', label: 'Website Build', from: 'From R10,000' },
-  { icon: '🎨', label: 'Brand Identity', from: 'From R12,000' },
-  { icon: '🛒', label: 'Shopify Store', from: 'From R15,000' },
-  { icon: '⚙️', label: 'CRM Setup', from: 'From R8,500' },
-  { icon: '🔍', label: 'SEO Audit', from: 'From R4,500' },
+  { icon: '💻', label: 'Website Build', from: 'From R5,000' },
+  { icon: '🎨', label: 'Brand Identity', from: 'From R6,000' },
+  { icon: '🛒', label: 'Shopify Store', from: 'From R7,500' },
+  { icon: '⚙️', label: 'CRM Setup', from: 'From R4,250' },
+  { icon: '🔍', label: 'SEO Audit', from: 'From R2,250' },
 ]
 
 export default function PricingPage() {

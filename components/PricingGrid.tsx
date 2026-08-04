@@ -4,9 +4,9 @@ import MagneticButton from '@/components/MagneticButton'
 import PricingModal from '@/components/PricingModal'
 
 const plans = [
-  { name: 'Starter', price: 10000, desc: 'For businesses ready to establish a strong digital foundation.', cta: 'Get Started', popular: false },
-  { name: 'Growth', price: 20000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', cta: 'Start Growing →', popular: true },
-  { name: 'Scale', price: 35000, desc: 'Full-service partnership for established brands ready to dominate their market.', cta: "Let's Talk", popular: false },
+  { name: 'Starter', price: 5000, desc: 'For businesses ready to establish a strong digital foundation.', cta: 'Get Started', popular: false },
+  { name: 'Growth', price: 10000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', cta: 'Start Growing →', popular: true },
+  { name: 'Scale', price: 17500, desc: 'Full-service partnership for established brands ready to dominate their market.', cta: "Let's Talk", popular: false },
 ]
 
 export default function PricingGrid(){

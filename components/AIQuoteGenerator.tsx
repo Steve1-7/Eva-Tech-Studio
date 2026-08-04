@@ -231,9 +231,9 @@ export default function AIQuoteGenerator({
 
   if (step === 'quote') {
     const tierPricing: Record<string, { monthly: number; annual: number }> = {
-      starter: { monthly: 7500, annual: 76500 },
-      growth: { monthly: 15000, annual: 153000 },
-      enterprise: { monthly: 35000, annual: 357000 }
+      starter: { monthly: 3750, annual: 38250 },
+      growth: { monthly: 7500, annual: 76500 },
+      enterprise: { monthly: 17500, annual: 178500 }
     }
     const pricing = tierPricing[tier.toLowerCase()] || tierPricing.growth
     const serviceNames = Array.isArray(services) ? services : [services]

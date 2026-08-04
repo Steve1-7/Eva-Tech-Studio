@@ -32,9 +32,9 @@ function generateFallbackQuote(services: string[], tier: string, businessName: s
   const tierName = tier.charAt(0).toUpperCase() + tier.slice(1)
 
   const tierPricing: Record<string, { monthly: number; annual: number }> = {
-    starter: { monthly: 7500, annual: 76500 },
-    growth: { monthly: 15000, annual: 153000 },
-    enterprise: { monthly: 35000, annual: 357000 }
+    starter: { monthly: 3750, annual: 38250 },
+    growth: { monthly: 7500, annual: 76500 },
+    enterprise: { monthly: 17500, annual: 178500 }
   }
 
   const pricing = tierPricing[tier.toLowerCase()] || tierPricing.growth

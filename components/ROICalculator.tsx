@@ -8,7 +8,7 @@ const INDUSTRIES = ['E-commerce', 'B2B / SaaS', 'Professional Services', 'Retail
 const MULTIPLIERS: Record<string, number> = { 'E-commerce': 3.8, 'B2B / SaaS': 3.2, 'Professional Services': 2.9, 'Retail': 3.1, 'Real Estate': 3.5, 'Healthcare': 2.8 }
 
 export default function ROICalculator() {
-  const [spend, setSpend] = useState(15000)
+  const [spend, setSpend] = useState(7500)
   const [revenue, setRevenue] = useState(200000)
   const [industry, setIndustry] = useState('E-commerce')
   const [calculated, setCalculated] = useState(false)

@@ -6,7 +6,6 @@ import ScrollReveal from '@/components/ScrollReveal'
 import CountUp from '@/components/CountUp'
 import LiveTicker from '@/components/LiveTicker'
 import ROICalculator from '@/components/ROICalculator'
-import AIAuditWidget from '@/components/AIAuditWidget'
 import MagneticButton from '@/components/MagneticButton'
 import TiltCard from '@/components/TiltCard'
 import ParallaxLayer from '@/components/ParallaxLayer'
@@ -29,7 +28,7 @@ const services = [
 ]
 
 const steps = [
-  { n: '01', title: 'Diagnose', desc: 'Deep-dive audit of your digital presence, funnel, competitors, and untapped growth opportunities.' },
+  { n: '01', title: 'Diagnose', desc: 'Deep-dive analysis of your digital presence, funnel, competitors, and untapped growth opportunities.' },
   { n: '02', title: 'Architect', desc: 'A custom growth roadmap prioritised by ROI potential, with clear KPIs for every initiative.' },
   { n: '03', title: 'Execute', desc: 'Our multi-disciplinary team launches, tests, and iterates at speed — moving fast without breaking what works.' },
   { n: '04', title: 'Scale', desc: 'Once we find what converts, we amplify. Winning campaigns get scaled, systems get automated, growth compounds.' },
@@ -179,10 +178,7 @@ export default function Home() {
               <div className="font-cormorant text-[2rem] font-bold" style={{ color: '#E8E3D8' }}>47</div>
             </div>
 
-            {/* Floating badge */}
-            <div className="absolute top-[200px] -right-10 btn-primary text-[0.72rem] px-4 py-2 animate-float z-40 pointer-events-none whitespace-nowrap shadow-[0_0_30px_rgba(201,169,110,0.3)]">
-              ✨ Free Audit Available
-            </div>
+
           </div>
         </div>
       </section>
@@ -368,9 +364,6 @@ export default function Home() {
       {/* ══ ROI CALCULATOR ══ */}
       <ROICalculator />
 
-      {/* ══ AI AUDIT ══ */}
-      <AIAuditWidget />
-
       {/* PRICING CALCULATOR removed from here (moved above next to case studies) */}
 
       {/* ══ CLIENT PORTAL PREVIEW ══ */}
@@ -396,7 +389,6 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <MagneticButton><Link href="/contact" className="btn-primary text-[0.9rem] px-8 py-4">Book a Strategy Call →</Link></MagneticButton>
-              <MagneticButton><Link href="/contact" className="btn-ghost text-[0.9rem] px-8 py-4">Get a Free Audit</Link></MagneticButton>
             </div>
             <p className="text-[0.73rem] mt-6 tracking-[0.04em]" style={{ color: '#3A3830' }}>
               No commitment required · 30-minute call · Real, actionable insights

@@ -6,12 +6,12 @@ import CountUp from './CountUp'
 import AIQuoteGenerator from './AIQuoteGenerator'
 
 const SERVICES = [
-  { id: 'social', name: 'Social Media Marketing', basePrice: 4675, desc: 'Content creation, posting, community management' },
-  { id: 'ads', name: 'Paid Ads Management', basePrice: 6375, desc: 'Campaign setup, optimization, reporting (excl. ad spend)' },
-  { id: 'seo', name: 'SEO & Content', basePrice: 3825, desc: 'Technical SEO, content strategy, link building' },
-  { id: 'web', name: 'Website Development', basePrice: 8500, desc: 'Custom design, development, optimization (once-off)' },
-  { id: 'email', name: 'Email Marketing', basePrice: 2975, desc: 'Campaign design, automation, list management' },
-  { id: 'brand', name: 'Branding & Design', basePrice: 6800, desc: 'Logo, brand guidelines, marketing assets (once-off)' },
+  { id: 'social', name: 'Social Media Marketing', basePrice: 2338, desc: 'Content creation, posting, community management' },
+  { id: 'ads', name: 'Paid Ads Management', basePrice: 3188, desc: 'Campaign setup, optimization, reporting (excl. ad spend)' },
+  { id: 'seo', name: 'SEO & Content', basePrice: 1913, desc: 'Technical SEO, content strategy, link building' },
+  { id: 'web', name: 'Website Development', basePrice: 4250, desc: 'Custom design, development, optimization (once-off)' },
+  { id: 'email', name: 'Email Marketing', basePrice: 1488, desc: 'Campaign design, automation, list management' },
+  { id: 'brand', name: 'Branding & Design', basePrice: 3400, desc: 'Logo, brand guidelines, marketing assets (once-off)' },
 ]
 
 const TIERS = [
