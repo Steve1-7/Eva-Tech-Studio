@@ -40,7 +40,7 @@ export default function Navbar() {
           : 'py-5'
       }`}>
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo5.webp" alt="Eva-Tech-Studio" width={100} height={25} className="h-20 w-auto object-contain" priority />
+          <Image src="/logo5.webp" alt="Eva-Tech-Studio" width={100} height={25} className="h-16 md:h-20 w-auto object-contain" priority />
         </Link>
 
         {/* Desktop */}
