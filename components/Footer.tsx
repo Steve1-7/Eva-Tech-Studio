@@ -26,7 +26,7 @@ export default function Footer() {
               powerful technology, and systems that compound.
             </p>
             <div className="flex gap-3 mt-6">
-              <a href="https://www.linkedin.com/company/111078966" target="_blank" rel="noopener noreferrer" className="footer-social-link" title="LinkedIn">in</a>
+              <a href="https://www.linkedin.com/company/eva-tech-studio" target="_blank" rel="noopener noreferrer" className="footer-social-link" title="LinkedIn">in</a>
               <a href="https://www.tiktok.com/@evatechstudio" target="_blank" rel="noopener noreferrer" className="footer-social-link" title="TikTok">tt</a>
               <a href="mailto:info@eve-tech-studio.com" className="footer-social-link" title="Email">@</a>
             </div>

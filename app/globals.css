@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════
-   PEACE OF PIE — LUXURY OBSIDIAN THEME
-   Base: Deep midnight obsidian
-   Accent: Warm champagne gold
-   Secondary: Sage emerald
+   EVA TECH STUDIO — BLACK + PURPLE THEME
+   Base: Solid black
+   Accent: Purple spectrum
+   Secondary: Indigo & violet glow
 ═══════════════════════════════════════════════════ */
 
 :root {
@@ -16,10 +16,10 @@
   --accent-violet:   #A855F7; /* Electric Violet */
 
   /* Background & surfaces */
-  --bg-base:         #09090B;
-  --bg-surface:      #18181B;
-  --bg-card:         #1F1F23;
-  --bg-card-hover:   #242427;
+  --bg-base:         #000000;
+  --bg-surface:      #111111;
+  --bg-card:         #17171A;
+  --bg-card-hover:   #1E1E22;
 
   /* Text */
   --text-primary:    #FAFAFA;
@@ -110,13 +110,13 @@ h1, h2, h3 {
 }
 .cursor-ring {
   position: fixed; width: 32px; height: 32px;
-  border: 1.5px solid rgba(201,169,110,0.4);
+  border: 1.5px solid rgba(109,40,217,0.42);
   border-radius: 50%; pointer-events: none; z-index: 99998;
   transform: translate(-50%,-50%);
   transition: width 0.2s ease, height 0.2s ease, border-color 0.2s;
 }
 .cursor-dot.hovering  { width: 10px; height: 10px; background: var(--gold-bright); }
-.cursor-ring.hovering { width: 50px; height: 50px; border-color: rgba(201,169,110,0.5); }
+.cursor-ring.hovering { width: 50px; height: 50px; border-color: rgba(168,85,247,0.62); }
 
 /* ── GRAIN ── */
 .grain-overlay {
@@ -152,19 +152,19 @@ h1, h2, h3 {
 }
 .aurora-orb-1 {
   width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(74,122,100,0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(109,40,217,0.35) 0%, transparent 70%);
   top: -200px; right: -100px;
   animation-delay: 0s; animation-duration: 14s;
 }
 .aurora-orb-2 {
   width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(201,169,110,0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(168,85,247,0.2) 0%, transparent 70%);
   bottom: -150px; left: -100px;
   animation-delay: -4s; animation-duration: 16s;
 }
 .aurora-orb-3 {
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(74,90,160,0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(76,29,149,0.22) 0%, transparent 70%);
   top: 30%; left: 30%;
   animation-delay: -8s; animation-duration: 18s;
 }
@@ -333,11 +333,9 @@ h1, h2, h3 {
   100% { background-position: 200% center; }
 }
 .text-shimmer {
-  background: linear-gradient(90deg, var(--gold-dim) 0%, var(--gold-bright) 40%, var(--gold-dim) 60%, var(--gold) 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--gold-bright);
+  -webkit-text-fill-color: var(--gold-bright);
+  /* Removed background clip so the text remains solid and readable */
   animation: shimmer 4s linear infinite;
 }
 

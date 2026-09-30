@@ -4,7 +4,7 @@ import { organizationSchema, localBusinessSchema } from '../lib/seo'
 export default function Head() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
   const title = 'Eva Tech Studio — Premium Digital Agency'
-  const description = 'Eva Tech Studio builds premium digital products, AI solutions, and beautiful brand experiences.'
+  const description = 'Eva Tech Studio builds premium digital products and beautiful brand experiences.'
   const image = `${baseUrl}/icons/og-home.png`
 
   const orgSchema = JSON.stringify(organizationSchema())

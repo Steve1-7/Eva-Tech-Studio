@@ -2,9 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
-import MagneticButton from '@/components/MagneticButton'
-import CountUp from '@/components/CountUp'
 import PricingGrid from '@/components/PricingGrid'
+import OneTimePricingGrid from '@/components/OneTimePricingGrid'
 
 export const metadata: Metadata = {
   title: 'Pricing — Eva-Tech-Studio',
@@ -15,20 +14,6 @@ export const metadata: Metadata = {
     description: 'Transparent pricing plans for digital marketing services.',
   },
 }
-
-const plans = [
-  { name: 'Starter', price: 5000, desc: 'For businesses ready to establish a strong digital foundation.', features: ['Social media management (2 platforms)', '12 posts/month with graphics', 'Basic paid ads (up to R5K spend)', 'Monthly performance report', 'Email support within 24 hours', 'Onboarding strategy session'], cta: 'Get Started', popular: false },
-  { name: 'Growth', price: 10000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', features: ['Full social media management (4 platforms)', '24 posts/month + Stories & Reels', 'Paid ads management (up to R25K spend)', 'SEO optimisation (on-page & technical)', 'Email marketing (2 campaigns/month)', 'Bi-weekly strategy calls', 'CRO & landing page optimisation', 'Priority Slack support'], cta: 'Start Growing →', popular: true },
-  { name: 'Scale', price: 17500, desc: 'Full-service partnership for established brands ready to dominate their market.', features: ['Everything in Growth, plus:', 'Dedicated account director', 'Unlimited paid ads management', 'Website development & CRO (ongoing)', 'Full CRM & automation setup', 'Video & photography production', 'Weekly strategy sessions', 'Brand strategy & positioning'], cta: "Let's Talk", popular: false },
-]
-
-const oneTime = [
-  { icon: '💻', label: 'Website Build', from: 'From R5,000' },
-  { icon: '🎨', label: 'Brand Identity', from: 'From R6,000' },
-  { icon: '🛒', label: 'Shopify Store', from: 'From R7,500' },
-  { icon: '⚙️', label: 'CRM Setup', from: 'From R4,250' },
-  { icon: '🔍', label: 'SEO Audit', from: 'From R2,250' },
-]
 
 export default function PricingPage() {
   return (
@@ -62,18 +47,7 @@ export default function PricingPage() {
                 <h2 className="font-cormorant text-[clamp(1.8rem,3.5vw,2.8rem)] font-semibold mt-2 mb-3" style={{ color: '#E8E3D8' }}>Need a Single Deliverable?</h2>
               </div>
             </ScrollReveal>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {oneTime.map((o, i) => (
-                <ScrollReveal key={o.label} delay={i * 60}>
-                  <div className="rounded-[16px] p-6 text-center transition-all duration-300 hover:border-[rgba(201,169,110,0.2)]"
-                    style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(232,227,216,0.05)' }}>
-                    <div className="text-[1.8rem] mb-3">{o.icon}</div>
-                    <strong className="block text-[0.88rem] font-semibold mb-1" style={{ color: '#E8E3D8' }}>{o.label}</strong>
-                    <span className="text-[0.76rem]" style={{ color: '#6B6860' }}>{o.from}</span>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
+            <OneTimePricingGrid />
           </div>
         </div>
       </section>

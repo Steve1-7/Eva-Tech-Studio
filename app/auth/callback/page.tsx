@@ -23,7 +23,7 @@ export default function AuthCallbackPage() {
         }
 
         if (!mounted) return
-        router.replace('/client-portal')
+        router.replace('/')
       } catch (e) {
         console.error('[auth/callback] error', e)
         router.replace('/')

@@ -1,21 +1,24 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MagneticButton from '@/components/MagneticButton'
 import PricingModal from '@/components/PricingModal'
-
-const plans = [
-  { name: 'Starter', price: 5000, desc: 'For businesses ready to establish a strong digital foundation.', cta: 'Get Started', popular: false },
-  { name: 'Growth', price: 10000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', cta: 'Start Growing →', popular: true },
-  { name: 'Scale', price: 17500, desc: 'Full-service partnership for established brands ready to dominate their market.', cta: "Let's Talk", popular: false },
-]
+import { defaultPricingPlans, type PricingPlan } from '@/lib/pricing'
 
 export default function PricingGrid(){
   const [openPackage, setOpenPackage] = useState<string | null>(null)
+  const [plans, setPlans] = useState<PricingPlan[]>(defaultPricingPlans)
+
+  useEffect(() => {
+    fetch('/api/pricing')
+      .then(response => response.ok ? response.json() : null)
+      .then(data => { if (data?.plans?.length) setPlans(data.plans) })
+      .catch(() => {})
+  }, [])
 
   return (
     <div>
       <div className="grid md:grid-cols-3 gap-5">
-        {plans.map(p => (
+        {plans.filter(plan => plan.billing_period === 'monthly').map(p => (
           <div key={p.name} className={`rounded-[24px] p-10 relative h-full flex flex-col card ${p.popular ? 'border-[rgba(201,169,110,0.3)]' : ''}`} style={p.popular ? { background: 'linear-gradient(145deg, var(--obsidian-4), var(--obsidian-3))', boxShadow: '0 0 60px rgba(201,169,110,0.08)' } : { background: 'var(--obsidian-3)' }}>
             {p.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[0.68rem] font-bold tracking-[0.1em] uppercase px-4 py-1 rounded-full whitespace-nowrap" style={{ background: 'var(--gold)', color: 'var(--obsidian)' }}>Most Popular</div>}
             <div className="font-syne text-[0.72rem] font-bold tracking-[0.14em] uppercase mb-3" style={{ color: p.popular ? '#C9A96E' : '#6B6860' }}>{p.name}</div>
@@ -24,7 +27,7 @@ export default function PricingGrid(){
               {p.price}
               <sub className="text-[0.95rem] align-baseline font-dm font-light" style={{ color: '#6B6860' }}>/mo</sub>
             </div>
-            <p className="text-[0.83rem] leading-[1.65] mb-6" style={{ color: '#6B6860' }}>{p.desc}</p>
+            <p className="text-[0.83rem] leading-[1.65] mb-6" style={{ color: '#6B6860' }}>{p.description}</p>
             <div className="h-px mb-6" style={{ background: 'rgba(201,169,110,0.08)' }} />
             <div className="flex-1" />
             <MagneticButton className="w-full">

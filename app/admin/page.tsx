@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import { apiFetch } from '@/lib/api'
 import { generateLinkedInPost, formatLinkedInForCopy } from '@/lib/linkedin'
@@ -471,6 +472,8 @@ export default function AdminDashboard() {
             </h1>
           </div>
           <div className="flex gap-4">
+            <Link href="/admin/pricing" className="btn-outline py-2.5 px-6">Manage Pricing</Link>
+            <Link href="/admin/jobs" className="btn-outline py-2.5 px-6">Manage Jobs</Link>
             <button
               onClick={handleCreatePost}
               className="btn-primary py-2.5 px-6"

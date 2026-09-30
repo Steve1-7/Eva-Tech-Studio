@@ -3,7 +3,6 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import SectionLabel from './SectionLabel'
 import CountUp from './CountUp'
-import AIQuoteGenerator from './AIQuoteGenerator'
 
 const SERVICES = [
   { id: 'social', name: 'Social Media Marketing', basePrice: 2338, desc: 'Content creation, posting, community management' },
@@ -256,11 +255,6 @@ export default function PricingCalculator() {
                   Save R{((pricing.monthlyTotal * 12 - pricing.annualTotal) / 1000).toFixed(0)}K/year
                 </div>
               </div>
-
-              {/* AI Quote Generator only in summary step */}
-              {step === 'summary' && (
-                <AIQuoteGenerator services={selectedServices.map(id => SERVICES.find(s => s.id === id)?.name || id)} tier={selectedTier} />
-              )}
 
               {/* Consultation button always visible */}
               <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(232,227,216,0.05)' }}>

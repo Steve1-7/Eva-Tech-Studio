@@ -35,11 +35,12 @@ export async function GET() {
     pages = await scanAppForPages(appDir, appDir)
   } catch (e) {
     // fallback to a conservative static list
-    pages = ['/', '/about', '/services', '/contact', '/pricing', '/blog', '/work', '/client-portal']
+    pages = ['/', '/about', '/services', '/contact', '/pricing', '/blog', '/work']
   }
 
-  // Deduplicate and sort
-  pages = Array.from(new Set(pages)).sort()
+  // Retired tools and the client portal should not be advertised in search.
+  const retiredRoutes = new Set(['/ai', '/ai-audit', '/ai-quote', '/ai-consultant', '/client-portal'])
+  pages = Array.from(new Set(pages)).filter(page => !retiredRoutes.has(page)).sort()
 
   const urlsXml = pages
     .map((u) => `  <url>\\n    <loc>${baseUrl}${u}</loc>\\n    <changefreq>weekly</changefreq>\\n    <priority>0.8</priority>\\n  </url>`)

@@ -27,9 +27,9 @@ const config: Config = {
           muted: '#A1A1AA',
         },
         gold: {
-          DEFAULT: '#C9A96E',
-          bright: '#E8C97A',
-          dim: '#8B6F3A',
+          DEFAULT: '#6D28D9',
+          bright: '#A855F7',
+          dim: '#4C1D95',
         },
         sage: {
           DEFAULT: '#4A7A64',

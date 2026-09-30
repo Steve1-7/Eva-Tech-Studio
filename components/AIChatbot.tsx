@@ -82,14 +82,14 @@ export default function AIChatbot() {
               <span className="text-lg">💬</span>
             </div>
             <div>
-              <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>Eva AI — Digital Consultant</div>
-              <div className="text-[0.65rem]" style={{ color: '#6B6860' }}>Ask about services, pricing, audits, or proposals. I'll help you decide next steps.</div>
+              <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>Eva Support</div>
+              <div className="text-[0.65rem]" style={{ color: '#6B6860' }}>Ask about services, pricing, or projects.</div>
             </div>
           </div>
 
           <div className="h-[340px] overflow-y-auto px-4 py-3" style={{ scrollbarWidth: 'thin' }}>
             <div className="mb-4 text-[0.92rem] leading-[1.6]" style={{ color: '#B8B2A8' }}>
-              Ask a quick question about Eva-Tech-Studio. No name or email required — if you want a reply, include your email in the message body.
+              Ask a quick question about Eva-Tech-Studio. For a direct conversation, message us on WhatsApp at +27 67 628 3210.
             </div>
 
             {reply && (
@@ -102,13 +102,17 @@ export default function AIChatbot() {
               <div className="mb-4 p-3 rounded-[12px] bg-rose-800 text-white">{error}</div>
             )}
 
+            <a href="https://wa.me/27676283210?text=Hi%2C%20I%20have%20a%20question%20for%20Eva-Tech-Studio." target="_blank" rel="noopener noreferrer" className="mb-4 block rounded-lg border px-3 py-2 text-center text-sm" style={{ borderColor: 'rgba(74,122,100,0.35)', color: '#8FC5A6' }}>
+              Continue on WhatsApp
+            </a>
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <textarea
                 ref={inputRef}
-                rows={6}
+                rows={3}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask Eva AI — e.g. How much does a business website cost?"
+                placeholder="Ask about services, pricing, or Bagmaa"
                 className="form-input resize-none"
               />
               <div className="flex items-center gap-3">
@@ -117,7 +121,7 @@ export default function AIChatbot() {
                   disabled={loading}
                   className="btn-primary flex-1 py-3"
                 >
-                  {loading ? 'Thinking...' : 'Ask Eva AI'}
+                  {loading ? 'Sending...' : 'Send question'}
                 </button>
                 <button type="button" onClick={() => { setIsOpen(false); setError(''); setReply('') }} className="px-4 py-3 rounded-full" style={{ border: '1px solid rgba(232,227,216,0.06)' }}>
                   Close

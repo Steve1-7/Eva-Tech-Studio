@@ -10,14 +10,14 @@ const AmbientSound = dynamic(() => import('@/components/AmbientSound'), { ssr: f
 const links = [
   { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
-  { href: '/ai', label: 'AI Tools' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
     { href: '/work', label: 'Work' },
     { href: '/careers', label: 'Careers' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/client-portal', label: 'Client Portal' },
 ]
+
+  const whatsappUrl = 'https://wa.me/27676283210?text=Hi%2C%20I%27d%20like%20to%20book%20a%20call%20with%20Eva-Tech-Studio.'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -59,9 +59,9 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-3">
           <AmbientSound />
-          <Link href="/contact" className="btn-primary text-[0.8rem] px-5 py-2.5">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-primary text-[0.8rem] px-5 py-2.5">
             Book a Call
-          </Link>
+          </a>
         </div>
 
         {/* Mobile */}
