@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import { apiFetch } from '@/lib/api'
@@ -22,51 +21,24 @@ interface BlogPost {
 }
 
 export default function BlogPage() {
-  const router = useRouter()
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [search, setSearch] = useState('')
-  const [selectedTag, setSelectedTag] = useState('')
   const [loading, setLoading] = useState(true)
-
-  const tags = useMemo(
-    () => Array.from(new Set(posts.flatMap((post) => post.tags || []))).sort(),
-    [posts]
-  )
 
   const filteredPosts = useMemo(
     () => posts.filter((post) => {
       const matchesSearch = [post.title, post.excerpt, post.author, post.category]
         .filter(Boolean)
         .some((value) => value.toLowerCase().includes(search.toLowerCase()))
-
-      const matchesTag = selectedTag ? (post.tags || []).includes(selectedTag) : true
-      return matchesSearch && matchesTag
+      return matchesSearch
     }),
-    [posts, search, selectedTag]
+    [posts, search]
   )
 
   useEffect(() => {
-    const tag = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tag') || '' : ''
-    if (tag !== selectedTag) {
-      setSelectedTag(tag)
-    }
     loadPosts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const handleTagSelect = (tag: string) => {
-    setSelectedTag(tag)
-    if (typeof window === 'undefined') return
-
-    const params = new URLSearchParams(window.location.search)
-    if (tag) {
-      params.set('tag', tag)
-    } else {
-      params.delete('tag')
-    }
-    const query = params.toString()
-    router.replace(`/blog${query ? `?${query}` : ''}`, { scroll: false })
-  }
 
   const loadPosts = async () => {
     try {
@@ -116,7 +88,7 @@ export default function BlogPage() {
       {/* Blog Posts Grid */}
       <section className="py-[60px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
         <div className="max-w-[1200px] mx-auto">
-          <div className="mb-10 grid gap-4 md:grid-cols-[1.2fr_0.8fr] items-end">
+          <div className="mb-10">
             <div>
               <label className="block text-[0.78rem] font-semibold mb-2" style={{ color: '#C9A96E' }}>Search articles</label>
               <input
@@ -127,34 +99,12 @@ export default function BlogPage() {
                 className="form-input w-full"
               />
             </div>
-            <div>
-              <label className="block text-[0.78rem] font-semibold mb-2" style={{ color: '#C9A96E' }}>Filter by tag</label>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleTagSelect('')}
-                  className={`px-3 py-2 rounded-full text-[0.82rem] font-medium transition ${selectedTag === '' ? 'bg-[#C9A96E] text-[#07080F]' : 'bg-[rgba(232,227,216,0.1)] text-[#E8E3D8]'}`}
-                >
-                  All
-                </button>
-                {tags.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => handleTagSelect(tag)}
-                    className={`px-3 py-2 rounded-full text-[0.82rem] font-medium transition ${selectedTag === tag ? 'bg-[#C9A96E] text-[#07080F]' : 'bg-[rgba(232,227,216,0.1)] text-[#E8E3D8]'}`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
 
           {filteredPosts.length === 0 ? (
             <div className="text-center py-12 rounded-[24px]" style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.06)' }}>
               <p style={{ color: '#6B6860' }}>
-                No articles match your search. Try a different keyword or clear the tag filter.
+                No articles match your search. Try a different keyword.
               </p>
             </div>
           ) : (
