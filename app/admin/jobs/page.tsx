@@ -18,6 +18,8 @@ const emptyJob: JobForm = {
   remote: false,
   featured: false,
   category: '',
+  deadline: '',
+  sourceUrl: '',
 }
 
 export default function AdminJobsPage() {
@@ -70,6 +72,8 @@ export default function AdminJobsPage() {
       remote: job.remote,
       featured: job.featured,
       category: job.category || '',
+      deadline: job.deadline || '',
+      sourceUrl: job.sourceUrl || '',
     })
     setError('')
     setNotice('')
@@ -125,25 +129,31 @@ export default function AdminJobsPage() {
             <h1 className="mt-2 font-cormorant text-[2.5rem] font-semibold" style={{ color: '#E8E3D8' }}>Job Listings</h1>
             <p className="mt-2 text-sm" style={{ color: '#8B877F' }}>Create roles, attach application links, and update or remove listings.</p>
           </div>
-          <Link href="/admin" className="btn-outline px-5 py-3">Admin Dashboard</Link>
+          <div className="flex gap-3">
+            <Link href="/admin/job-submissions" className="btn-outline px-5 py-3">Submission Inbox</Link>
+            <Link href="/admin/automation" className="btn-outline px-5 py-3">Automation Monitor</Link>
+            <Link href="/admin" className="btn-outline px-5 py-3">Admin Dashboard</Link>
+          </div>
         </div>
 
         {(error || notice) && <p role="status" className="mb-5 text-sm" style={{ color: error ? '#FCA5A5' : '#9CC6A7' }}>{error || notice}</p>}
 
         {loading && !authorized && <p style={{ color: '#8B877F' }}>Checking admin access...</p>}
-        {!loading && !authorized && <p className="text-sm" style={{ color: '#8B877F' }}>Sign in to manage job listings. <Link href="/admin" className="underline" style={{ color: '#C9A96E' }}>Open the admin dashboard</Link>.</p>}
+        {!loading && !authorized && <p className="text-sm" style={{ color: '#8B877F' }}>Sign in to manage job listings. <Link href="/admin" className="underline" style={{ color: '#A855F7' }}>Open the admin dashboard</Link>.</p>}
 
         {authorized && <>
         <form onSubmit={saveJob} className="mb-10 grid gap-4 rounded-xl p-5 md:grid-cols-2" style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.08)' }}>
-          <h2 className="font-syne text-sm font-bold uppercase tracking-wider md:col-span-2" style={{ color: '#C9A96E' }}>{editingId === null ? 'Add a job' : 'Edit job'}</h2>
+          <h2 className="font-syne text-sm font-bold uppercase tracking-wider md:col-span-2" style={{ color: '#A855F7' }}>{editingId === null ? 'Add a job' : 'Edit job'}</h2>
           <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Job title<input required value={form.title} onChange={event => updateForm({ title: event.target.value })} className="form-input mt-2" /></label>
           <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Company<input required value={form.company} onChange={event => updateForm({ company: event.target.value })} className="form-input mt-2" /></label>
           <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Location<input value={form.location || ''} onChange={event => updateForm({ location: event.target.value })} placeholder="Johannesburg, South Africa" className="form-input mt-2" /></label>
           <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Work type<input value={form.jobType || ''} onChange={event => updateForm({ jobType: event.target.value })} placeholder="Full-time, Contract, Internship" className="form-input mt-2" /></label>
           <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Salary / compensation<input value={form.salary || ''} onChange={event => updateForm({ salary: event.target.value })} className="form-input mt-2" /></label>
           <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Category<input value={form.category || ''} onChange={event => updateForm({ category: event.target.value })} placeholder="Engineering, Marketing..." className="form-input mt-2" /></label>
-          <label className="text-xs uppercase tracking-wider md:col-span-2" style={{ color: '#8B877F' }}>Description<textarea value={form.description || ''} onChange={event => updateForm({ description: event.target.value })} rows={5} className="form-input mt-2 resize-y" /></label>
-          <label className="text-xs uppercase tracking-wider md:col-span-2" style={{ color: '#8B877F' }}>Application link<input type="url" value={form.applyUrl || ''} onChange={event => updateForm({ applyUrl: event.target.value })} placeholder="https://..." className="form-input mt-2" /></label>
+          <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Application deadline<input type="date" value={form.deadline || ''} onChange={event => updateForm({ deadline: event.target.value })} className="form-input mt-2" /></label>
+          <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>Original source URL<input type="url" value={form.sourceUrl || ''} onChange={event => updateForm({ sourceUrl: event.target.value })} placeholder="https://..." className="form-input mt-2" /></label>
+          <label className="text-xs uppercase tracking-wider md:col-span-2" style={{ color: '#8B877F' }}>Description<textarea required value={form.description || ''} onChange={event => updateForm({ description: event.target.value })} rows={5} className="form-input mt-2 resize-y" /></label>
+          <label className="text-xs uppercase tracking-wider md:col-span-2" style={{ color: '#8B877F' }}>Application link<input required type="url" value={form.applyUrl || ''} onChange={event => updateForm({ applyUrl: event.target.value })} placeholder="https://..." className="form-input mt-2" /></label>
           <div className="flex flex-wrap gap-6 md:col-span-2">
             <label className="flex items-center gap-2 text-sm" style={{ color: '#B8B2A8' }}><input type="checkbox" checked={form.remote} onChange={event => updateForm({ remote: event.target.checked })} />Remote-friendly</label>
             <label className="flex items-center gap-2 text-sm" style={{ color: '#B8B2A8' }}><input type="checkbox" checked={form.featured} onChange={event => updateForm({ featured: event.target.checked })} />Feature this role</label>

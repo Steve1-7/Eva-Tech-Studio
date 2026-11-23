@@ -3,10 +3,10 @@ import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 
 export const metadata: Metadata = {
-  title: 'Bagmaa — Case Study | Eva-Tech-Studio',
+  title: 'Bagmaa — Case Study | Eva Tech Studio',
   description: 'A responsive, installable customer ordering and booking web app with a Supabase-backed administration dashboard.',
   openGraph: {
-    title: 'Bagmaa — Case Study | Eva-Tech-Studio',
+    title: 'Bagmaa — Case Study | Eva Tech Studio',
     description: 'Customer ordering, ticket sales, car-wash bookings, and operations management in one web app.',
   },
 }

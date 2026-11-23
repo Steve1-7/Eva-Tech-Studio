@@ -16,7 +16,7 @@ export default function Page() {
           <Button href="https://www.goldcoastminingreview.com" variant="outline">Visit the site</Button>
           <CaseStudyDownload
             title="Gold Coast Mining Review — Case Study"
-            content={`Gold Coast Mining Review\n\nProject Overview:\nGold Coast Mining Review engaged Eva Tech Studio to build a modern publishing platform that supports news, magazine downloads, and advertising opportunities with enterprise-grade SEO and responsive design.\n\nClient Goals:\n- Launch a fast, searchable news site for mining industry audiences.\n- Provide downloadable magazines and gated content.\n- Offer advertising placements and sponsorship management.\n- Achieve strong SEO and performance on mobile.\n\nSolutions Delivered:\n- Custom CMS workflows for editorial publishing and magazine downloads.\n- Ad slots with flexible placements and tracking.\n- Responsive, accessibility-minded UI and image optimization pipeline.\n- SEO migration plan, structured data, and canonical mappings.\n\nResults:\nA measurable uplift in organic visibility, simplified ad management, and a modern publishing foundation enabling ongoing growth.`}
+            content={`Gold Coast Mining Review\n\nProject Overview:\nEva Tech Studio built a modern publishing platform supporting news, magazine downloads, and advertising opportunities.\n\nClient Goals:\n- Launch a searchable news site for mining industry audiences.\n- Provide downloadable magazines and gated content.\n- Offer advertising placements and sponsorship management.\n- Establish responsive pages and technical SEO foundations.\n\nSolutions Delivered:\n- Custom CMS workflows for editorial publishing and magazine downloads.\n- Ad slots with flexible placements and tracking.\n- Responsive interface and image optimization pipeline.\n- Structured data and canonical mappings.\n\nOutcomes:\nDelivered the publishing workflows, magazine downloads, advertising placements, and technical foundations described above. No verified performance figures are published.`}
             filename="gold-coast-mining-review-case-study.pdf"
           />
         </div>
@@ -57,9 +57,9 @@ export default function Page() {
 
           <h4 className="font-semibold mb-2">Business Impact</h4>
           <ul className="text-sm text-gray-700 list-disc list-inside">
-            <li>Improved organic traffic by X% (client metric)</li>
-            <li>Increased ad revenue with better inventory management</li>
-            <li>Reduced page load times and improved engagement</li>
+            <li>Delivered editorial publishing workflows and magazine downloads</li>
+            <li>Added advertising placement management</li>
+            <li>No verified performance figures are published</li>
           </ul>
         </aside>
       </section>
@@ -88,7 +88,7 @@ export default function Page() {
 
       <section>
         <h2 className="text-2xl font-semibold mb-4">Results Achieved</h2>
-        <p className="text-gray-700">A measurable uplift in organic visibility, simplified ad management, and a modern publishing foundation enabling ongoing growth.</p>
+        <p className="text-gray-700">The delivery includes editorial workflows, magazine downloads, advertising placement management, and technical SEO foundations. No verified performance figures are published.</p>
       </section>
     </main>
   )

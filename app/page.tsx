@@ -1,400 +1,303 @@
-import dynamic from 'next/dynamic'
-import Image from 'next/image'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import SectionLabel from '@/components/SectionLabel'
-import ScrollReveal from '@/components/ScrollReveal'
 import CountUp from '@/components/CountUp'
-import LiveTicker from '@/components/LiveTicker'
-import ROICalculator from '@/components/ROICalculator'
-import MagneticButton from '@/components/MagneticButton'
-import TiltCard from '@/components/TiltCard'
-import ParallaxLayer from '@/components/ParallaxLayer'
-import PricingCalculator from '@/components/PricingCalculator'
-import Hero3DObject from '@/components/Hero3DObject'
+import SitePricing from '@/components/site/SitePricing'
+import { ChatbotDemo, MarketTimes, TradingBotDemo } from '@/components/site/InteractiveShowcases'
+import { faqs, projects, services, techStack } from '@/lib/siteContent'
 
+export const metadata: Metadata = {
+  title: 'Eva Tech Studio | Senior Engineering for Digital Products',
+  description: 'Websites, apps, custom software, chatbots, trading systems, and automation—built by a senior engineering studio in Johannesburg for clients worldwide.',
+  alternates: { canonical: '/' },
+}
 
-const ParticleHero = dynamic(() => import('@/components/ParticleHero'), { ssr: false })
-const HeroBackground = dynamic(() => import('@/components/HeroBackground'), { ssr: false })
-const GoogleReviews = dynamic(() => import('@/components/GoogleReviews'), { ssr: false })
-
-const services = [
-  { icon: '/icons/social-media.webp', title: 'Social Media Marketing', desc: 'Scroll-stopping content and social strategies that turn followers into loyal, paying customers.', tags: ['Instagram', 'TikTok', 'LinkedIn', 'X'], featured: false },
-  { icon: '/icons/target.webp', title: 'Paid Ads Management', desc: 'High-performance campaigns engineered for maximum ROAS. Every rand earns its place.', tags: ['Google Ads', 'Meta', 'Programmatic'], featured: true },
-  { icon: '/icons/social-media.webp', title: 'Branding & Content', desc: 'Visual identities and content ecosystems that build authority and desire at every touchpoint.', tags: ['Brand Design', 'Copywriting', 'Strategy'], featured: false },
-  { icon: '/icons/website.webp', title: 'Website Development', desc: 'Blazing-fast, conversion-obsessed websites on Next.js and React that impress and convert.', tags: ['Next.js', 'React', 'Headless'], featured: false },
-  { icon: '/icons/shopping.webp', title: 'E-commerce', desc: 'Online stores built to sell — optimising every step of the purchase journey for maximum AOV.', tags: ['Shopify', 'WooCommerce', 'Custom'], featured: false },
-  { icon: '/icons/seo.webp', title: 'SEO & Automation', desc: 'Compound organic growth and automated pipelines that work while you sleep.', tags: ['Technical SEO', 'CRM', 'Automation'], featured: false },
+const serviceTicker = [
+  'Websites', 'Web Apps', 'Mobile Apps', 'Custom Software', 'Chatbots', 'Trading Bots', 'Automation',
 ]
 
 const steps = [
-  { n: '01', title: 'Diagnose', desc: 'Deep-dive analysis of your digital presence, funnel, competitors, and untapped growth opportunities.' },
-  { n: '02', title: 'Architect', desc: 'A custom growth roadmap prioritised by ROI potential, with clear KPIs for every initiative.' },
-  { n: '03', title: 'Execute', desc: 'Our multi-disciplinary team launches, tests, and iterates at speed — moving fast without breaking what works.' },
-  { n: '04', title: 'Scale', desc: 'Once we find what converts, we amplify. Winning campaigns get scaled, systems get automated, growth compounds.' },
+  {
+    number: '01',
+    title: 'Discovery',
+    goal: 'Get clear on the problem.',
+    detail: 'We learn how your business works, who the product is for, and what a useful result looks like.',
+    deliverables: 'Brief · risks · priorities',
+  },
+  {
+    number: '02',
+    title: 'Design and Architecture',
+    goal: 'Plan before committing.',
+    detail: 'We shape the experience, data model, integrations, and delivery plan around your needs.',
+    deliverables: 'Flows · technical plan · milestones',
+  },
+  {
+    number: '03',
+    title: 'Build and Launch',
+    goal: 'Ship a dependable first release.',
+    detail: 'We build in reviewable increments, test the important paths, and prepare a controlled launch.',
+    deliverables: 'Working software · QA · handover',
+  },
+  {
+    number: '04',
+    title: 'Support and Scaling',
+    goal: 'Improve with evidence.',
+    detail: 'We monitor what matters, resolve issues, and plan the next improvements with your team.',
+    deliverables: 'Monitoring · maintenance · roadmap',
+  },
 ]
 
-const marqueeItems = ['Social Media Marketing', 'Paid Ads Management', 'Website Development', 'SEO Optimisation', 'E-commerce Development', 'Brand Strategy', 'CRM Integration', 'Business Automation']
+const reasons = [
+  ['Senior-only delivery', 'Work directly with the engineers making the technical decisions. No junior hand-offs.'],
+  ['No lock-in contracts', 'Keep control of your accounts and choose support only when it is useful to you.'],
+  ['Clear reporting', 'See what shipped, what changed, and what needs attention in plain language.'],
+  ['Built for scale', 'Start with the right foundation, then extend it without rebuilding by default.'],
+]
 
-export const metadata = {
-  title: 'Eva-Tech-Studio — Growth-Driven Digital Agency',
-  description: 'We architect digital ecosystems that compound your growth — from performance marketing to scalable tech infrastructure.',
-  keywords: ['digital agency', 'growth marketing', 'paid advertising', 'web development', 'SEO', 'social media marketing', 'Johannesburg', 'South Africa'],
-  openGraph: {
-    title: 'Eva-Tech-Studio — Growth-Driven Digital Agency',
-    description: 'Stop leaving revenue on the table. Build your growth engine.',
-    type: 'website',
-    url: 'https://evatechstudio.com',
-  },
+const articleTopics = [
+  ['What does a website actually cost?', 'A practical way to compare scope, build quality, and ongoing costs.'],
+  ['Web app or website: which do you need?', 'Understand the difference before you pay to build the wrong thing.'],
+  ['What to ask before automating a workflow', 'Map the exceptions and risks before connecting business-critical tools.'],
+]
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@graph': services.map((service) => ({
+    '@type': 'Service',
+    name: service.title,
+    description: service.description,
+    provider: {
+      '@type': 'Organization',
+      name: 'Eva Tech Studio',
+      url: 'https://www.eva-tech-studio.com',
+    },
+    areaServed: 'Worldwide',
+    url: `https://www.eva-tech-studio.com${service.href}`,
+  })),
 }
 
 export default function Home() {
   return (
-    <>
-      {/* ══ HERO ══ */}
-      <section className="relative min-h-screen flex items-center pt-[130px] pb-24 px-6 md:px-[60px] overflow-hidden bg-[#07080F]">
-        <HeroBackground src="/vid/we.mp4" />
-        {/* Aurora background - parallax layer */}
-        <ParallaxLayer speed={0.3} className="absolute inset-0">
-          <div className="aurora-bg">
-            <div className="aurora-orb aurora-orb-1" />
-            <div className="aurora-orb aurora-orb-2" />
-            <div className="aurora-orb aurora-orb-3" />
+    <div className="ets-page">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+
+      <section className="ets-hero ets-section">
+        <div className="ets-container ets-hero-grid">
+          <div className="ets-hero-copy">
+            <p className="ets-eyebrow"><span className="ets-status-dot" /> Senior engineering · Johannesburg · Global delivery</p>
+            <h1>We build software that <em>earns its keep.</em></h1>
+            <p className="ets-lede">Websites, apps, and custom software designed around your business—not a template, trend, or sales pitch.</p>
+            <div className="ets-button-row">
+              <Link className="ets-button primary" href="/contact">Get a Free Project Quote <span aria-hidden="true">↗</span></Link>
+              <Link className="ets-button secondary" href="/services">View services <span aria-hidden="true">↓</span></Link>
+            </div>
+            <div className="ets-hero-stats" aria-label="Studio facts">
+              <div><strong><CountUp end={7} /></strong><span>focused services</span></div>
+              <div><strong><CountUp end={48} suffix="h" /></strong><span>scoping turnaround</span></div>
+              <div><strong><CountUp end={4} /></strong><span>clear delivery steps</span></div>
+              <div><strong><CountUp end={0} /></strong><span>junior hand-offs</span></div>
+            </div>
           </div>
-        </ParallaxLayer>
-        {/* Particle canvas - parallax layer */}
-        <ParallaxLayer speed={0.5} className="absolute inset-0">
-          <ParticleHero />
-        </ParallaxLayer>
-        {/* Subtle grid overlay */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: 'linear-gradient(rgba(232,227,216,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(232,227,216,0.5) 1px,transparent 1px)', backgroundSize: '80px 80px' }} />
-
-        <div className="max-w-[1200px] mx-auto w-full grid md:grid-cols-2 gap-16 items-center relative z-10 hero-content">
-          {/* Left */}
-          <div>
-            <ScrollReveal>
-              <div className="inline-flex items-center gap-2.5 border border-[rgba(168,85,247,0.28)] bg-[rgba(109,40,217,0.12)] text-[#A855F7] px-4 py-2 rounded-full text-[0.72rem] font-semibold tracking-[0.1em] uppercase mb-8">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#6D28D9] animate-pulse-dot" />
-                Growth-Driven Digital Agency
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={80}>
-              <h1 className="hero-heading text-[clamp(3rem,6.5vw,6rem)] font-semibold leading-[1.0] mb-6" style={{ color: '#E8E3D8', letterSpacing: '-0.03em' }}>
-                Digital<br />
-                Solutions{' '}
-                <span className="text-shimmer italic font-light">Built</span>
-                <br />
-                To Scale.
-              </h1>
-            </ScrollReveal>
-
-            <ScrollReveal delay={160}>
-              <p className="text-[1.05rem] leading-[1.85] font-light max-w-[480px] mb-7" style={{ color: '#6B6860' }}>
-                We architect digital ecosystems that compound your growth — from performance
-                marketing to scalable tech infrastructure, Eva-Tech-Studio turns ambition into
-                measurable results.
-              </p>
-              <div className="mb-9">
-                <LiveTicker />
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={240}>
-              <div className="flex flex-wrap gap-4 hero-cta">
-                <MagneticButton>
-                  <a href="https://wa.me/27676283210?text=Hi%2C%20I%27d%20like%20to%20book%20a%20strategy%20call%20with%20Eva-Tech-Studio." target="_blank" rel="noopener noreferrer" className="btn-primary">Book a Strategy Call →</a>
-                </MagneticButton>
-                <MagneticButton>
-                  <Link href="/services" className="btn-outline">Explore Services</Link>
-                </MagneticButton>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={320}>
-              <div className="flex flex-wrap gap-10 mt-14 pt-10 border-t border-[rgba(168,85,247,0.12)]">
-                {[
-                  { end: 340, suffix: '%', label: 'Traffic Growth', decimals: 0 },
-                  { end: 10, suffix: '+', label: 'Brands Scaled', decimals: 0 },
-                  { end: 60, suffix: '%', label: 'Cost Per Lead Reduced', decimals: 0 },
-                ].map(({ end, suffix, label, decimals }) => (
-                  <div key={label}>
-                    <div className="font-cormorant text-[2.8rem] font-bold leading-none tracking-tight text-shimmer">
-                      <CountUp end={end} suffix={suffix} decimals={decimals} />
-                    </div>
-                    <div className="text-[0.75rem] mt-1.5 tracking-[0.05em]" style={{ color: '#6B6860' }}>{label}</div>
-                  </div>
-                ))}
-              </div>
-            </ScrollReveal>
-          </div>
-
-          {/* Dashboard cards */}
-          <div className="relative h-[500px] hidden md:block">
-            {/* 3D Hero Object */}
-            <ScrollReveal delay={200}>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <Hero3DObject />
-              </div>
-            </ScrollReveal>
-            {/* Main card */}
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[300px] rounded-[20px] p-7 z-20 card" style={{ background: 'var(--obsidian-3)' }}>
-              <div className="w-10 h-10 rounded-[10px] bg-[rgba(74,122,100,0.15)] flex items-center justify-center text-xl mb-4">📈</div>
-              <div className="font-syne text-[0.78rem] font-bold mb-1 tracking-[0.06em] uppercase" style={{ color: '#6B6860' }}>Monthly Revenue</div>
-              <div className="font-cormorant text-[2.2rem] font-bold" style={{ color: '#6BA889' }}>+127%</div>
-              <div className="text-[0.7rem] font-semibold mt-0.5" style={{ color: '#4A7A64' }}>↑ vs last quarter</div>
-              <div className="flex items-end gap-1 h-10 mt-4">
-                {[30, 45, 40, 60, 70, 65, 85, 100].map((h, i) => (
-                  <div key={i} className={`mini-bar ${i > 3 ? 'active' : ''}`} style={{ height: `${h}%` }} />
-                ))}
+          <div className="ets-hero-art" aria-label="Illustration of an application being built">
+            <div className="ets-window">
+              <div className="ets-window-bar"><i /><i /><i /><span>your-product / overview</span></div>
+              <div className="ets-window-content">
+                <div className="ets-window-side"><b /><i /><i /><i /><i /></div>
+                <div className="ets-window-main">
+                  <span className="ets-skeleton short" />
+                  <strong>Built around your work.</strong>
+                  <span className="ets-skeleton" />
+                  <div className="ets-window-cards"><i /><i /><i /></div>
+                  <div className="ets-window-chart"><span /><span /><span /><span /><span /><span /><span /></div>
+                </div>
               </div>
             </div>
-
-            {/* ROAS card */}
-            <div className="absolute top-2 right-2 w-[200px] rounded-[20px] p-6 z-30 card">
-              <div className="w-9 h-9 rounded-[8px] bg-[rgba(109,40,217,0.12)] flex items-center justify-center text-lg mb-3">🎯</div>
-              <div className="font-syne text-[0.72rem] font-bold uppercase tracking-[0.06em] mb-1" style={{ color: '#6B6860' }}>Ads ROAS</div>
-              <div className="font-cormorant text-[2rem] font-bold" style={{ color: '#E8E3D8' }}>6.8×</div>
-              <div className="h-[3px] rounded-full mt-3 overflow-hidden bg-[#232638]">
-                <div className="h-full rounded-full grow-bar" style={{ background: 'var(--gold)' }} />
-              </div>
-            </div>
-
-            {/* Traffic card */}
-            <div className="absolute bottom-20 -left-4 w-[185px] rounded-[20px] p-6 z-30 card">
-              <div className="w-9 h-9 rounded-[8px] bg-[rgba(74,122,100,0.15)] flex items-center justify-center text-lg mb-3">🌐</div>
-              <div className="font-syne text-[0.72rem] font-bold uppercase tracking-[0.06em] mb-1" style={{ color: '#6B6860' }}>Organic Traffic</div>
-              <div className="font-cormorant text-[2rem] font-bold" style={{ color: '#E8E3D8' }}>+340%</div>
-            </div>
-
-            {/* Live card */}
-            <div className="absolute bottom-4 right-2 w-[210px] rounded-[20px] p-6 z-30 card">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-dot" />
-                <span className="text-[0.68rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#4A7A64' }}>Live</span>
-              </div>
-              <div className="font-syne text-[0.72rem] font-bold uppercase tracking-[0.06em] mb-1" style={{ color: '#6B6860' }}>New Leads Today</div>
-              <div className="font-cormorant text-[2rem] font-bold" style={{ color: '#E8E3D8' }}>47</div>
-            </div>
-
-
+            <div className="ets-note-card"><span>01 / BUILD</span><strong>Clear scope.<br />Thoughtful engineering.</strong></div>
+            <span className="ets-hero-stamp">Made in<br />Johannesburg<br /><b>↗ Worldwide</b></span>
           </div>
         </div>
       </section>
 
-      {/* ══ MARQUEE ══ */}
-      <div className="marquee-wrapper py-5 border-y border-[rgba(168,85,247,0.12)]" style={{ background: 'var(--obsidian-2)' }}>
-        <div className="marquee-track">
-          {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} className="marquee-item">
-              <span className="marquee-dot" />
-              {item}
-            </span>
-          ))}
+      <div className="ets-ticker" aria-label="Our services">
+        <div className="ets-ticker-track" aria-hidden="true">
+          {[...serviceTicker, ...serviceTicker].map((item, index) => <span key={`${item}-${index}`}>{item}<b>✦</b></span>)}
         </div>
       </div>
 
-      {/* ══ VALUE PROP ══ */}
-      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
-        <div className="max-w-[1200px] mx-auto grid md:grid-cols-2 gap-20 items-center">
-          <div>
-            <ScrollReveal><SectionLabel>Why Eva-Tech-Studio</SectionLabel></ScrollReveal>
-            <ScrollReveal delay={80}>
-              <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-6" style={{ color: '#E8E3D8' }}>
-                We Don't Just Run<br />Campaigns. We Build<br />Growth Machines.
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={140}>
-              <p className="font-light leading-[1.85] mb-10" style={{ color: '#6B6860', fontSize: '1rem' }}>
-                Most agencies optimise for vanity metrics. We obsess over the numbers that actually
-                move your business — qualified leads, conversion rates, and real revenue growth.
-              </p>
-            </ScrollReveal>
-            <div className="flex flex-col gap-6">
-              {[
-                { icon: '🔬', title: 'Data-First Approach', desc: 'Every decision is backed by analytics and A/B testing. No guesswork, ever.' },
-                { icon: '⚙️', title: 'Scalable Systems', desc: 'Automated pipelines, CRM ecosystems, and compounding SEO that grow with you.' },
-                { icon: '🚀', title: 'Full-Funnel Execution', desc: 'From first impression to closed deal — every touchpoint engineered for conversion.' },
-              ].map((p, i) => (
-                <ScrollReveal key={p.title} delay={i * 80}>
-                  <div className="flex gap-4 items-start group">
-                    <div className="w-11 h-11 rounded-[12px] flex items-center justify-center text-xl shrink-0 transition-all duration-300 group-hover:scale-110"
-                      style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(168,85,247,0.18)' }}>
-                      {p.icon}
-                    </div>
-                    <div>
-                      <strong className="block font-semibold text-[0.95rem] mb-1" style={{ color: '#E8E3D8' }}>{p.title}</strong>
-                      <span className="text-[0.85rem]" style={{ color: '#6B6860' }}>{p.desc}</span>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
+      <section className="ets-section ets-results">
+        <div className="ets-container">
+          <div className="ets-section-heading">
+            <p className="ets-eyebrow">Results at a glance</p>
+            <h2>Proof, not promises.</h2>
+            <p>We publish client outcomes only when they are verified and approved. These figures are awaiting confirmed data.</p>
           </div>
-
-          {/* Stat cards */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="ets-results-grid">
             {[
-              { end: 94, suffix: '%', label: 'Client retention rate', desc: 'Our results keep clients coming back', gold: false },
-              { end: 28, suffix: '', label: 'Days avg to first results', desc: 'Fast momentum, long-term impact', gold: true },
-              { end: 3, suffix: '×', label: 'Avg. Traffic Increase', desc: 'Organic growth multiplier', gold: true },
-              { end: 150, suffix: '+', label: 'Brands scaled globally', desc: 'B2B, DTC, SaaS & beyond', gold: false },
-            ].map((c, i) => (
-              <ScrollReveal key={c.label} delay={i * 80}>
-                <div className={`rounded-[20px] p-7 card h-full ${c.gold ? 'border-[rgba(168,85,247,0.22)]' : ''}`}
-                  style={{ background: c.gold ? 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))' : 'var(--obsidian-3)' }}>
-                  <div className={`font-cormorant text-[3rem] font-bold leading-none tracking-tight mb-2 count-up-number ${c.gold ? 'text-shimmer' : ''}`}
-                    style={c.gold ? undefined : { color: '#E8E3D8' }}>
-                    <CountUp end={c.end} suffix={c.suffix} decimals={c.suffix === '×' ? 1 : 0} />
-                  </div>
-                  <div className="text-[0.74rem] mb-2" style={{ color: '#6B6860' }}>{c.label}</div>
-                  <div className="text-[0.82rem] font-medium" style={{ color: '#B8B2A8' }}>{c.desc}</div>
+              ['6', 'projects showcased', 'Published project count'],
+              ['Pending', 'uptime', 'Verified monitoring data needed'],
+              ['Pending', 'average load time', 'Field measurement needed'],
+              ['Pending', 'client retention', 'Verified client data needed'],
+            ].map(([value, label, note]) => (
+              <article className="ets-result-card" key={label}>
+                <strong>{value}</strong><span>{label}</span><small>{note}</small>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="ets-section ets-services" id="services">
+        <div className="ets-container">
+          <div className="ets-section-heading ets-heading-split">
+            <div><p className="ets-eyebrow">What we build</p><h2>Engineering for the next step.</h2></div>
+            <p>Bring us a clear brief or an early idea. We will help you choose a practical route from problem to production.</p>
+          </div>
+          <div className="ets-service-grid">
+            {services.map((service) => (
+              <article className="ets-service-card" key={service.number}>
+                <div className="ets-service-card-top"><span>{service.number}</span><span className="ets-mini-visual" aria-hidden="true">{service.number}</span></div>
+                <p className="ets-eyebrow">{service.tag}</p>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+                <Link className="ets-text-link" href={service.href}>Learn more <span aria-hidden="true">↗</span></Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="ets-offer-band">
+        <div className="ets-container ets-offer-inner">
+          <div><p className="ets-eyebrow">Free · no obligation</p><h2>Project scoping and technical audit in 48 hours.</h2><p>Get a clear first assessment, key risks, and a practical next step.</p></div>
+          <Link className="ets-button light" href="/contact">Send us your brief <span aria-hidden="true">↗</span></Link>
+        </div>
+      </section>
+
+      <section className="ets-section ets-process">
+        <div className="ets-container">
+          <div className="ets-section-heading"><p className="ets-eyebrow">How we work</p><h2>Small steps. Solid foundations.</h2></div>
+          <div className="ets-process-grid">
+            {steps.map((step) => (
+              <article className="ets-process-card" key={step.number}>
+                <span className="ets-step-number">{step.number}</span>
+                <h3>{step.title}</h3>
+                <strong>{step.goal}</strong>
+                <p>{step.detail}</p>
+                <small>{step.deliverables}</small>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="ets-section ets-why">
+        <div className="ets-container ets-why-grid">
+          <div className="ets-section-heading"><p className="ets-eyebrow">Why Eva Tech Studio</p><h2>Experienced people. Direct answers.</h2><p>Senior attention from first conversation through launch and beyond.</p></div>
+          <div className="ets-reasons">
+            {reasons.map(([title, detail], index) => (
+              <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{detail}</p></div></article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="ets-section ets-projects">
+        <div className="ets-container">
+          <div className="ets-section-heading ets-heading-split">
+            <div><p className="ets-eyebrow">Selected work</p><h2>Useful things, built for real use.</h2></div>
+            <Link className="ets-text-link" href="/case-studies">All case studies <span aria-hidden="true">↗</span></Link>
+          </div>
+          <div className="ets-project-grid">
+            {projects.map((project, index) => (
+              <article className="ets-project-card" key={project.name}>
+                <div className={`ets-project-art tone-${index + 1}`} aria-hidden="true"><span>{project.type}</span><b>0{index + 1}</b></div>
+                <div className="ets-project-info">
+                  <p className="ets-eyebrow">{project.type}</p>
+                  <h3>{project.name}</h3>
+                  <p>{project.description}</p>
+                  <small>{project.tech}</small>
+                  <Link href={project.href} target={project.href.startsWith('http') ? '_blank' : undefined} rel={project.href.startsWith('http') ? 'noreferrer' : undefined} className="ets-text-link">View project <span aria-hidden="true">↗</span></Link>
                 </div>
-              </ScrollReveal>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-
-
-      {/* ══ SERVICES PREVIEW ══ */}
-      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
-        <div className="max-w-[1200px] mx-auto">
-          <ScrollReveal>
-            <div className="text-center max-w-[620px] mx-auto mb-16">
-              <SectionLabel center>What We Do</SectionLabel>
-              <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
-                Every Discipline Under One Roof
-              </h2>
-              <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
-                Stop juggling agencies. We are your complete growth partner — from creative strategy to technical execution.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {services.map((s, i) => (
-              <ScrollReveal key={s.title} delay={i * 60}>
-                <TiltCard tiltStrength={12} glareOpacity={0.1}>
-                  <div className={`rounded-[20px] p-9 h-full transition-all duration-300 cursor-pointer group card ${
-                    s.featured
-                      ? 'border-[rgba(201,169,110,0.3)]'
-                      : 'hover:border-[rgba(201,169,110,0.2)]'
-                  }`}
-                    style={s.featured ? {
-                      background: 'linear-gradient(145deg, var(--obsidian-4), var(--obsidian-3))',
-                      boxShadow: '0 0 40px rgba(201,169,110,0.06), inset 0 1px 0 rgba(201,169,110,0.1)',
-                    } : { background: 'var(--obsidian-3)' }}>
-                    <div className="w-[50px] h-[50px] rounded-[12px] flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 overflow-hidden"
-                      style={{ background: s.featured ? 'rgba(201,169,110,0.12)' : 'var(--obsidian-5)' }}>
-                      <Image src={s.icon} alt={s.title} width={40} height={40} className="object-contain" />
-                    </div>
-                    <h3 className="font-cormorant text-[1.35rem] font-semibold mb-3" style={{ color: '#E8E3D8' }}>{s.title}</h3>
-                    <p className="text-[0.85rem] leading-[1.72] mb-5" style={{ color: '#6B6860' }}>{s.desc}</p>
-                    <div className="flex flex-wrap gap-1.5 mb-5">
-                      {s.tags.map(t => (
-                        <span key={t} className="text-[0.68rem] font-medium px-2.5 py-1 rounded-full"
-                          style={{ background: 'var(--obsidian-5)', color: '#6B6860', border: '1px solid rgba(232,227,216,0.06)' }}>
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-1.5 text-[0.78rem] font-semibold transition-colors duration-200 group-hover:gap-2.5"
-                      style={{ color: s.featured ? '#C9A96E' : '#4A7A64' }}>
-                      Learn more <span>→</span>
-                    </div>
-                  </div>
-                </TiltCard>
-              </ScrollReveal>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <MagneticButton>
-              <Link href="/services" className="btn-outline">View All Services →</Link>
-            </MagneticButton>
+      <section className="ets-section ets-demos">
+        <div className="ets-container">
+          <div className="ets-section-heading"><p className="ets-eyebrow">Small, safe previews</p><h2>See the shape of the work.</h2><p>Both examples below are demonstrations, not live client systems.</p></div>
+          <div className="ets-demo-grid">
+            <div><h3>Chatbot interface</h3><p>One way a guided support experience could feel.</p><ChatbotDemo /></div>
+            <div><h3>Trading system dashboard</h3><p>A view of how a test environment can surface status and controls.</p><TradingBotDemo /></div>
           </div>
         </div>
       </section>
 
-      {/* ══ PRICING CALCULATOR (moved from later) ══ */}
-      <PricingCalculator />
+      <section className="ets-quote-marquee" aria-label="Client feedback">
+        <p className="ets-eyebrow">Client words</p>
+        <div className="ets-quote-track" aria-live="off">
+          {[1, 2, 3, 4].map((item) => <span key={item}>Client testimonials will appear here once approved <b>✦</b></span>)}
+        </div>
+        <small>No client quotes have been published on this redesign.</small>
+      </section>
 
-      {/* ══ PROCESS ══ */}
-      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
-        <div className="max-w-[1200px] mx-auto">
-          <ScrollReveal>
-            <div className="text-center max-w-[620px] mx-auto mb-20">
-              <SectionLabel center>Our Process</SectionLabel>
-              <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-4" style={{ color: '#E8E3D8' }}>
-                From Discovery to Domination
-              </h2>
-              <p className="font-light leading-[1.75]" style={{ color: '#6B6860' }}>
-                A battle-tested framework that turns insight into action — and action into compounding growth.
-              </p>
-            </div>
-          </ScrollReveal>
+      <section className="ets-stack-section">
+        <div className="ets-container ets-stack-heading"><p className="ets-eyebrow">Tools we work with</p><span>Chosen for the project, not the trend.</span></div>
+        <div className="ets-stack-marquee" aria-label={`Technology stack: ${techStack.join(', ')}`}>
+          <div className="ets-stack-track" aria-hidden="true">
+            {[...techStack, ...techStack].map((tech, index) => <span key={`${tech}-${index}`}>{tech}<b>·</b></span>)}
+          </div>
+        </div>
+      </section>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-            {/* Connecting line */}
-            <div className="hidden lg:block pointer-events-none absolute top-8 left-[12%] right-[12%] h-px"
-              style={{ background: 'linear-gradient(90deg, transparent, var(--gold-dim), var(--gold-dim), transparent)' }} />
+      <section className="ets-section ets-markets">
+        <div className="ets-container ets-market-layout">
+          <div className="ets-section-heading"><p className="ets-eyebrow">Local roots · global teams</p><h2>Work across time zones.</h2><p>Based in Johannesburg, we work remotely with teams wherever the work is.</p></div>
+          <MarketTimes />
+        </div>
+      </section>
 
-            {steps.map((s, i) => (
-              <ScrollReveal key={s.n} delay={i * 100}>
-                <div className="text-center relative z-10 group">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 font-syne font-extrabold text-[0.88rem] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(201,169,110,0.25)]"
-                    style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(201,169,110,0.2)', color: '#C9A96E' }}>
-                    {s.n}
-                  </div>
-                  <h3 className="font-cormorant text-[1.3rem] font-semibold mb-3" style={{ color: '#E8E3D8' }}>{s.title}</h3>
-                  <p className="text-[0.83rem] leading-[1.72]" style={{ color: '#6B6860' }}>{s.desc}</p>
-                </div>
-              </ScrollReveal>
+      <section className="ets-section ets-notes">
+        <div className="ets-container">
+          <div className="ets-section-heading ets-heading-split">
+            <div><p className="ets-eyebrow">The jargon buster</p><h2>Good questions, plain answers.</h2></div>
+            <Link className="ets-text-link" href="/blog">Browse the notes <span aria-hidden="true">↗</span></Link>
+          </div>
+          <div className="ets-article-grid">
+            {articleTopics.map(([title, description], index) => (
+              <article key={title}><span>0{index + 1} / ENGINEERING NOTES</span><h3>{title}</h3><p>{description}</p><Link href="/blog" className="ets-text-link">Read the blog <span aria-hidden="true">↗</span></Link></article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══ GOOGLE REVIEWS (Elfsight) ══ */}
-      <GoogleReviews />
-
-      {/* ══ ROI CALCULATOR ══ */}
-      <ROICalculator />
-
-      {/* PRICING CALCULATOR removed from here (moved above next to case studies) */}
-
-      {/* ══ CLIENT PORTAL PREVIEW ══ */}
-
-      {/* ══ FINAL CTA ══ */}
-      <section className="py-[120px] px-6 md:px-[60px] relative overflow-hidden" style={{ background: 'var(--obsidian-2)' }}>
-        <div className="aurora-bg" style={{ opacity: 0.4 }}>
-          <div className="aurora-orb aurora-orb-1" style={{ opacity: 0.6 }} />
-          <div className="aurora-orb aurora-orb-2" style={{ opacity: 0.4 }} />
-        </div>
-        <div className="gold-line absolute top-0 left-0 right-0" />
-        <ScrollReveal>
-          <div className="max-w-[700px] mx-auto text-center relative z-10">
-            <SectionLabel center>Ready to grow?</SectionLabel>
-            <h2 className="text-[clamp(2.2rem,5vw,4rem)] font-semibold mt-4 mb-6" style={{ color: '#E8E3D8' }}>
-              Stop Leaving Revenue<br />on the{' '}
-              <span className="text-shimmer italic">Table.</span>
-            </h2>
-            <p className="leading-[1.85] font-light mb-12 text-[1rem]" style={{ color: '#6B6860' }}>
-              Every day without a clear growth strategy is a day your competitors pull further ahead.
-              Let's build your unfair advantage — starting with a free, no-pressure strategy session.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <MagneticButton><Link href="/contact" className="btn-primary text-[0.9rem] px-8 py-4">Book a Strategy Call →</Link></MagneticButton>
-            </div>
-            <p className="text-[0.73rem] mt-6 tracking-[0.04em]" style={{ color: '#3A3830' }}>
-              No commitment required · 30-minute call · Real, actionable insights
-            </p>
+      <section className="ets-section ets-faq">
+        <div className="ets-container ets-faq-layout">
+          <div className="ets-section-heading"><p className="ets-eyebrow">Frequently asked</p><h2>Before we get started.</h2><Link className="ets-text-link" href="/faq">All questions <span aria-hidden="true">↗</span></Link></div>
+          <div className="ets-accordion">
+            {faqs.slice(0, 5).map((faq) => (
+              <details key={faq.question}><summary>{faq.question}<span aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>
+            ))}
           </div>
-        </ScrollReveal>
-        <div className="gold-line absolute bottom-0 left-0 right-0" />
+        </div>
       </section>
-    </>
+
+      <section className="ets-section ets-home-pricing">
+        <div className="ets-container">
+          <div className="ets-section-heading ets-heading-split">
+            <div><p className="ets-eyebrow">Launch offer</p><h2>Start with a clear number.</h2><p>Launch pricing is calculated from our current rates. Final scope is agreed before work begins.</p></div>
+            <Link className="ets-text-link" href="/pricing">See all service pricing <span aria-hidden="true">↗</span></Link>
+          </div>
+          <SitePricing compact />
+        </div>
+      </section>
+
+      <section className="ets-final-cta">
+        <div className="ets-container ets-final-cta-inner">
+          <div><p className="ets-eyebrow">A good first step</p><h2>Tell us what you want to make possible.</h2><p>We’ll help you work out what to build, what to leave out, and what happens next.</p></div>
+          <Link href="/contact" className="ets-button primary">Let’s talk <span aria-hidden="true">↗</span></Link>
+        </div>
+      </section>
+    </div>
   )
 }

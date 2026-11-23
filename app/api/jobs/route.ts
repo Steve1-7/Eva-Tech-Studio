@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { withAdmin } from '@/lib/routeWrappers'
 import { requireAdmin } from '@/lib/rbac'
 import { supabase, supabaseAdmin } from '@/lib/supabase'
+import {
+  createJobSlug,
+  hashJobContent,
+  isSafeHttpsUrl,
+  isValidDateOnly,
+  validateJobFields,
+} from '@/lib/jobAutomation'
+import { randomUUID } from 'node:crypto'
 
 // GET - public job listings with simple filters
 export async function GET(request: NextRequest) {
@@ -18,7 +26,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ jobs: [] })
     }
 
-    const q = searchParams.get('q')
+    const q = searchParams.get('q')?.slice(0, 100).replace(/[,*().%\\]/g, '')
     const category = searchParams.get('category')
     const remote = searchParams.get('remote')
     const jobType = searchParams.get('type')
@@ -30,20 +38,27 @@ export async function GET(request: NextRequest) {
       .select('*')
       .order('created_at', { ascending: false })
 
+    if (!adminView) {
+      query = query.eq('status', 'published')
+    }
     if (category) query = query.eq('category', category)
     if (remote === 'true') query = query.eq('remote', true)
     if (jobType) query = query.eq('job_type', jobType)
     if (featured === 'true') query = query.eq('featured', true)
     if (q) query = query.or(`title.ilike.%${q}%,company.ilike.%${q}%,description.ilike.%${q}%`)
 
-    query = query.limit(limit)
+    query = query.limit(adminView ? limit : 500)
 
     const { data: jobs, error } = await query
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      console.error('[JOBS] Listing query failed', error)
+      return NextResponse.json({ error: 'Unable to load job listings.' }, { status: 500 })
+    }
 
     const formatted = (jobs || []).map((j: any) => ({
       id: j.id,
+      slug: j.slug,
       title: j.title,
       company: j.company,
       location: j.location,
@@ -54,9 +69,12 @@ export async function GET(request: NextRequest) {
       remote: j.remote,
       featured: j.featured,
       category: j.category,
+      deadline: j.deadline,
+      sourceUrl: j.source_url,
+      verificationStatus: j.verification_status,
       createdAt: j.created_at,
       updatedAt: j.updated_at
-    }))
+    })).filter((job: any) => adminView || !job.deadline || job.deadline >= new Date().toISOString().slice(0, 10)).slice(0, limit)
 
     return NextResponse.json({ jobs: formatted })
   } catch (err: any) {
@@ -68,8 +86,8 @@ export async function GET(request: NextRequest) {
 export const POST = withAdmin(async (request: Request) => {
   try {
     const body = await request.json()
-    const title = String(body.title || '').trim()
-    const company = String(body.company || '').trim()
+    const title = typeof body.title === 'string' ? body.title.trim() : ''
+    const company = typeof body.company === 'string' ? body.company.trim() : ''
 
     if (!title || !company) {
       return NextResponse.json({ error: 'Job title and company are required.' }, { status: 400 })
@@ -77,30 +95,66 @@ export const POST = withAdmin(async (request: Request) => {
 
     const applyUrl = normalizeApplyUrl(body.applyUrl)
     if (body.applyUrl && !applyUrl) {
-      return NextResponse.json({ error: 'Application link must be a valid HTTP or HTTPS URL.' }, { status: 400 })
+      return NextResponse.json({ error: 'Application link must be a valid HTTPS URL.' }, { status: 400 })
     }
 
-    const payload: any = {
+    const sourceUrl = normalizeApplyUrl(body.sourceUrl)
+    if (body.sourceUrl && !sourceUrl) {
+      return NextResponse.json({ error: 'Source link must be a valid HTTPS URL.' }, { status: 400 })
+    }
+
+    const deadline = typeof body.deadline === 'string' && body.deadline
+      ? body.deadline
+      : null
+    if (deadline && !isValidDateOnly(deadline)) {
+      return NextResponse.json({ error: 'Deadline must be a valid calendar date in YYYY-MM-DD format.' }, { status: 400 })
+    }
+
+    const fields = {
       title,
       company,
-      location: body.location || null,
-      job_type: body.jobType || null,
-      salary: body.salary || null,
-      description: body.description || null,
-      apply_url: applyUrl,
-      remote: body.remote || false,
-      featured: body.featured || false,
-      category: body.category || null
+      description: typeof body.description === 'string' ? body.description.trim() : '',
+      applyUrl: applyUrl || undefined,
+      sourceUrl: sourceUrl || undefined,
+      deadline: deadline || undefined,
+    }
+    const validationErrors = validateJobFields(fields)
+    if (validationErrors.length) {
+      return NextResponse.json({ error: 'Correct the job validation issues before publishing.', validationErrors }, { status: 400 })
+    }
+    const payload = {
+      title,
+      company,
+      location: typeof body.location === 'string' ? body.location.trim() : '',
+      job_type: typeof body.jobType === 'string' ? body.jobType.trim() : '',
+      salary: typeof body.salary === 'string' ? body.salary.trim() : '',
+      description: fields.description,
+      apply_url: applyUrl || '',
+      remote: body.remote === true,
+      featured: body.featured === true,
+      category: typeof body.category === 'string' ? body.category.trim() : '',
+      source_url: sourceUrl || '',
+      deadline: deadline || '',
+      verification_status: 'unverified',
+      risk_status: 'clear',
+      source_type: 'admin',
+      content_hash: hashJobContent(fields),
+      slug: createJobSlug(title, company, randomUUID()),
     }
 
-    if (body.ownerId) payload.owner_id = body.ownerId
+    const { data: job, error } = await supabaseAdmin.rpc('create_published_job', { p_job: payload })
 
-    const { data: job, error } = await supabaseAdmin.from('jobs').insert(payload).select().single()
-
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      console.error('[JOBS] Create failed', error)
+      if (/potential duplicate/i.test(error.message || '')) {
+        return NextResponse.json({ error: 'A potentially duplicate listing already exists.' }, { status: 409 })
+      }
+      return NextResponse.json({ error: 'Unable to publish this job.' }, { status: 500 })
+    }
 
     const formatted = {
       id: job.id,
+      slug: job.slug,
       title: job.title,
       company: job.company,
       location: job.location,
@@ -111,6 +165,9 @@ export const POST = withAdmin(async (request: Request) => {
       remote: job.remote,
       featured: job.featured,
       category: job.category,
+      deadline: job.deadline,
+      sourceUrl: job.source_url,
+      verificationStatus: job.verification_status,
       createdAt: job.created_at
     }
 
@@ -124,8 +181,8 @@ function normalizeApplyUrl(value: unknown): string | null {
   if (typeof value !== 'string' || !value.trim()) return null
 
   try {
-    const url = new URL(value.trim())
-    return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : null
+    const normalized = value.trim()
+    return isSafeHttpsUrl(normalized) ? new URL(normalized).toString() : null
   } catch {
     return null
   }

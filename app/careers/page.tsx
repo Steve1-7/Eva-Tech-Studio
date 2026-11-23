@@ -16,6 +16,8 @@ export default async function CareersPage() {
       const { data, error } = await supabase
         .from('jobs')
         .select('*')
+        .eq('status', 'published')
+        .or(`deadline.is.null,deadline.gte.${new Date().toISOString().slice(0, 10)}`)
         .order('featured', { ascending: false })
         .order('created_at', { ascending: false })
         .limit(100)
@@ -23,6 +25,7 @@ export default async function CareersPage() {
       if (error) throw error
       jobs = (data || []).map((job: any) => ({
         id: job.id,
+        slug: job.slug,
         title: job.title,
         company: job.company,
         location: job.location,
@@ -33,6 +36,9 @@ export default async function CareersPage() {
         remote: job.remote,
         featured: job.featured,
         category: job.category,
+        deadline: job.deadline,
+        sourceUrl: job.source_url,
+        verificationStatus: job.verification_status,
         createdAt: job.created_at,
       }))
     } catch (error) {

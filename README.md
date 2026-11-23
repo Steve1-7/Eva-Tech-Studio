@@ -1,6 +1,6 @@
-# Eva-Tech-Studio — Digital Agency Website
+# Eva Tech Studio
 
-A full Next.js 14 website for Eva-Tech-Studio, a growth-driven digital agency.
+A Next.js 14 website for Eva Tech Studio, a senior boutique engineering studio based in Johannesburg and serving clients globally.
 
 ## Tech Stack
 
@@ -8,27 +8,28 @@ A full Next.js 14 website for Eva-Tech-Studio, a growth-driven digital agency.
 - **Styling**: Tailwind CSS
 - **Fonts**: Cormorant Garamond, DM Sans, Syne (via next/font/google)
 - **Language**: TypeScript
-- **Animations**: CSS keyframes + Tailwind utilities
+- **Animations**: CSS motion, intersection-based reveals, and Tailwind utilities
 
 ## Project Structure
 
 ```
 eva-tech-studio/
 ├── app/
-│   ├── layout.tsx          # Root layout (fonts, Navbar, Footer)
-│   ├── globals.css         # Global styles + custom utilities
-│   ├── page.tsx            # Home page
-│   ├── services/
-│   │   └── page.tsx        # Services page
-│   ├── about/
-│   │   └── page.tsx        # About Us page
-│   ├── work/
-│   │   └── page.tsx        # Case Studies page
-│   ├── pricing/
-│   │   └── page.tsx        # Pricing page
-│   └── contact/
-│       ├── page.tsx        # Contact page (re-export)
-│       └── ContactForm.tsx # Contact form (client component)
+│   ├── layout.tsx          # Metadata, structured data, navigation, footer
+│   ├── globals.css         # Editorial palette, responsive styles, dark mode
+│   ├── page.tsx            # Homepage and studio sections
+│   ├── services/           # Service index and detail pages
+│   ├── case-studies/       # Public project portfolio
+│   ├── blog/               # Jargon Buster articles
+│   ├── faq/                # FAQ page and structured data
+│   ├── tools/              # Free project-brief builder
+│   ├── pricing/            # Launch offer pricing
+│   └── contact/            # Project brief form
+├── components/site/        # Theme, demos, pricing, and interactive UI
+├── lib/siteContent.ts      # Service, project, FAQ, and stack content
+├── lib/blogContent.ts      # Jargon Buster article content
+├── app/sitemap.ts          # XML sitemap
+├── app/robots.ts           # Crawler rules
 ├── components/
 │   ├── Navbar.tsx          # Sticky, scroll-aware nav with mobile drawer
 │   ├── Footer.tsx          # Consistent footer across all pages
@@ -78,24 +79,18 @@ Or connect your GitHub repo to [vercel.com](https://vercel.com) for automatic de
 ## Customisation
 
 ### Colors
-Edit `tailwind.config.ts` to change the brand palette:
-- `cream` — page background
-- `navy` — dark sections + text
-- `sage` — primary accent (green)
-- `gold` — CTA accent
+The editorial site palette and dark-mode variables live in `app/globals.css` under the `--ets-*` tokens. Legacy Tailwind palette values remain available to existing admin and utility screens.
 
 ### Content
-All page content lives directly in each `app/*/page.tsx` file as data arrays at the top — easy to update without touching layout code.
+Service, project, FAQ, and technology-stack content lives in `lib/siteContent.ts`. Jargon Buster articles live in `lib/blogContent.ts`. Page-specific copy remains alongside each route.
 
 ### Fonts
 Fonts are loaded via `next/font/google` in `app/layout.tsx`. Swap them out there.
 
 ### Contact Form
-The contact form in `app/contact/ContactForm.tsx` currently shows a success state on submit.
-Hook it up to your preferred backend:
-- **Resend** for email
-- **Formspree** for a no-backend solution
-- **Supabase** for storing submissions
+Project briefs are validated and sent through `app/api/contact/route.ts` using Resend. The API uses a honeypot and per-IP request limit; configure `RESEND_API_KEY` and `CONTACT_TO_EMAIL` in the deployment environment. Email delivery failures are reported rather than shown as successful submissions.
+
+See [the Vercel deployment guide](./docs/deploy-guide.md) for environment variables, launch checks, and contact-form setup.
 
 ## Pages
 
@@ -103,7 +98,11 @@ Hook it up to your preferred backend:
 |-------|------|
 | `/` | Home (hero, services preview, process, testimonials, CTA) |
 | `/services` | Full services breakdown |
-| `/about` | Mission, values, team |
-| `/work` | Case studies / portfolio |
-| `/pricing` | Pricing plans + one-time projects |
-| `/contact` | Contact form + booking CTA |
+| `/about` | Studio approach |
+| `/work` | Redirect to case studies |
+| `/case-studies` | Public project portfolio |
+| `/pricing` | Service tiers and one-time items |
+| `/contact` | Project brief form |
+| `/faq` | FAQ accordion |
+| `/tools` | Free project brief builder |
+| `/blog` | Jargon Buster articles |

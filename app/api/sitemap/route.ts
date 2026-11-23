@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 // Dynamic XML sitemap index referencing sitemaps
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eva-tech-studio.com'
   const sitemaps = [
     'sitemap-pages.xml',
     'sitemap-images.xml',

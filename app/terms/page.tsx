@@ -5,15 +5,16 @@ import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Eva-Tech-Studio',
+  title: 'Terms of Service | Eva Tech Studio',
   description: 'The terms and conditions governing your use of our website and services.',
+  alternates: { canonical: '/terms' },
 }
 
 const sections = [
   {
     title: 'Services Overview',
     content: [
-      'Eva-Tech-Studio provides digital marketing, web development, branding, and growth consulting services.',
+      'Eva Tech Studio provides website, web application, mobile application, custom software, chatbot, trading-system, and automation engineering services.',
       'Specific service terms, deliverables, and timelines are defined in individual client agreements.',
       'We reserve the right to modify, suspend, or discontinue any aspect of our services with reasonable notice.',
     ],
@@ -30,7 +31,7 @@ const sections = [
   {
     title: 'Intellectual Property',
     content: [
-      'All content on this website — including text, graphics, logos, and code — is the property of Eva-Tech-Studio unless otherwise stated.',
+      'All content on this website — including text, graphics, logos, and code — is the property of Eva Tech Studio unless otherwise stated.',
       'Client projects: Upon full payment, clients receive rights to final deliverables as specified in their service agreement.',
       'We retain the right to showcase completed work in our portfolio unless explicitly agreed otherwise.',
       'Unauthorized use, reproduction, or distribution of our content is strictly prohibited.',
@@ -66,7 +67,7 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <>
+    <div className="ets-page ets-legal">
       {/* Hero */}
       <section className="pt-[180px] pb-[80px] px-6 md:px-[60px] relative overflow-hidden" style={{ background: 'var(--obsidian)' }}>
         <div className="aurora-bg" style={{ opacity: 0.25 }}>
@@ -89,7 +90,7 @@ export default function TermsPage() {
           </ScrollReveal>
           <ScrollReveal delay={240}>
             <p className="text-[0.8rem] mt-6 text-center" style={{ color: '#3A3830' }}>
-              Last updated: January 2026
+              Last updated: November 2026
             </p>
           </ScrollReveal>
         </div>
@@ -105,7 +106,7 @@ export default function TermsPage() {
                 Agreement to Terms
               </h2>
               <p className="leading-[1.8] mb-4" style={{ color: '#6B6860' }}>
-                These Terms of Service govern your access to and use of the Eva-Tech-Studio website, services, and any related applications. By accessing or using our services, you agree to be bound by these terms.
+                These Terms of Service govern your access to and use of the Eva Tech Studio website, services, and any related applications. By accessing or using our services, you agree to be bound by these terms.
               </p>
               <p className="leading-[1.8]" style={{ color: '#6B6860' }}>
                 If you are using our services on behalf of a business or organization, you represent that you have authority to bind that entity to these terms.
@@ -145,19 +146,19 @@ export default function TermsPage() {
               </p>
               <MagneticButton>
                 <a 
-                  href="mailto:stevezuluu@gmail.com" 
+                  href="mailto:info@eva-tech-studio.com"
                   className="btn-primary text-[0.9rem] px-6 py-3 inline-block"
                 >
                   Contact Us →
                 </a>
               </MagneticButton>
               <p className="text-[0.8rem] mt-4" style={{ color: '#6B6860' }}>
-                stevezuluu@gmail.com
+                info@eva-tech-studio.com
               </p>
             </div>
           </ScrollReveal>
         </div>
       </section>
-    </>
+    </div>
   )
 }

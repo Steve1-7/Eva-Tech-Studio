@@ -19,7 +19,7 @@ export function generateMeta({
     title,
     description,
     url,
-    image: image || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'}/api/og?title=${encodeURIComponent(title)}`,
+    image: image || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eva-tech-studio.com'}/api/og?title=${encodeURIComponent(title)}`,
     type,
     publishedTime,
     modifiedTime
@@ -28,7 +28,7 @@ export function generateMeta({
 }
 
 export function organizationSchema() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eva-tech-studio.com'
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -43,7 +43,7 @@ export function organizationSchema() {
 }
 
 export function localBusinessSchema() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eva-tech-studio.com'
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

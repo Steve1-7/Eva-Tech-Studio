@@ -1,141 +1,126 @@
- 'use client'
+'use client'
+
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 import Link from 'next/link'
-import SectionLabel from '@/components/SectionLabel'
-import ScrollReveal from '@/components/ScrollReveal'
-import MagneticButton from '@/components/MagneticButton'
-import Confetti from '@/components/Confetti'
 import { submitContact } from '@/lib/forms'
 
-const services = ['Social Media Marketing','Paid Ads Management','Website Development','E-commerce Development','SEO Optimisation','Business Automation / CRM','Full Growth Partnership','Other / Not Sure Yet']
-const budgets = ['Under R10,000/month','R10,000 – R25,000/month','R25,000 – R50,000/month','R50,000+/month','One-time project']
+const serviceOptions = [
+  'Website Development',
+  'Web App Development',
+  'Mobile and App Development',
+  'Custom Software',
+  'AI Chatbots',
+  'Trading Bots',
+  'Automation and Integrations',
+  'Not sure yet',
+]
 
-export default function ContactPage() {
+const budgetOptions = [
+  'Under R5,000',
+  'R5,000–R15,000',
+  'R15,000–R30,000',
+  'R30,000+',
+  'Not sure yet',
+]
+
+const timelineOptions = ['As soon as possible', 'Within 2–4 weeks', 'Within 1–3 months', 'Flexible']
+
+export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
-  const [confettiTrigger, setConfettiTrigger] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [form, setForm] = useState({ firstName:'',lastName:'',email:'',phone:'',service:'',budget:'',message:'' })
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    budget: '',
+    timeline: '',
+    message: '',
+    website: '',
+  })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  function updateField(field: keyof typeof form, value: string) {
+    setForm((current) => ({ ...current, [field]: value }))
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setLoading(true)
     setError('')
-
     try {
-      const data = await submitContact({
-        firstName: form.firstName,
-        lastName: form.lastName,
-        email: form.email,
-        phone: form.phone,
-        service: form.service,
-        budget: form.budget,
-        message: form.message
-      })
-      if (!data || !data.success) throw new Error((data && (data.error || data.message)) || 'Failed to send message')
-      setConfettiTrigger(true)
+      const response = await submitContact(form)
+      if (!response?.success) throw new Error(response?.error || 'Your brief could not be sent.')
       setSubmitted(true)
-    } catch (err: any) {
-      setError(err.message || 'Unable to send message. Please try again.')
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : 'Your brief could not be sent. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
-  if (submitted) return (
-    <>
-      <Confetti trigger={confettiTrigger} />
-      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: 'var(--obsidian)' }}>
-        <div className="text-center max-w-md animate-fade-up">
-          <div className="text-[3.5rem] mb-6">🎉</div>
-          <h2 className="font-cormorant text-[2.5rem] font-semibold mb-4" style={{ color: '#E8E3D8' }}>Message Sent!</h2>
-          <p className="leading-[1.7] mb-8" style={{ color: '#6B6860' }}>Thanks for reaching out! We will be in touch within 24 hours.</p>
-          <MagneticButton><Link href="/" className="btn-primary">Back to Home</Link></MagneticButton>
-        </div>
-      </div>
-    </>
-  )
-
   return (
-    <>
-      <section className="pt-[180px] pb-[100px] px-6 md:px-[60px] relative overflow-hidden text-center" style={{ background: 'var(--obsidian)' }}>
-        <div className="aurora-bg" style={{ opacity: 0.3 }}><div className="aurora-orb aurora-orb-1" /><div className="aurora-orb aurora-orb-2" /></div>
-        <div className="max-w-[800px] mx-auto relative z-10">
-          <SectionLabel center>Get In Touch</SectionLabel>
-          <h1 className="text-[clamp(2.6rem,6vw,5rem)] font-semibold mt-2 mb-5" style={{ color: '#E8E3D8' }}>
-            Let's Build Your<br /><span className="text-shimmer italic">Growth Engine</span>
-          </h1>
-          <p className="font-light leading-[1.8] text-[1.05rem]" style={{ color: '#6B6860' }}>Whether you are ready to start or just exploring, we would love to hear about your business.</p>
+    <div className="ets-contact-card">
+      {submitted ? (
+        <div className="ets-contact-success" role="status">
+          <p className="ets-eyebrow">Brief received</p>
+          <h2>Thanks for the context.</h2>
+          <p>We’ll review your project details and follow up by email.</p>
+          <Link className="ets-text-link" href="/">Back to Eva Tech Studio <span aria-hidden="true">↗</span></Link>
         </div>
-      </section>
-
-      <section className="py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian-2)' }}>
-        <div className="max-w-[1200px] mx-auto grid md:grid-cols-[1fr_1.5fr] gap-20 items-start">
-          <ScrollReveal direction="left">
-            <div>
-              <SectionLabel>Contact Details</SectionLabel>
-              <h3 className="font-cormorant text-[1.8rem] font-semibold mt-1 mb-5" style={{ color: '#E8E3D8' }}>Free Audit — No Strings Attached</h3>
-              <p className="text-[0.9rem] leading-[1.8] mb-8" style={{ color: '#6B6860' }}>Book a 30-minute strategy session. We will audit your digital presence, identify your growth levers, and share a custom roadmap — completely free.</p>
-              {[['📧','info@eva-tech-studio.com'],['�','sales@eva-tech-studio.com'],['🛟','support@eva-tech-studio.com'],['�📞','+27 67 628 3210'],['📍','Johannesburg, South Africa'],['🕐','Mon–Fri, 8am–6pm SAST']].map(([icon,text]) => (
-                <div key={text} className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0 text-lg" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(201,169,110,0.12)' }}>{icon}</div>
-                  <span className="text-[0.87rem]" style={{ color: '#B8B2A8' }}>{text}</span>
-                </div>
-              ))}
-              <div className="mt-8 p-6 rounded-[16px]" style={{ background: 'rgba(201,169,110,0.05)', border: '1px solid rgba(201,169,110,0.12)' }}>
-                <p className="font-semibold text-[0.88rem] mb-3" style={{ color: '#E8E3D8' }}>What happens next?</p>
-                <div className="text-[0.82rem] leading-[1.9]" style={{ color: '#6B6860' }}>1. We review your details within 24 hours<br />2. Schedule a free 30-min discovery call<br />3. Receive a custom growth proposal<br />4. You decide — zero pressure, ever</div>
-              </div>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal direction="right">
-            <div className="rounded-[24px] p-10 md:p-12" style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.06)' }}>
-              <h3 className="font-cormorant text-[1.6rem] font-semibold mb-1" style={{ color: '#E8E3D8' }}>Send Us a Message</h3>
-              <p className="text-[0.85rem] mb-8" style={{ color: '#6B6860' }}>Or book a call directly below</p>
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {[['firstName','First Name','Your first name'],['lastName','Last Name','Your last name']].map(([k,l,p]) => (
-                    <div key={k} className="flex flex-col gap-2">
-                      <label className="text-[0.72rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#6B6860' }}>{l}</label>
-                      <input type="text" required placeholder={p} className="form-input" value={form[k as keyof typeof form]} onChange={e => setForm({...form,[k]:e.target.value})} />
-                    </div>
-                  ))}
-                </div>
-                {[['email','Email','your@email.com','email'],['phone','Phone','+27 (0) ___','tel']].map(([k,l,p,t]) => (
-                  <div key={k} className="flex flex-col gap-2">
-                    <label className="text-[0.72rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#6B6860' }}>{l}</label>
-                    <input type={t} required={k==='email'} placeholder={p} className="form-input" value={form[k as keyof typeof form]} onChange={e => setForm({...form,[k]:e.target.value})} />
-                  </div>
-                ))}
-                <div className="flex flex-col gap-2">
-                  <label className="text-[0.72rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#6B6860' }}>Service</label>
-                  <select className="form-input" value={form.service} onChange={e => setForm({...form,service:e.target.value})}>
-                    <option value="">Select a service...</option>
-                    {services.map(s => <option key={s}>{s}</option>)}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[0.72rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#6B6860' }}>Monthly Budget</label>
-                  <select className="form-input" value={form.budget} onChange={e => setForm({...form,budget:e.target.value})}>
-                    <option value="">Select a range...</option>
-                    {budgets.map(b => <option key={b}>{b}</option>)}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[0.72rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#6B6860' }}>Your Goals</label>
-                  <textarea rows={4} placeholder="What are your biggest growth challenges?" className="form-input resize-y" value={form.message} onChange={e => setForm({...form,message:e.target.value})} />
-                </div>
-                {error && <p className="text-red-400 text-[0.82rem]">⚠️ {error}</p>}
-                <button type="submit" disabled={loading} className="btn-primary w-full justify-center mt-2 py-4 text-[0.9rem] disabled:opacity-50 disabled:cursor-not-allowed">
-                  {loading ? 'Sending...' : 'Send Message & Book a Call →'}
-                </button>
-                <p className="text-[0.72rem] text-center tracking-[0.03em]" style={{ color: '#3A3830' }}>We respond within 24 hours. No spam, ever.</p>
-              </form>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-    </>
+      ) : (
+        <form className="ets-contact-form" onSubmit={handleSubmit}>
+          <div className="ets-contact-fields">
+            <label>
+              <span>Name</span>
+              <input autoComplete="name" name="name" required maxLength={160} value={form.name} onChange={(event) => updateField('name', event.target.value)} />
+            </label>
+            <label>
+              <span>Email</span>
+              <input autoComplete="email" name="email" type="email" required maxLength={254} value={form.email} onChange={(event) => updateField('email', event.target.value)} />
+            </label>
+            <label>
+              <span>Service</span>
+              <select name="service" required value={form.service} onChange={(event) => updateField('service', event.target.value)}>
+                <option value="">Choose a service</option>
+                {serviceOptions.map((option) => <option key={option}>{option}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>Budget</span>
+              <select name="budget" required value={form.budget} onChange={(event) => updateField('budget', event.target.value)}>
+                <option value="">Choose a range</option>
+                {budgetOptions.map((option) => <option key={option}>{option}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>Timeline</span>
+              <select name="timeline" required value={form.timeline} onChange={(event) => updateField('timeline', event.target.value)}>
+                <option value="">Choose a timeline</option>
+                {timelineOptions.map((option) => <option key={option}>{option}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>Phone <small>Optional</small></span>
+              <input autoComplete="tel" name="phone" type="tel" maxLength={50} value={form.phone} onChange={(event) => updateField('phone', event.target.value)} />
+            </label>
+            <label className="ets-contact-message">
+              <span>Tell us what you want to build</span>
+              <textarea name="message" rows={6} required maxLength={5000} value={form.message} onChange={(event) => updateField('message', event.target.value)} placeholder="What are you trying to make easier, faster, or possible?" />
+            </label>
+          </div>
+          <div className="ets-honeypot" aria-hidden="true">
+            <label htmlFor="contact-website">Leave this field empty</label>
+            <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={(event) => updateField('website', event.target.value)} />
+          </div>
+          {error && <p className="ets-form-error" role="alert">{error}</p>}
+          <button className="ets-button primary" type="submit" disabled={loading}>
+            {loading ? 'Sending brief…' : 'Send project brief'} <span aria-hidden="true">↗</span>
+          </button>
+          <p className="ets-form-note">Your details are used only to respond to this enquiry. See our <Link href="/privacy">privacy policy</Link>.</p>
+        </form>
+      )}
+    </div>
   )
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eva-tech-studio.com'
 
   // Placeholder: add video entries if site hosts videos
   const videos: Array<{ page: string; thumbnail: string; title: string; description: string; src: string }> = []

@@ -5,8 +5,6 @@ import SectionLabel from '@/components/SectionLabel'
 import { apiFetch } from '@/lib/api'
 import { generateLinkedInPost, formatLinkedInForCopy } from '@/lib/linkedin'
 
-const AUTHORIZED_EMAIL = 'stevezuluu@gmail.com'
-
 interface BlogPost {
   id: number
   title: string
@@ -221,7 +219,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between mb-8">
             <button
               onClick={() => setIsEditing(false)}
-              className="text-[0.8rem] font-medium transition-colors hover:text-[#C9A96E]"
+              className="text-[0.8rem] font-medium transition-colors hover:text-[#A855F7]"
               style={{ color: '#6B6860' }}
             >
               ← Back to Dashboard
@@ -396,7 +394,7 @@ export default function AdminDashboard() {
             {editingPost.published && editingPost.title && (
               <div className="rounded-lg p-4" style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(201,169,110,0.2)' }}>
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-[0.75rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#C9A96E' }}>
+                  <h4 className="text-[0.75rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#A855F7' }}>
                     LinkedIn Post Preview
                   </h4>
                   <button
@@ -421,7 +419,7 @@ export default function AdminDashboard() {
                         alert('LinkedIn post copied to clipboard!')
                       }}
                       className="w-full py-2 rounded text-[0.8rem] font-medium transition-colors cursor-pointer"
-                      style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E', border: '1px solid rgba(201,169,110,0.3)' }}
+                      style={{ background: 'rgba(168,85,247,0.15)', color: '#A855F7', border: '1px solid rgba(168,85,247,0.3)' }}
                     >
                       Copy LinkedIn Post
                     </button>
@@ -474,6 +472,8 @@ export default function AdminDashboard() {
           <div className="flex gap-4">
             <Link href="/admin/pricing" className="btn-outline py-2.5 px-6">Manage Pricing</Link>
             <Link href="/admin/jobs" className="btn-outline py-2.5 px-6">Manage Jobs</Link>
+            <Link href="/admin/job-submissions" className="btn-outline py-2.5 px-6">Job Inbox</Link>
+            <Link href="/admin/automation" className="btn-outline py-2.5 px-6">Automation</Link>
             <button
               onClick={handleCreatePost}
               className="btn-primary py-2.5 px-6"
@@ -528,7 +528,7 @@ export default function AdminDashboard() {
                       className={`text-[0.75rem] font-medium px-3 py-1 rounded-full ${
                         post.published
                           ? 'bg-[rgba(74,122,100,0.15)] text-[#4A7A64]'
-                          : 'bg-[rgba(201,169,110,0.1)] text-[#C9A96E]'
+                          : 'bg-[rgba(168,85,247,0.1)] text-[#A855F7]'
                       }`}
                     >
                       {post.published ? 'Published' : 'Draft'}
@@ -538,7 +538,7 @@ export default function AdminDashboard() {
                     <div className="flex justify-end gap-2">
                       <button
                         onClick={() => handleEditPost(post)}
-                        className="text-[0.8rem] font-medium transition-colors hover:text-[#C9A96E]"
+                        className="text-[0.8rem] font-medium transition-colors hover:text-[#A855F7]"
                         style={{ color: '#6B6860' }}
                       >
                         Edit

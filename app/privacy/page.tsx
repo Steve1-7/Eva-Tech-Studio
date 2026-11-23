@@ -5,8 +5,9 @@ import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Eva-Tech-Studio',
+  title: 'Privacy Policy | Eva Tech Studio',
   description: 'How we collect, use, and protect your personal information.',
+  alternates: { canonical: '/privacy' },
 }
 
 const sections = [
@@ -14,8 +15,8 @@ const sections = [
     title: 'Information We Collect',
     content: [
       'Personal Information: When you contact us or use our services, we may collect your name, email address, phone number, and company details.',
-      'Usage Data: We automatically collect information about how you interact with our website, including pages visited, time spent, and device information.',
-      'Communication Data: Any messages, emails, or inquiries you send us are stored to help us provide better support and service.',
+      'Usage Data: If analytics is enabled, we may collect information about pages visited, device information, and how the website is used.',
+      'Communication Data: Project briefs are sent to our team by email so we can respond to your enquiry.',
     ],
   },
   {
@@ -46,9 +47,9 @@ const sections = [
   {
     title: 'Cookies & Tracking',
     content: [
-      'We use cookies to enhance your browsing experience, remember preferences, and analyze website traffic.',
-      'You can control cookies through your browser settings. Disabling cookies may affect some website features.',
-      'We use analytics tools to understand how visitors use our site and improve functionality.',
+      'The site stores your light or dark mode preference in your browser’s local storage.',
+      'Google Analytics 4 is loaded only when a measurement ID is configured for the site. When enabled, Google may use cookies and collect usage data.',
+      'You can use browser settings and available Google controls to manage analytics cookies.',
     ],
   },
   {
@@ -64,7 +65,7 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <>
+    <div className="ets-page ets-legal">
       {/* Hero */}
       <section className="pt-[180px] pb-[80px] px-6 md:px-[60px] relative overflow-hidden" style={{ background: 'var(--obsidian)' }}>
         <div className="aurora-bg" style={{ opacity: 0.25 }}>
@@ -87,7 +88,7 @@ export default function PrivacyPage() {
           </ScrollReveal>
           <ScrollReveal delay={240}>
             <p className="text-[0.8rem] mt-6 text-center" style={{ color: '#3A3830' }}>
-              Last updated: January 2026
+              Last updated: November 2026
             </p>
           </ScrollReveal>
         </div>
@@ -103,7 +104,7 @@ export default function PrivacyPage() {
                 Our Commitment to You
               </h2>
               <p className="leading-[1.8]" style={{ color: '#6B6860' }}>
-                At Eva-Tech-Studio, your privacy is fundamental to how we operate. We are committed to protecting your personal information and being transparent about our data practices. This policy applies to all information collected through our website, services, and communications.
+                At Eva Tech Studio, your privacy is fundamental to how we operate. We are committed to protecting your personal information and being transparent about our data practices. This policy applies to information collected through our website, services, and communications.
               </p>
             </div>
           </ScrollReveal>
@@ -140,19 +141,19 @@ export default function PrivacyPage() {
               </p>
               <MagneticButton>
                 <a 
-                  href="mailto:stevezuluu@gmail.com" 
+                  href="mailto:info@eva-tech-studio.com"
                   className="btn-primary text-[0.9rem] px-6 py-3 inline-block"
                 >
                   Contact Us →
                 </a>
               </MagneticButton>
               <p className="text-[0.8rem] mt-4" style={{ color: '#6B6860' }}>
-                stevezuluu@gmail.com
+                info@eva-tech-studio.com
               </p>
             </div>
           </ScrollReveal>
         </div>
       </section>
-    </>
+    </div>
   )
 }

@@ -44,6 +44,7 @@ export default function AdminPricingPage() {
       popular: false,
       sort_order: current.length,
       billing_period: 'monthly',
+      discount_percent: 40,
     }])
   }
 
@@ -102,7 +103,7 @@ export default function AdminPricingPage() {
         </div>
 
         {source === 'defaults' && !loading && (
-          <p className="mb-5 border-l-2 border-[#C9A96E] px-4 py-2 text-sm" style={{ color: '#B8B2A8' }}>
+          <p className="mb-5 border-l-2 border-[#A855F7] px-4 py-2 text-sm" style={{ color: '#B8B2A8' }}>
             Showing default prices. Apply the Supabase pricing migration to save changes permanently.
           </p>
         )}
@@ -131,6 +132,10 @@ export default function AdminPricingPage() {
                 <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>
                   Display order
                   <input type="number" step="1" value={plan.sort_order} onChange={event => updatePlan(index, { sort_order: Number(event.target.value) })} className="form-input mt-2" />
+                </label>
+                <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>
+                  Launch discount (%)
+                  <input type="number" min="0" max="100" step="1" value={plan.discount_percent ?? 40} onChange={event => updatePlan(index, { discount_percent: Number(event.target.value) })} className="form-input mt-2" />
                 </label>
                 <label className="text-xs uppercase tracking-wider" style={{ color: '#8B877F' }}>
                   Billing type

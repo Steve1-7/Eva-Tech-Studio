@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 
 export interface CareerJob {
   id: number | string
+  slug?: string
   title: string
   company: string
   location: string | null
@@ -14,6 +15,9 @@ export interface CareerJob {
   remote: boolean
   featured: boolean
   category: string | null
+  deadline?: string | null
+  sourceUrl?: string | null
+  verificationStatus?: string | null
   createdAt?: string
 }
 
@@ -74,16 +78,19 @@ export default function CareerListings({ jobs }: { jobs: CareerJob[] }) {
                   {job.featured && <span className="text-[0.65rem] font-bold uppercase tracking-wider" style={{ color: '#C9A96E' }}>Featured</span>}
                   {job.category && <span className="text-[0.68rem] uppercase tracking-wider" style={{ color: '#6B9B83' }}>{job.category}</span>}
                 </div>
-                <h3 className="font-cormorant text-2xl font-semibold" style={{ color: '#E8E3D8' }}>{job.title}</h3>
+                <h3 className="font-cormorant text-2xl font-semibold" style={{ color: '#E8E3D8' }}>
+                  <a href={`/careers/${encodeURIComponent(job.slug || String(job.id))}`} className="hover:underline">{job.title}</a>
+                </h3>
                 <p className="mt-1 text-sm" style={{ color: '#B8B2A8' }}>{job.company} <span aria-hidden="true">·</span> {job.location || (job.remote ? 'Remote' : 'Location not specified')}</p>
                 {job.description && <p className="mt-3 max-w-[780px] whitespace-pre-line text-sm leading-6" style={{ color: '#8B877F' }}>{job.description}</p>}
                 <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs" style={{ color: '#6B6860' }}>
                   {job.jobType && <span>{job.jobType}</span>}
                   {job.salary && <span>{job.salary}</span>}
                   {job.remote && <span>Remote-friendly</span>}
+                  {job.deadline && <span>Apply by {job.deadline}</span>}
                 </div>
               </div>
-              {job.applyUrl && <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" className="btn-primary justify-center whitespace-nowrap px-5 py-3">View & Apply ↗</a>}
+              <a href={`/careers/${encodeURIComponent(job.slug || String(job.id))}`} className="btn-primary justify-center whitespace-nowrap px-5 py-3">View & Apply ↗</a>
             </article>
           ))}
           {filteredJobs.length === 0 && (

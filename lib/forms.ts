@@ -1,28 +1,39 @@
 type ContactPayload = {
+  name?: string
   firstName?: string
   lastName?: string
   email: string
   phone?: string
   service?: string
   budget?: string
+  timeline?: string
   message?: string
+  website?: string
 }
 
 const inFlight = new Set<string>()
 
 function hashPayload(p: ContactPayload) {
-  return [p.email || '', p.firstName || '', p.lastName || '', (p.message || '').slice(0, 200)].join('|')
+  return [p.email || '', p.name || '', (p.message || '').slice(0, 200)].join('|')
 }
 
 export async function submitContact(payload: ContactPayload) {
+  const name = payload.name?.trim() || [payload.firstName, payload.lastName].filter(Boolean).join(' ').trim()
   const p: ContactPayload = {
+    name,
     firstName: payload.firstName?.trim() || '',
     lastName: payload.lastName?.trim() || '',
     email: (payload.email || '').trim(),
     phone: payload.phone?.trim() || '',
     service: payload.service?.trim() || '',
     budget: payload.budget?.trim() || '',
-    message: payload.message?.trim() || ''
+    timeline: payload.timeline?.trim() || '',
+    message: payload.message?.trim() || '',
+    website: payload.website?.trim() || '',
+  }
+
+  if (!name) {
+    throw new Error('Name is required')
   }
 
   if (!p.email) {
@@ -41,24 +52,26 @@ export async function submitContact(payload: ContactPayload) {
 
   inFlight.add(key)
   try {
-    // Use configurable API base so frontend can target different backends
-    const { apiFetch } = await import('./api')
-    const res = await apiFetch('/api/contact', {
+    const res = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        name: p.name,
         firstName: p.firstName,
         lastName: p.lastName,
         email: p.email,
         phone: p.phone,
         service: p.service,
         budget: p.budget,
-        message: p.message
-      })
+        timeline: p.timeline,
+        message: p.message,
+        website: p.website,
+      }),
+      credentials: 'same-origin',
     })
 
     const data = await res.json()
-    if (!res.ok && !data.success) {
+    if (!res.ok || !data.success) {
       throw new Error(data.error || data.message || 'Submission failed')
     }
 

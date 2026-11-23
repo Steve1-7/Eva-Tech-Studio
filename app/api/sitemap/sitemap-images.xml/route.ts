@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { readdir } from 'fs/promises'
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eva-tech-studio.com'
   const publicDir = process.cwd() + '/public'
   const imageDirs = ['og', 'images']
   const found: { loc: string; img: string }[] = []

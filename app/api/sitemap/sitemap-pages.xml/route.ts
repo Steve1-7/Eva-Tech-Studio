@@ -27,7 +27,7 @@ async function scanAppForPages(dir: string, baseDir: string): Promise<string[]> 
 }
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eva-tech-studio.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eva-tech-studio.com'
   const appDir = path.join(process.cwd(), 'app')
 
   let pages: string[] = []

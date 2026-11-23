@@ -41,6 +41,10 @@ export default function CountUp({
 
   useEffect(() => {
     if (!started) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setValue(end)
+      return
+    }
     const startTime = performance.now()
     const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
 

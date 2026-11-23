@@ -1,67 +1,44 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import SectionLabel from '@/components/SectionLabel'
-import ScrollReveal from '@/components/ScrollReveal'
-import MagneticButton from '@/components/MagneticButton'
-import StickySplitServices from '@/components/StickySplitServices'
-import { canonicalUrl } from '@/lib/metadata'
-import { ogUrl } from '@/lib/og'
+import { services } from '@/lib/siteContent'
 
 export const metadata: Metadata = {
-  title: 'Services — Eva-Tech-Studio',
-  description: 'Every digital service your brand needs to win. Social media, paid ads, web development, SEO, and more.',
-  keywords: ['digital marketing services', 'social media marketing', 'paid advertising', 'web development', 'SEO services', 'Johannesburg'],
-  openGraph: {
-    title: 'Services — Eva-Tech-Studio',
-    description: 'Every digital service your brand needs to win.',
-    url: canonicalUrl('/services'),
-    images: [
-      {
-        url: ogUrl('Services — Eva-Tech-Studio', 'Every digital service your brand needs to win. Social media, paid ads, web development, SEO, and more.'),
-        width: 1200,
-        height: 630,
-      },
-    ],
-  },
+  title: 'Services',
+  description: 'Website, app, software, chatbot, trading-system, and automation engineering from Eva Tech Studio.',
+  alternates: { canonical: '/services' },
 }
 
 export default function ServicesPage() {
   return (
-    <>
-      <section className="pt-[180px] pb-[100px] px-6 md:px-[60px] relative overflow-hidden text-center" style={{ background: 'var(--obsidian)' }}>
-        <div className="aurora-bg" style={{ opacity: 0.3 }}>
-          <div className="aurora-orb aurora-orb-1" /><div className="aurora-orb aurora-orb-3" />
-        </div>
-        <div className="max-w-[800px] mx-auto relative z-10">
-          <SectionLabel center>What We Do</SectionLabel>
-          <h1 className="text-[clamp(2.6rem,6vw,5rem)] font-semibold mt-2 mb-5" style={{ color: '#E8E3D8' }}>
-            Every Service Your Brand<br />Needs to <span className="text-shimmer italic">Win</span>
-          </h1>
-          <p className="font-light leading-[1.8] text-[1.05rem] max-w-[580px] mx-auto" style={{ color: '#6B6860' }}>
-            Integrated growth systems tailored to where you are, where you're going, and what it takes to get there faster.
-          </p>
+    <div className="ets-page">
+      <section className="ets-section ets-hero">
+        <div className="ets-container">
+          <p className="ets-eyebrow">What we do</p>
+          <h1>Good engineering for <em>real work.</em></h1>
+          <p className="ets-lede">From a first website to a connected software product, get senior help across the full build—from the first question to the handover.</p>
         </div>
       </section>
-
-      <section style={{ background: 'var(--obsidian-2)' }}>
-        <StickySplitServices />
-      </section>
-
-      <div className="px-6 md:px-[60px] pb-[100px]" style={{ background: 'var(--obsidian-2)' }}>
-        <div className="max-w-[1200px] mx-auto rounded-[24px] px-10 md:px-16 py-16 flex flex-col md:flex-row items-center justify-between gap-10"
-          style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(201,169,110,0.15)', boxShadow: '0 0 60px rgba(201,169,110,0.05)' }}>
-          <ScrollReveal direction="left">
-            <h2 className="font-cormorant text-[clamp(1.8rem,3.5vw,2.8rem)] font-semibold max-w-[520px]" style={{ color: '#E8E3D8' }}>
-              Not Sure Which Service Is Right?{' '}
-              <span className="text-shimmer italic">Let's Figure It Out Together.</span>
-            </h2>
-          </ScrollReveal>
-          <ScrollReveal direction="right">
-            <MagneticButton><Link href="/contact" className="btn-primary">Get a Free Audit →</Link></MagneticButton>
-          </ScrollReveal>
+      <section className="ets-section ets-services">
+        <div className="ets-container">
+          <div className="ets-service-grid">
+            {services.map((service) => (
+              <article className="ets-service-card" key={service.href}>
+                <div className="ets-service-card-top"><span>{service.number}</span><span className="ets-mini-visual">{service.number}</span></div>
+                <p className="ets-eyebrow">{service.tag}</p>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+                <Link className="ets-text-link" href={service.href}>Learn more <span aria-hidden="true">↗</span></Link>
+              </article>
+            ))}
+          </div>
         </div>
-      </div>
-    </>
+      </section>
+      <section className="ets-final-cta">
+        <div className="ets-container ets-final-cta-inner">
+          <div><p className="ets-eyebrow">Not sure where to start?</p><h2>Bring us the problem, not a perfect spec.</h2><p>We’ll help turn your idea into a practical scope and next step.</p></div>
+          <Link className="ets-button primary" href="/contact">Get a free project quote <span aria-hidden="true">↗</span></Link>
+        </div>
+      </section>
+    </div>
   )
 }
-

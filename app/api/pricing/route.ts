@@ -11,12 +11,13 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabaseAdmin
       .from('pricing_plans')
-      .select('id,name,price,description,cta,popular,sort_order,billing_period')
+      .select('id,name,price,description,cta,popular,sort_order,billing_period,discount_percent')
       .order('sort_order', { ascending: true })
 
     if (!error && data?.length) {
       return NextResponse.json({ plans: data, source: 'supabase' })
     }
+    if (error) console.warn('[PRICING] Supabase lookup failed; returning configured default plans', error)
   } catch (error) {
     console.warn('[PRICING] Supabase unavailable; returning default plans', error)
   }
@@ -38,15 +39,17 @@ export async function POST(request: NextRequest) {
     const price = Number(body.price)
     const sortOrder = Number(body.sort_order)
     const billingPeriod = body.billing_period === 'one-time' ? 'one-time' : 'monthly'
+    const discountPercent = Number(body.discount_percent)
 
-    if (!id || !name || !description || !cta || !Number.isFinite(price) || price < 0 || !Number.isInteger(sortOrder)) {
-      return NextResponse.json({ error: 'Enter a plan name, description, button label, valid price, and order.' }, { status: 400 })
+    if (!id || !name || !description || !cta || !Number.isFinite(price) || price < 0 || !Number.isInteger(sortOrder)
+      || !Number.isInteger(discountPercent) || discountPercent < 0 || discountPercent > 100) {
+      return NextResponse.json({ error: 'Enter a plan name, description, button label, valid price, order, and discount.' }, { status: 400 })
     }
 
     const { data, error } = await supabaseAdmin
       .from('pricing_plans')
-      .upsert({ id, name, price, description, cta, popular: Boolean(body.popular), sort_order: sortOrder, billing_period: billingPeriod }, { onConflict: 'id' })
-      .select('id,name,price,description,cta,popular,sort_order,billing_period')
+      .upsert({ id, name, price, description, cta, popular: Boolean(body.popular), sort_order: sortOrder, billing_period: billingPeriod, discount_percent: discountPercent }, { onConflict: 'id' })
+      .select('id,name,price,description,cta,popular,sort_order,billing_period,discount_percent')
       .single()
 
     if (error) throw error
