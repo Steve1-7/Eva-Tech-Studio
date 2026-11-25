@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
 import ServiceDetail from '@/components/site/ServiceDetail'
+import { createPageMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-  title: 'Website Development',
+export const metadata = createPageMetadata({
+  title: 'Website Development for Growing Businesses',
   description: 'Fast, accessible, and maintainable websites designed and developed by Eva Tech Studio.',
-  alternates: { canonical: '/services/website-development' },
-}
+  path: '/services/website-development',
+})
 
 export default function WebsiteDevelopmentPage() {
   return <ServiceDetail slug="website-development" />

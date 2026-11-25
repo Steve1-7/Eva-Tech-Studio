@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
 type Props = { params: { slug: string } }
 
@@ -21,18 +23,14 @@ async function getJob(slug: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const job = await getJob(params.slug)
-  if (!job) return { title: 'Job not found — Eva Tech Studio' }
+  if (!job) return { title: 'Job not found', robots: { index: false, follow: false } }
 
-  return {
-    title: `${job.title} at ${job.company} — Eva Tech Studio Careers`,
+  return createPageMetadata({
+    title: `${job.title} at ${job.company}`,
     description: `${job.title} at ${job.company}${job.location ? ` in ${job.location}` : ''}. View details and apply.`,
-    alternates: { canonical: `/careers/${encodeURIComponent(job.slug)}` },
-    openGraph: {
-      title: `${job.title} at ${job.company}`,
-      description: `${job.title} at ${job.company}${job.location ? ` in ${job.location}` : ''}.`,
-      type: 'article',
-    },
-  }
+    path: `/careers/${encodeURIComponent(job.slug)}`,
+    type: 'article',
+  })
 }
 
 export default async function CareerJobPage({ params }: Props) {
@@ -83,6 +81,7 @@ export default async function CareerJobPage({ params }: Props) {
 
   return (
     <main className="min-h-screen px-6 pb-20 pt-[160px] md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Careers', path: '/careers' }, { name: job.title, path: `/careers/${encodeURIComponent(job.slug)}` }]} />
       {jobPosting && (
         <script
           type="application/ld+json"

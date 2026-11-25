@@ -1,16 +1,18 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import ContactForm from './ContactForm'
 import { BOOKING_URL } from '@/config/site'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: 'Send a Project Brief',
   description: 'Tell Eva Tech Studio what you want to build. Get a free project scope and technical audit in 48 hours.',
-  alternates: { canonical: '/contact' },
-}
+  path: '/contact',
+})
 
 export default function ContactPage() {
   return (
     <div className="ets-page">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
           <p className="ets-eyebrow">Start a project conversation</p>

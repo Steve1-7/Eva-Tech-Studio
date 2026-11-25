@@ -1,13 +1,13 @@
 import React from 'react'
 import ServiceTemplate from '@/components/ServiceTemplate'
-import { canonicalUrl } from '@/lib/metadata'
-import { ogUrl } from '@/lib/og'
+import { canonicalUrl, createPageMetadata } from '@/lib/metadata'
 
-export const metadata = {
-  title: 'UI/UX Design — Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'UI and UX Design Services',
   description: 'Human-centred UI/UX design: research, prototypes, and design systems.',
-  openGraph: { title: 'UI/UX Design — Eva Tech Studio', description: 'Human-centred design', url: canonicalUrl('/services/ui-ux-design'), image: ogUrl('UI/UX Design — Eva Tech Studio','Human-centred UI/UX design: research, prototypes, and design systems.') }
-}
+  path: '/services/ui-ux-design',
+})
+
 
 export default function Page() {
   const benefits = [
@@ -45,6 +45,7 @@ export default function Page() {
     <>
       <ServiceTemplate
         title="UI/UX Design"
+  canonicalPath="/services/ui-ux-design"
         subtitle="Design that delights and converts"
         intro="We create intuitive experiences grounded in research and refined through user testing."
         benefits={benefits}

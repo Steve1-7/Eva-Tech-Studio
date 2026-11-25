@@ -1,10 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import Link from 'next/link'
 import { submitContact } from '@/lib/forms'
-import { DEFAULT_BUDGET_CURRENCY, getBudgetOptionsForCurrency } from '@/config/markets'
+import {
+  DEFAULT_BUDGET_CURRENCY,
+  getBudgetOptionsForCurrency,
+  isBudgetCurrency,
+  SUPPORTED_CURRENCIES,
+  type BudgetCurrency,
+} from '@/config/markets'
 
 const serviceOptions = [
   'Website Development',
@@ -17,8 +23,7 @@ const serviceOptions = [
   'Not sure yet',
 ]
 
-const budgetOptions = getBudgetOptionsForCurrency(DEFAULT_BUDGET_CURRENCY)
-
+const CURRENCY_COOKIE = 'ets-currency'
 const timelineOptions = ['As soon as possible', 'Within 2–4 weeks', 'Within 1–3 months', 'Flexible']
 
 export default function ContactForm() {
@@ -36,6 +41,24 @@ export default function ContactForm() {
     message: '',
     website: '',
   })
+  const [budgetCurrency, setBudgetCurrency] = useState<BudgetCurrency>(DEFAULT_BUDGET_CURRENCY)
+  const budgetOptions = getBudgetOptionsForCurrency(budgetCurrency)
+
+  useEffect(() => {
+    const savedCurrency = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith(`${CURRENCY_COOKIE}=`))
+      ?.split('=')[1]
+    if (savedCurrency && isBudgetCurrency(savedCurrency)) setBudgetCurrency(savedCurrency)
+  }, [])
+
+  function handleBudgetCurrencyChange(value: string) {
+    if (!isBudgetCurrency(value)) return
+    setBudgetCurrency(value)
+    const secure = window.location.protocol === 'https:' ? '; Secure' : ''
+    document.cookie = `${CURRENCY_COOKIE}=${value}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`
+    setForm((current) => ({ ...current, budget: '' }))
+  }
 
   function updateField(field: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [field]: value }))
@@ -84,7 +107,13 @@ export default function ContactForm() {
               </select>
             </label>
             <label>
-              <span>Budget ({DEFAULT_BUDGET_CURRENCY}) <small>Optional</small></span>
+              <span>Budget currency</span>
+              <select name="budgetCurrency" value={budgetCurrency} onChange={(event) => handleBudgetCurrencyChange(event.target.value)}>
+                {SUPPORTED_CURRENCIES.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>Budget ({budgetCurrency}) <small>Optional</small></span>
               <select name="budget" value={form.budget} onChange={(event) => updateField('budget', event.target.value)}>
                 <option value="">Choose a range</option>
                 {budgetOptions.map((option) => <option key={option}>{option}</option>)}

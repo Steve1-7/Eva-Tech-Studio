@@ -1,12 +1,14 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import SectionLabel from '@/components/SectionLabel'
 import CareerListings, { type CareerJob } from '@/components/CareerListings'
 import { supabase } from '@/lib/supabase'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Careers — Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'Careers at Eva Tech Studio',
   description: 'Explore current roles, remote opportunities, and internships at Eva Tech Studio and partner companies.',
-}
+  path: '/careers',
+})
 
 export default async function CareersPage() {
   let jobs: CareerJob[] = []
@@ -48,6 +50,7 @@ export default async function CareersPage() {
 
   return (
     <main style={{ background: 'var(--obsidian)' }}>
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Careers', path: '/careers' }]} />
       <section className="px-6 pb-14 pt-[180px] md:px-[60px]">
         <div className="mx-auto max-w-[1100px]">
           <SectionLabel>Careers & Opportunities</SectionLabel>

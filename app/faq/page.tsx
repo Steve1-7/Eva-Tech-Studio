@@ -1,11 +1,12 @@
-import type { Metadata } from 'next'
 import { faqs } from '@/lib/siteContent'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd, JsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: 'Frequently Asked Questions',
   description: 'Straight answers about Eva Tech Studio’s engineering services, project delivery, ownership, and support.',
-  alternates: { canonical: '/faq' },
-}
+  path: '/faq',
+})
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -20,7 +21,8 @@ const faqSchema = {
 export default function FaqPage() {
   return (
     <div className="ets-page">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <JsonLd data={faqSchema} />
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'FAQ', path: '/faq' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
           <p className="ets-eyebrow">Frequently asked</p>

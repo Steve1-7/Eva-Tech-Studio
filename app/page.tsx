@@ -1,4 +1,5 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
+import { JsonLd } from '@/components/site/JsonLd'
 import Link from 'next/link'
 import CountUp from '@/components/CountUp'
 import SitePricing from '@/components/site/SitePricing'
@@ -6,13 +7,13 @@ import { ChatbotDemo, MarketTimes, TradingBotDemo } from '@/components/site/Inte
 import { faqs, projects, services, techStack } from '@/lib/siteContent'
 import { blogPosts } from '@/lib/blogContent'
 import { PRIMARY_CTA_LABEL, SECONDARY_CTA_LABEL, SHOW_PROOF_SECTION } from '@/config/site'
-import TestimonialsStrip from '@/components/site/TestimonialsStrip'
+import GoogleReviews from '@/components/GoogleReviews'
 
-export const metadata: Metadata = {
-  title: 'Eva Tech Studio | Senior Engineering for Digital Products',
+export const metadata = createPageMetadata({
+  title: 'Senior Engineering for Digital Products',
   description: 'Websites, apps, custom software, chatbots, trading systems, and automation—built by a senior engineering studio in Johannesburg for clients worldwide.',
-  alternates: { canonical: '/' },
-}
+  path: '/',
+})
 
 const serviceTicker = [
   'Websites', 'Web Apps', 'Mobile Apps', 'Custom Software', 'Chatbots', 'Trading Bots', 'Automation',
@@ -56,26 +57,43 @@ const reasons = [
   ['Built for scale', 'Start with the right foundation, then extend it without rebuilding by default.'],
 ]
 
-const serviceSchema = {
+const professionalServiceSchema = {
   '@context': 'https://schema.org',
-  '@graph': services.map((service) => ({
-    '@type': 'Service',
-    name: service.title,
-    description: service.description,
-    provider: {
-      '@type': 'Organization',
-      name: 'Eva Tech Studio',
-      url: 'https://www.eva-tech-studio.com',
-    },
-    areaServed: 'Worldwide',
-    url: `https://www.eva-tech-studio.com${service.href}`,
+  '@type': 'ProfessionalService',
+  name: 'Eva Tech Studio',
+  url: 'https://www.eva-tech-studio.com',
+  description: 'Senior engineering for websites, applications, custom software, chatbots, trading systems, and automation.',
+  areaServed: 'Worldwide',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Software engineering services',
+    itemListElement: services.map((service) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: service.title,
+        description: service.description,
+        url: `https://www.eva-tech-studio.com${service.href}`,
+      },
+    })),
+  },
+}
+
+const homeFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.slice(0, 5).map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
   })),
 }
 
 export default function Home() {
   return (
     <div className="ets-page">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <JsonLd data={professionalServiceSchema} />
+      <JsonLd data={homeFaqSchema} />
 
       <section className="ets-hero ets-section">
         <div className="ets-container ets-hero-grid">
@@ -214,7 +232,7 @@ export default function Home() {
                   <h3>{project.name}</h3>
                   <p>{project.description}</p>
                   <small>{project.tech}</small>
-                  <Link href={project.href} target={project.href.startsWith('http') ? '_blank' : undefined} rel={project.href.startsWith('http') ? 'noreferrer' : undefined} className="ets-text-link">View project <span aria-hidden="true">↗</span></Link>
+                  <Link href={project.href} target={project.href.startsWith('http') ? '_blank' : undefined} rel={project.href.startsWith('http') ? 'noreferrer' : undefined} className="ets-text-link">Read case study <span aria-hidden="true">↗</span></Link>
                 </div>
               </article>
             ))}
@@ -232,7 +250,7 @@ export default function Home() {
         </div>
       </section>
 
-      <TestimonialsStrip testimonials={[]} />
+      <GoogleReviews />
 
       <section className="ets-stack-section">
         <div className="ets-container ets-stack-heading"><p className="ets-eyebrow">Tools we work with</p><span>Chosen for the project, not the trend.</span></div>
@@ -278,7 +296,7 @@ export default function Home() {
       <section className="ets-section ets-home-pricing">
         <div className="ets-container">
           <div className="ets-section-heading ets-heading-split">
-            <div><p className="ets-eyebrow">Launch offer</p><h2>Start with a clear number.</h2><p>Launch pricing is calculated from our current rates. Final scope is agreed before work begins.</p></div>
+            <div><p className="ets-eyebrow">Service pricing</p><h2>Start with a clear scope.</h2><p>Choose a service and we will confirm deliverables and price in a written proposal.</p></div>
             <Link className="ets-text-link" href="/pricing">See all service pricing <span aria-hidden="true">↗</span></Link>
           </div>
           <SitePricing compact />

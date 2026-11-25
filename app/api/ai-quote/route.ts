@@ -176,25 +176,22 @@ export async function POST(request: NextRequest): Promise<NextResponse<QuoteResp
       business: businessName || 'none'
     })
 
-    const prompt = `You are a senior pricing strategist at Eva-Tech-Studio. Generate professional, detailed quotes for digital marketing services. Be specific about deliverables, timelines, and expected outcomes. Format with clear sections. Use South African Rand (R) currency.
+    const prompt = `You are a project scoping assistant for Eva Tech Studio. Create a preliminary scope outline from the information supplied. This is not a commercial quote.
 
-Generate a detailed quote for:
+Do not invent prices, hours, revisions, support windows, timelines, performance results, KPIs, contractual terms, or capabilities. Do not include currency amounts or numerical estimates. If the user asks for pricing, say that service-specific rates are being confirmed and a written proposal will provide the price after scope review. Mark unknown requirements as questions for discovery.
 
 Business: ${businessName || 'Not provided'}
 Industry: ${industry || 'Not provided'}
 Description: ${description || 'Not provided'}
 Selected Services: ${serviceNames}
-Package Tier: ${tierName}
+Requested Package: ${tierName}
 
-Format the quote with these sections:
-📋 QUOTE SUMMARY
-🎯 SCOPE OF WORK (detailed deliverables for each service)
-📅 TIMELINE & MILESTONES
-💰 PRICING BREAKDOWN (monthly and annual with 15% annual discount)
-📈 EXPECTED OUTCOMES & KPIs
-⚡ TERMS & CONDITIONS
+Use these sections:
+SCOPE OUTLINE
+OPEN QUESTIONS
+POSSIBLE NEXT STEPS
 
-Be specific about what's included in each service. Provide realistic pricing based on the tier (Starter = base pricing ~R7,500/mo, Growth = 1.5× ~R15,000/mo, Enterprise = 2.5× ~R35,000/mo).`
+Keep the language plain, avoid promising outcomes, and make clear that the outline needs review before it can become a proposal.`
 
     const text = await callGemini(prompt, undefined, QUOTE_GENERATION_CONFIG)
     const textWithWatermark = addAIWatermark(text)

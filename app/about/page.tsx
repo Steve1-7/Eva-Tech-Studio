@@ -1,16 +1,18 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import { PRIMARY_CTA_LABEL } from '@/config/site'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: 'About Eva Tech Studio',
   description: 'Meet Eva Tech Studio, a senior boutique engineering studio based in Johannesburg and working globally.',
-  alternates: { canonical: '/about' },
-}
+  path: '/about',
+})
 
 export default function AboutPage() {
   return (
     <div className="ets-page">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
           <p className="ets-eyebrow">About Eva Tech Studio</p>

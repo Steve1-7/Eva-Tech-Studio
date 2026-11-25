@@ -1,13 +1,13 @@
 import React from 'react'
 import ServiceTemplate from '@/components/ServiceTemplate'
-import { canonicalUrl } from '@/lib/metadata'
-import { ogUrl } from '@/lib/og'
+import { canonicalUrl, createPageMetadata } from '@/lib/metadata'
 
-export const metadata = {
-  title: 'Startup MVP Development — Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'Startup MVP Development',
   description: 'MVPs that validate ideas quickly with product-market fit focus and fast iteration.',
-  openGraph: { title: 'Startup MVP Development — Eva Tech Studio', description: 'MVP development', url: canonicalUrl('/services/startup-mvp-development'), image: ogUrl('Startup MVP Development — Eva Tech Studio','MVPs that validate ideas quickly with product-market fit focus and fast iteration.') }
-}
+  path: '/services/startup-mvp-development',
+})
+
 
 export default function Page() {
   const benefits = [
@@ -45,6 +45,7 @@ export default function Page() {
     <>
       <ServiceTemplate
         title="Startup MVP Development"
+  canonicalPath="/services/startup-mvp-development"
         subtitle="Validate quickly, iterate faster"
         intro="We help startups build and validate MVPs that attract users and investors."
         benefits={benefits}

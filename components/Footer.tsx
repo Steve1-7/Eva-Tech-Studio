@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { services } from '@/lib/siteContent'
 import { BOOKING_URL, COMPANY_REGISTRATION_NUMBER, PRIMARY_CTA_LABEL, REGISTERED_ADDRESS } from '@/config/site'
+import { LIVE_MARKETS } from '@/config/markets'
 
 const resourceLinks = [
   ['Case studies', '/case-studies'],
@@ -33,13 +34,16 @@ export default function Footer() {
           {resourceLinks.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}
         </div>
         <div>
+          <h2>Markets</h2>
+          {LIVE_MARKETS.map((market) => <Link key={market.slug} href={market.path}>{market.name}</Link>)}
+        </div>
+        <div>
           <h2>Company</h2>
           <Link href="/contact" className="ets-footer-primary-cta">{PRIMARY_CTA_LABEL}</Link>
           {BOOKING_URL && <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Book a 20-minute call</a>}
           <Link href="/about">About</Link>
           <Link href="/privacy">Privacy policy</Link>
           <Link href="/terms">Terms</Link>
-          <a href="tel:+27676283210">+27 67 628 3210</a>
           <a href="mailto:info@eva-tech-studio.com">info@eva-tech-studio.com</a>
           <a href="mailto:sales@eva-tech-studio.com">sales@eva-tech-studio.com</a>
           <a href="mailto:support@eva-tech-studio.com">support@eva-tech-studio.com</a>

@@ -1,16 +1,18 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import { blogPosts } from '@/lib/blogContent'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: 'The Jargon Buster',
   description: 'Plain-language notes on software projects, websites, apps, and automation.',
-  alternates: { canonical: '/blog' },
-}
+  path: '/blog',
+})
 
 export default function BlogPage() {
   return (
     <div className="ets-page">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
           <p className="ets-eyebrow">The jargon buster</p>

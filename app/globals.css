@@ -602,7 +602,7 @@ body {
 .ets-final-cta h2 { max-width: 750px; }
 .ets-final-cta p:not(.ets-eyebrow) { max-width: 540px; color: #b7b9b3; font-size: .88rem; }
 .ets-footer { padding: 64px max(24px, calc((100% - 1180px) / 2)) 22px; border-top: 1px solid var(--ets-line); background: var(--ets-paper); color: var(--ets-ink); }
-.ets-footer-main { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 35px; padding-bottom: 45px; }
+.ets-footer-main { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 35px; padding-bottom: 45px; }
 .ets-footer-brand p { max-width: 310px; margin-top: 16px; color: var(--ets-muted); font-size: .8rem; line-height: 1.7; }
 .ets-footer-brand .ets-footer-location { font-size: .68rem; }
 .ets-footer-main > div:not(.ets-footer-brand) { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
@@ -613,6 +613,18 @@ body {
 .ets-footer-main a.ets-footer-primary-cta { display: inline-flex; max-width: 250px; padding: 10px 13px; background: var(--ets-accent); color: #fffaf3; font-weight: 700; line-height: 1.4; }
 .ets-footer-main a.ets-footer-primary-cta:hover { color: #fffaf3; background: var(--ets-accent-dark); }
 .ets-floating-contact { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 90; display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 16px 0 10px; border-radius: 999px; background: var(--ets-accent); color: #fffaf3; box-shadow: 0 8px 28px rgba(29, 39, 34, .22); font-size: .78rem; font-weight: 700; text-decoration: none; transition: transform 180ms ease, background 180ms ease; }
+.ets-market-suggestion { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; width: min(1180px, calc(100% - 32px)); margin: 12px auto 0; padding: 18px; border: 1px solid var(--ets-line); background: var(--ets-paper); color: var(--ets-ink); box-shadow: var(--ets-shadow); }
+.ets-market-suggestion .ets-eyebrow { color: var(--ets-accent); }
+.ets-market-suggestion p:not(.ets-eyebrow) { margin: 5px 0; color: var(--ets-ink); font-size: .8rem; }
+.ets-market-suggestion .ets-text-link { font-size: .75rem; }
+.ets-market-suggestion button { flex: 0 0 auto; border: 0; background: transparent; color: var(--ets-muted); font: 600 .68rem var(--font-dm, sans-serif); text-decoration: underline; cursor: pointer; }
+.ets-market-suggestion button:focus-visible { outline: 2px solid var(--ets-accent); outline-offset: 3px; }
+.ets-market-price { margin: 16px 0 20px; color: var(--ets-ink); font-size: .9rem; font-weight: 700; }
+.ets-market-overlap { align-self: start; padding: 26px; border: 1px solid var(--ets-line); background: var(--ets-card); color: var(--ets-ink); }
+.ets-market-overlap p { margin: 8px 0; color: var(--ets-muted); font-size: .82rem; line-height: 1.7; }
+.ets-market-overlap p strong { color: var(--ets-ink); }
+.ets-market-payment-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; list-style: none; }
+.ets-market-payment-list li { padding: 10px 14px; border: 1px solid var(--ets-line); background: var(--ets-card); color: var(--ets-ink); font-size: .8rem; }
 .ets-floating-contact:hover { transform: translateY(-2px); background: var(--ets-accent-dark); }
 .ets-whatsapp-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, .17); font-size: .58rem; letter-spacing: .04em; }
 .ets-testimonials { background: var(--ets-ink); color: var(--ets-paper); text-align: left; --ets-line: rgba(29, 39, 34, .14); }
@@ -709,6 +721,7 @@ body {
   .ets-footer-brand { grid-column: 1 / -1; }
   .ets-footer-bottom { flex-direction: column; }
   .ets-floating-contact { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); min-height: 46px; }
+  .ets-market-suggestion { width: calc(100% - 24px); margin-top: 10px; padding: 14px; }
   .ets-pricing-table-wrap { margin-inline: -16px; }
   .ets-maintenance-options { grid-template-columns: 1fr; }
 }

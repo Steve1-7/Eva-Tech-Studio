@@ -1,17 +1,19 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import ScopeBriefTool from '@/components/site/ScopeBriefTool'
 import { PRIMARY_CTA_LABEL } from '@/config/site'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Free Tools',
+export const metadata = createPageMetadata({
+  title: 'Free Project Planning Tools',
   description: 'A free project brief builder from Eva Tech Studio.',
-  alternates: { canonical: '/tools' },
-}
+  path: '/tools',
+})
 
 export default function ToolsPage() {
   return (
     <div className="ets-page">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Tools', path: '/tools' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
           <p className="ets-eyebrow">Free tools</p>

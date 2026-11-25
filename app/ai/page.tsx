@@ -1,18 +1,17 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
 
-export const metadata: Metadata = {
-  title: 'AI Features — Eva-Tech-Studio',
-  description: 'Explore Eva-Tech-Studio AI tools for audits, quotes, consulting, and conversational support.',
+export const metadata = {
+  ...createPageMetadata({
+    title: 'AI Project Tools and Services',
+    description: 'Explore Eva Tech Studio AI tools for audits, quotes, consulting, and conversational support.',
+    path: '/ai',
+  }),
   keywords: ['AI tools', 'AI consulting', 'AI audit', 'AI quote', 'chatbot', 'digital agency AI'],
-  openGraph: {
-    title: 'AI Features — Eva-Tech-Studio',
-    description: 'Explore Eva-Tech-Studio AI tools for audits, quotes, consulting, and conversational support.',
-    type: 'website',
-  },
 }
 
 const tools = [
@@ -29,16 +28,17 @@ const tools = [
     badge: 'Audit'
   },
   {
-    title: 'AI Quote Generator',
-    description: 'Get a personalised digital services quote with pricing, timeline and delivery details.',
+    title: 'AI Project Scope Outline',
+    description: 'Create a preliminary project scope and discovery questions without unconfirmed prices or timelines.',
     href: '/ai-quote',
-    badge: 'Quote'
+    badge: 'Scope'
   },
 ]
 
 export default function AIHubPage() {
   return (
     <main className="min-h-screen pb-[100px] pt-[180px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'AI tools', path: '/ai' }]} />
       <div className="max-w-[1120px] mx-auto">
         <ScrollReveal>
           <SectionLabel>AI Powered</SectionLabel>
@@ -87,7 +87,7 @@ export default function AIHubPage() {
               <ul className="space-y-4 text-[#B8B2A8]">
                 <li>✅ AI Project Consultant: tailored business alignment</li>
                 <li>✅ AI Growth Audit: fast gap analysis and recommendations</li>
-                <li>✅ AI Quote Generator: proposal-ready pricing and scope</li>
+                <li>AI Project Scope Outline: draft scope and discovery questions</li>
                 <li>✅ Conversational AI Chatbot: on-demand digital consultancy</li>
               </ul>
             </div>

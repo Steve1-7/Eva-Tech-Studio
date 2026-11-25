@@ -1,15 +1,14 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd, JsonLd } from '@/components/site/JsonLd'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 
-export const metadata: Metadata = {
-  title: 'Bagmaa — Case Study | Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'Bagmaa Case Study',
   description: 'A responsive, installable customer ordering and booking web app with a Supabase-backed administration dashboard.',
-  openGraph: {
-    title: 'Bagmaa — Case Study | Eva Tech Studio',
-    description: 'Customer ordering, ticket sales, car-wash bookings, and operations management in one web app.',
-  },
-}
+  path: '/work/bagmaa',
+  type: 'article',
+})
 
 const customerFeatures = [
   'Responsive, mobile-friendly customer application',
@@ -33,6 +32,16 @@ const adminFeatures = [
 export default function BagmaaCaseStudy() {
   return (
     <main style={{ background: 'var(--obsidian)', color: '#E8E3D8' }}>
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        name: 'Bagmaa case study',
+        description: 'A responsive customer ordering and booking web app with a Supabase-backed administration dashboard.',
+        url: 'https://www.eva-tech-studio.com/work/bagmaa',
+        creator: { '@type': 'Organization', name: 'Eva Tech Studio' },
+        sameAs: 'https://bagmaa.vercel.app/',
+      }} />
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies' }, { name: 'Bagmaa', path: '/work/bagmaa' }]} />
       <section className="px-6 pb-16 pt-[180px] md:px-[60px]">
         <div className="mx-auto max-w-[1100px]">
           <SectionLabel>Bagmaa · Web Application</SectionLabel>
@@ -43,7 +52,7 @@ export default function BagmaaCaseStudy() {
                 Bagmaa is a responsive customer web app that brings product and food orders, ticket purchases, and car-wash bookings together with account management and order tracking.
               </p>
             </div>
-            <a href="https://bagmaa.vercel.app/" target="_blank" rel="noopener noreferrer" className="btn-primary whitespace-nowrap px-6 py-3">Visit Bagmaa ↗</a>
+            <a href="https://bagmaa.vercel.app/" target="_blank" rel="noopener noreferrer" className="btn-primary whitespace-nowrap px-6 py-3">View Bagmaa demo ↗</a>
           </div>
           <div className="mt-10 flex flex-wrap gap-3" aria-label="Project technologies">
             {['Responsive Web App', 'PWA', 'Supabase', 'Vercel'].map(item => <span key={item} className="border px-3 py-2 text-sm" style={{ borderColor: 'rgba(232,227,216,0.16)', color: '#B8B2A8' }}>{item}</span>)}

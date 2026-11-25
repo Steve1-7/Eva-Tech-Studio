@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import ServiceDetail from '@/components/site/ServiceDetail'
+import { createPageMetadata } from '@/lib/metadata'
 
 const customServices = {
   'custom-software': {
-    title: 'Custom Software',
+    title: 'Custom Software for Business Workflows',
     description: 'Purpose-built internal tools and software that fit the way your business actually operates.',
   },
   'trading-bots': {
-    title: 'Trading Bots',
+    title: 'Trading Bot Engineering',
     description: 'Trading-system engineering, simulation, and integrations—with risk controls and clear limits.',
   },
 }
@@ -21,11 +22,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const service = customServices[params.slug as ServiceSlug]
   if (!service) return { title: 'Service not found' }
-  return {
+  return createPageMetadata({
     title: service.title,
     description: service.description,
-    alternates: { canonical: `/services/${params.slug}` },
-  }
+    path: `/services/${params.slug}`,
+  })
 }
 
 export default function NewServicePage({ params }: { params: { slug: string } }) {

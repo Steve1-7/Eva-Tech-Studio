@@ -1,14 +1,15 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy | Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'Privacy Policy',
   description: 'How we collect, use, and protect your personal information.',
-  alternates: { canonical: '/privacy' },
-}
+  path: '/privacy',
+})
 
 const sections = [
   {
@@ -66,6 +67,7 @@ const sections = [
 export default function PrivacyPage() {
   return (
     <div className="ets-page ets-legal">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Privacy Policy', path: '/privacy' }]} />
       {/* Hero */}
       <section className="pt-[180px] pb-[80px] px-6 md:px-[60px] relative overflow-hidden" style={{ background: 'var(--obsidian)' }}>
         <div className="aurora-bg" style={{ opacity: 0.25 }}>
