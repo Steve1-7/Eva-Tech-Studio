@@ -88,7 +88,7 @@ Service, project, FAQ, and technology-stack content lives in `lib/siteContent.ts
 Fonts are loaded via `next/font/google` in `app/layout.tsx`. Swap them out there.
 
 ### Contact Form
-Project briefs are validated and sent through `app/api/contact/route.ts` using Resend. The API uses a honeypot and per-IP request limit; configure `RESEND_API_KEY` and `CONTACT_TO_EMAIL` in the deployment environment. Email delivery failures are reported rather than shown as successful submissions.
+Project briefs are validated and sent through `app/api/contact/route.ts` using Resend. The API uses a honeypot, per-IP request limit, Node.js runtime, and bounded provider requests. It accepts `RESEND_API_KEY` or the existing integration-provided `RESEND_EMAIL_RESEND_API_KEY`; `RESEND_EMAIL_DOMAIN` defaults to the verified `eva-tech-studio.com` domain, and `CONTACT_TO_EMAIL` defaults to `info@eva-tech-studio.com`. If delivery fails, the validated lead is written to a structured server recovery log and the client is shown both contact emails; runtime logs are a best-effort fallback, not durable database storage.
 
 See [the Vercel deployment guide](./docs/deploy-guide.md) for environment variables, launch checks, and contact-form setup.
 
