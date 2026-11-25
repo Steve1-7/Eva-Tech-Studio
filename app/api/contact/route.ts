@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
+const resendApiKey = process.env.RESEND_API_KEY || process.env.RESEND_EMAIL_RESEND_API_KEY
+const resend = resendApiKey ? new Resend(resendApiKey) : null
+const sender = `Eva Tech Studio <contact@${process.env.RESEND_EMAIL_DOMAIN || 'eva-tech-studio.com'}>`
 const recipient = process.env.CONTACT_TO_EMAIL || 'info@eva-tech-studio.com'
 const requestWindowMs = 15 * 60 * 1000
 const requestLimit = 5
@@ -130,7 +132,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const result = await resend.emails.send({
-      from: 'Eva Tech Studio <contact@eva-tech-studio.com>',
+      from: sender,
       to: [recipient],
       reply_to: email,
       subject: `New project brief from ${name}`,
@@ -154,7 +156,7 @@ export async function POST(request: NextRequest) {
 
     try {
       const autoReply = await resend.emails.send({
-        from: 'Eva Tech Studio <contact@eva-tech-studio.com>',
+        from: sender,
         to: [email],
         subject: 'We received your enquiry',
         text: `Hi ${name},\n\nThanks for getting in touch with Eva Tech Studio. We have received your enquiry and will review the details. We will reply within 48 hours with a clear first scope, any key questions, and practical next steps. There is no obligation to proceed.\n\nEva Tech Studio`,

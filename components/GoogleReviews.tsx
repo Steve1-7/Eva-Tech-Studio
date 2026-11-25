@@ -9,6 +9,8 @@ const ELFSIGHT_SCRIPT_ID = 'elfsight-platform-script'
 export default function GoogleReviews() {
   const [scriptFailed, setScriptFailed] = useState(false)
 
+  if (scriptFailed) return null
+
   return (
     <section className="w-full py-[100px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }} aria-labelledby="google-reviews-heading">
       <div className="container mx-auto px-4 max-w-[1200px]">
@@ -37,10 +39,9 @@ export default function GoogleReviews() {
           }}
         >
           <div
-            className="elfsight-app-152a6634-438f-4d16-ba16-b37a5e4faf1b w-full min-h-[360px]"
+            className="elfsight-app-152a6634-438f-4d16-ba16-b37a5e4faf1b w-full min-h-[520px]"
             data-elfsight-app-lazy
           />
-          {scriptFailed && <p role="status" className="mt-4 text-sm text-zinc-300">The live review feed could not be loaded. No review content is shown.</p>}
         </div>
       </div>
     </section>
