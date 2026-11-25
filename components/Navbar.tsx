@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import BookingLink from '@/components/BookingLink'
+import WhatsAppLink from '@/components/WhatsAppLink'
 
 const AmbientSound = dynamic(() => import('@/components/AmbientSound'), { ssr: false })
 
@@ -38,11 +40,11 @@ export default function Navbar() {
           : 'py-5'
       }`}>
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo5.webp" alt="Eva-Tech-Studio" className="h-24 w-auto max-w-[300px] object-contain" />
+          <img src="/logo5.webp" alt="Eva-Tech-Studio" className="h-16 w-auto max-w-[200px] object-contain xl:h-24 xl:max-w-[300px]" />
         </Link>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden xl:flex items-center gap-8">
           {links.map(l => (
             <Link key={l.href} href={l.href}
               className={`text-[0.78rem] font-medium uppercase tracking-[0.08em] transition-all duration-200 ${
@@ -55,20 +57,22 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3">
           <AmbientSound />
-          <Link href="/contact" className="btn-primary text-[0.8rem] px-5 py-2.5">
-            Book a Call
-          </Link>
+          <BookingLink className="btn-primary text-[0.8rem] px-5 py-2.5">
+            Book a Strategy Call
+          </BookingLink>
+          <WhatsAppLink className="btn-outline text-[0.8rem] px-4 py-2.5">WhatsApp</WhatsAppLink>
         </div>
 
         {/* Mobile */}
-        <div className="md:hidden">
+        <div className="xl:hidden">
           <button 
             onClick={() => setMobileOpen(v => !v)} 
             className="relative z-[60] flex flex-col gap-[5px] cursor-pointer p-2 -mr-2" 
             aria-label="Menu"
             aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
           >
             <span className={`block w-6 h-[2px] bg-[#E8E3D8] transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[3.5px]' : ''}`} />
             <span className={`block w-6 h-[2px] bg-[#E8E3D8] transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
@@ -78,8 +82,9 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile drawer */}
-      <div 
-        className={`fixed inset-0 z-[55] flex flex-col items-center justify-center gap-8 md:hidden transition-all duration-500 ${
+      <div
+        id="mobile-navigation"
+        className={`fixed inset-0 z-[55] flex flex-col items-center justify-start gap-4 overflow-y-auto px-6 py-24 xl:hidden transition-all duration-500 ${
           mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         style={{ background: 'rgba(7, 8, 15, 0.98)', backdropFilter: 'blur(20px)' }}
@@ -98,6 +103,11 @@ export default function Navbar() {
           </Link>
         ))}
         
+        <div className="flex flex-col items-center gap-3 mt-2">
+          <BookingLink className="btn-primary px-6 py-3">Book a Strategy Call</BookingLink>
+          <WhatsAppLink className="btn-outline px-6 py-3">WhatsApp</WhatsAppLink>
+        </div>
+
         {/* Close button hint */}
         <div className={`absolute bottom-10 text-[0.7rem] transition-opacity duration-500 ${mobileOpen ? 'opacity-40' : 'opacity-0'}`} style={{ color: '#6B6860' }}>
           Tap menu button to close

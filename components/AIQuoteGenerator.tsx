@@ -4,6 +4,7 @@ import Confetti from './Confetti'
 import { downloadPDF } from '@/lib/pdf-export'
 import { submitContact } from '@/lib/forms'
 import { apiFetch } from '@/lib/api'
+import { getWhatsAppHref } from '@/config/site'
 
 interface QuoteFormData {
   businessName: string
@@ -144,10 +145,8 @@ export default function AIQuoteGenerator({
         message,
       })
 
-      // Also open WhatsApp for immediate real-time conversation (optional)
-      const whatsappMessage = encodeURIComponent(message)
-      const whatsappUrl = `https://wa.me/27676283210?text=${whatsappMessage}`
-      window.open(whatsappUrl, '_blank')
+      const whatsappUrl = getWhatsAppHref(message)
+      if (whatsappUrl) window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
 
       setStep('success')
     } catch (err: any) {

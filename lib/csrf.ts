@@ -20,7 +20,6 @@ export function generateCSRFToken(): string {
     // Fallback to Node's crypto when available (server runtime)
     try {
       // Use require dynamically to avoid bundler resolving in edge runtimes
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const nodeCrypto = require('crypto')
       const buf = nodeCrypto.randomBytes(CSRF_TOKEN_LENGTH)
       for (let i = 0; i < CSRF_TOKEN_LENGTH; i++) bytes[i] = buf[i]

@@ -87,7 +87,7 @@ export default function AboutPage() {
             <div className="rounded-[24px] p-12 flex flex-col justify-between gap-10 min-h-[360px]"
               style={{ background: 'var(--obsidian-4)', border: '1px solid rgba(201,169,110,0.15)', boxShadow: '0 0 60px rgba(201,169,110,0.04)' }}>
               <blockquote className="font-cormorant text-[1.85rem] italic leading-[1.4]" style={{ color: '#E8E3D8' }}>
-                "We don't chase vanity metrics. We build systems that turn marketing spend into predictable, scalable revenue."
+                &ldquo;We don&apos;t chase vanity metrics. We build systems that turn marketing spend into predictable, scalable revenue.&rdquo;
               </blockquote>
               <div className="pt-6" style={{ borderTop: '1px solid rgba(201,169,110,0.1)' }}>
                 <p className="font-semibold" style={{ color: '#E8E3D8' }}>The Eva-Tech-Studio Team</p>
@@ -255,7 +255,7 @@ export default function AboutPage() {
               Ready to Turn Your Business Into a <span className="text-shimmer italic">Growth System?</span>
             </h2>
             <p className="font-light leading-[1.8] mb-10" style={{ color: '#6B6860' }}>
-              Let's build the infrastructure that transforms your marketing from a cost center into a revenue engine. 
+              Let&apos;s build the infrastructure that transforms your marketing from a cost center into a revenue engine.
               Strategy, execution, and results — all in one partnership.
             </p>
             <MagneticButton><Link href="/contact" className="btn-primary text-[0.9rem] px-8 py-4">Start Your Transformation →</Link></MagneticButton>

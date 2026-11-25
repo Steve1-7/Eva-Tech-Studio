@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { siteConfig } from '@/config/site'
 
 export default function Footer() {
   return (
@@ -27,7 +28,7 @@ export default function Footer() {
             <div className="flex gap-3 mt-6">
               <a href="https://www.linkedin.com/company/111078966" target="_blank" rel="noopener noreferrer" className="footer-social-link" title="LinkedIn">in</a>
               <a href="https://www.tiktok.com/@evatechstudio" target="_blank" rel="noopener noreferrer" className="footer-social-link" title="TikTok">tt</a>
-              <a href="mailto:info@eve-tech-studio.com" className="footer-social-link" title="Email">@</a>
+              <a href="mailto:info@eva-tech-studio.com" className="footer-social-link" title="Email">@</a>
             </div>
           </div>
 
@@ -51,10 +52,20 @@ export default function Footer() {
             ))}
             <div className="mt-5 pt-5" style={{ borderTop: '1px solid rgba(232,227,216,0.05)' }}>
               <p className="text-xs font-semibold mb-2" style={{ color: '#C9A96E' }}>Contact</p>
-              <p className="text-sm" style={{ color: '#6B6860' }}><a href="mailto:info@eve-tech-studio.com" className="hover:text-[#C9A96E] transition-colors">info@eve-tech-studio.com</a></p>
-              <p className="text-sm mt-1" style={{ color: '#6B6860' }}><a href="mailto:sales@eve-tech-studio.com" className="hover:text-[#C9A96E] transition-colors">sales@eve-tech-studio.com</a></p>
-              <p className="text-sm mt-1" style={{ color: '#6B6860' }}><a href="mailto:support@eve-tech-studio.com" className="hover:text-[#C9A96E] transition-colors">support@eve-tech-studio.com</a></p>
+              <p className="text-sm" style={{ color: '#6B6860' }}><a href="mailto:info@eva-tech-studio.com" className="hover:text-[#C9A96E] transition-colors">info@eva-tech-studio.com</a></p>
+              <p className="text-sm mt-1" style={{ color: '#6B6860' }}><a href="mailto:sales@eva-tech-studio.com" className="hover:text-[#C9A96E] transition-colors">sales@eva-tech-studio.com</a></p>
+              <p className="text-sm mt-1" style={{ color: '#6B6860' }}><a href="mailto:support@eva-tech-studio.com" className="hover:text-[#C9A96E] transition-colors">support@eva-tech-studio.com</a></p>
               <p className="text-sm mt-3" style={{ color: '#6B6860' }}>Johannesburg, South Africa</p>
+              {Object.entries(siteConfig.legalDetails).some(([, value]) => Boolean(value)) && (
+                <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(232,227,216,0.05)' }}>
+                  <p className="text-xs font-semibold mb-2" style={{ color: '#C9A96E' }}>Company details</p>
+                  {Object.entries(siteConfig.legalDetails).map(([label, value]) => value && (
+                    <p key={label} className="text-xs mt-1" style={{ color: '#6B6860' }}>
+                      {label.replace(/([A-Z])/g, ' $1').replace(/^./, (letter) => letter.toUpperCase())}: {value}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
+import BookingLink from '@/components/BookingLink'
 import HorizontalScrollCases from '@/components/HorizontalScrollCases'
 import dynamic from 'next/dynamic'
 
@@ -192,9 +193,9 @@ export default function WorkPage() {
               Your Business Could Be the Next <span className="text-shimmer italic">Success Story.</span>
             </h2>
             <p className="font-light leading-[1.8] mb-10" style={{ color: '#6B6860' }}>
-              Every case study started with a conversation. Let's talk about what's possible for your business.
+              Every case study started with a conversation. Let&apos;s talk about what&apos;s possible for your business.
             </p>
-            <MagneticButton><Link href="/contact" className="btn-primary text-[0.9rem] px-8 py-4">Book a Strategy Call →</Link></MagneticButton>
+            <MagneticButton><BookingLink className="btn-primary text-[0.9rem] px-8 py-4">Book a Strategy Call</BookingLink></MagneticButton>
           </div>
         </ScrollReveal>
       </section>

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
+import BookingLink from '@/components/BookingLink'
 import StickySplitServices from '@/components/StickySplitServices'
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default function ServicesPage() {
             Every Service Your Brand<br />Needs to <span className="text-shimmer italic">Win</span>
           </h1>
           <p className="font-light leading-[1.8] text-[1.05rem] max-w-[580px] mx-auto" style={{ color: '#6B6860' }}>
-            Integrated growth systems tailored to where you are, where you're going, and what it takes to get there faster.
+            Integrated growth systems tailored to where you are, where you&apos;re going, and what it takes to get there faster.
           </p>
         </div>
       </section>
@@ -43,11 +44,11 @@ export default function ServicesPage() {
           <ScrollReveal direction="left">
             <h2 className="font-cormorant text-[clamp(1.8rem,3.5vw,2.8rem)] font-semibold max-w-[520px]" style={{ color: '#E8E3D8' }}>
               Not Sure Which Service Is Right?{' '}
-              <span className="text-shimmer italic">Let's Figure It Out Together.</span>
+              <span className="text-shimmer italic">Let&apos;s Figure It Out Together.</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal direction="right">
-            <MagneticButton><Link href="/contact" className="btn-primary">Get a Free Audit →</Link></MagneticButton>
+            <MagneticButton><BookingLink className="btn-primary">Book a Strategy Call</BookingLink></MagneticButton>
           </ScrollReveal>
         </div>
       </div>

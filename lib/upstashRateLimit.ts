@@ -11,8 +11,6 @@ function getRedis() {
   try {
     // require inside function so missing package won't break the build.
     // Use dynamic require via eval to avoid static bundler resolution.
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const requireFn: any = eval('require')
     const { Redis: RedisLib } = requireFn('@upstash/redis')
     const url = process.env.UPSTASH_REDIS_REST_URL

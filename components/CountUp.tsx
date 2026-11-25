@@ -18,40 +18,52 @@ export default function CountUp({
   decimals = 0,
   className = '',
 }: Props) {
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(end)
   const [started, setStarted] = useState(false)
   const ref = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
+    const element = ref.current
+    if (!element || started || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (typeof IntersectionObserver === 'undefined') return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !started) {
+        if (entry.isIntersecting) {
+          setValue(0)
           setStarted(true)
           observer.disconnect()
         }
       },
       { threshold: 0.5 }
     )
-    observer.observe(el)
+
+    observer.observe(element)
     return () => observer.disconnect()
-  }, [started])
+  }, [end, started])
 
   useEffect(() => {
     if (!started) return
+
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (motionPreference.matches) {
+      setValue(end)
+      return
+    }
+
     const startTime = performance.now()
-    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
+    const easeOut = (progress: number) => 1 - Math.pow(1 - progress, 3)
+    let animationFrame = 0
 
     const tick = (now: number) => {
-      const elapsed = now - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      setValue(parseFloat((easeOut(progress) * end).toFixed(decimals)))
-      if (progress < 1) requestAnimationFrame(tick)
+      const progress = Math.min((now - startTime) / duration, 1)
+      setValue(Number((easeOut(progress) * end).toFixed(decimals)))
+      if (progress < 1) animationFrame = requestAnimationFrame(tick)
       else setValue(end)
     }
-    requestAnimationFrame(tick)
+
+    animationFrame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(animationFrame)
   }, [started, end, duration, decimals])
 
   return (

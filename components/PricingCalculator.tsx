@@ -4,6 +4,8 @@ import Link from 'next/link'
 import SectionLabel from './SectionLabel'
 import CountUp from './CountUp'
 import AIQuoteGenerator from './AIQuoteGenerator'
+import WhatsAppLink from './WhatsAppLink'
+import { getWhatsAppHref } from '@/config/site'
 
 const SERVICES = [
   { id: 'social', name: 'Social Media Marketing', basePrice: 4675, desc: 'Content creation, posting, community management' },
@@ -262,18 +264,16 @@ export default function PricingCalculator() {
                 <AIQuoteGenerator services={selectedServices.map(id => SERVICES.find(s => s.id === id)?.name || id)} tier={selectedTier} />
               )}
 
-              {/* Consultation button always visible */}
-              <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(232,227,216,0.05)' }}>
-                <a
-                  href="https://wa.me/27676283210?text=Hi, I'm interested in discussing a custom package for my business."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full py-3 rounded-full text-center text-[0.85rem] font-semibold transition-all hover:-translate-y-0.5 cursor-pointer"
-                  style={{ background: 'rgba(74,122,100,0.15)', color: '#4A7A64', border: '1px solid rgba(74,122,100,0.3)' }}
-                >
-                  Request Consultation 💬
-                </a>
-              </div>
+              {getWhatsAppHref() && (
+                <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(232,227,216,0.05)' }}>
+                  <WhatsAppLink
+                    message="Hi, I am interested in discussing a custom package for my business."
+                    className="block w-full py-3 rounded-full text-center text-[0.85rem] font-semibold transition-all hover:-translate-y-0.5"
+                  >
+                    Request Consultation
+                  </WhatsAppLink>
+                </div>
+              )}
             </div>
 
             {/* Navigation Buttons */}

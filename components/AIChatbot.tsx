@@ -83,7 +83,7 @@ export default function AIChatbot() {
             </div>
             <div>
               <div className="font-semibold text-[0.9rem]" style={{ color: '#E8E3D8' }}>Eva AI — Digital Consultant</div>
-              <div className="text-[0.65rem]" style={{ color: '#6B6860' }}>Ask about services, pricing, audits, or proposals. I'll help you decide next steps.</div>
+              <div className="text-[0.65rem]" style={{ color: '#6B6860' }}>Ask about services, pricing, audits, or proposals. I&apos;ll help you decide next steps.</div>
             </div>
           </div>
 

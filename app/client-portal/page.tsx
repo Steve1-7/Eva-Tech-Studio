@@ -36,7 +36,7 @@ export default function ClientPortalPage() {
           <ScrollReveal>
             <div className="mb-6 text-center">
               <h2 className="text-[1.35rem] font-semibold" style={{ color: '#E8E3D8' }}>Client Dashboard Preview</h2>
-              <p style={{ color: '#6B6860' }} className="mt-2">Once logged in you'll see a modern dashboard with performance, blog management, project status and support tools.</p>
+              <p style={{ color: '#6B6860' }} className="mt-2">Once logged in you&apos;ll see a modern dashboard with performance, blog management, project status and support tools.</p>
             </div>
           </ScrollReveal>
 

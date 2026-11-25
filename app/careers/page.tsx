@@ -44,7 +44,7 @@ export default async function Page() {
     <main className="max-w-5xl mx-auto py-16 px-6">
       <header className="mb-8">
         <h1 className="text-3xl font-bold">Careers & Opportunities</h1>
-        <p className="text-gray-600 mt-2">Browse curated job listings from Eva Tech Studio and partner employers. Click "Apply Now" to go to the employer's application page — we never store candidate applications.</p>
+        <p className="text-gray-600 mt-2">Browse curated job listings from Eva Tech Studio and partner employers. Click &quot;Apply Now&quot; to go to the employer&apos;s application page — we never store candidate applications.</p>
       </header>
 
       <section className="mb-8">

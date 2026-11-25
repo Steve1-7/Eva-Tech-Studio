@@ -2,10 +2,10 @@ export { default } from './ContactForm'
 
 export const metadata = {
   title: 'Contact — Eva-Tech-Studio',
-  description: 'Get in touch for a free digital growth audit. Book a strategy call with our team.',
-  keywords: ['contact', 'digital marketing consultation', 'free audit', 'strategy call', 'Johannesburg'],
+  description: 'Contact Eva-Tech-Studio about your business goals. Send a message and receive clear next steps within 48 hours.',
+  keywords: ['contact', 'digital marketing consultation', 'strategy call', 'Johannesburg'],
   openGraph: {
     title: 'Contact — Eva-Tech-Studio',
-    description: 'Get in touch for a free digital growth audit.',
+    description: 'Tell Eva-Tech-Studio what you are working toward and get practical next steps.',
   },
 }

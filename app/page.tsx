@@ -8,6 +8,9 @@ import LiveTicker from '@/components/LiveTicker'
 import ROICalculator from '@/components/ROICalculator'
 import AIAuditWidget from '@/components/AIAuditWidget'
 import MagneticButton from '@/components/MagneticButton'
+import BookingLink from '@/components/BookingLink'
+import TestimonialStrip from '@/components/TestimonialStrip'
+import { siteConfig } from '@/config/site'
 import TiltCard from '@/components/TiltCard'
 import ParallaxLayer from '@/components/ParallaxLayer'
 import PricingCalculator from '@/components/PricingCalculator'
@@ -97,15 +100,17 @@ export default function Home() {
                 marketing to scalable tech infrastructure, Eva-Tech-Studio turns ambition into
                 measurable results.
               </p>
-              <div className="mb-9">
-                <LiveTicker />
-              </div>
+              {siteConfig.availabilityMonth && (
+                <div className="mb-9">
+                  <LiveTicker />
+                </div>
+              )}
             </ScrollReveal>
 
             <ScrollReveal delay={240}>
               <div className="flex flex-wrap gap-4 hero-cta">
                 <MagneticButton>
-                  <Link href="/contact" className="btn-primary">Book a Strategy Call →</Link>
+                  <BookingLink className="btn-primary">Book a Strategy Call</BookingLink>
                 </MagneticButton>
                 <MagneticButton>
                   <Link href="/services" className="btn-outline">Explore Services</Link>
@@ -114,17 +119,18 @@ export default function Home() {
             </ScrollReveal>
 
             <ScrollReveal delay={320}>
-              <div className="flex flex-wrap gap-10 mt-14 pt-10 border-t border-[rgba(201,169,110,0.1)]">
+              <div className="flex flex-wrap gap-x-8 gap-y-5 mt-14 pt-10 border-t border-[rgba(201,169,110,0.1)]">
                 {[
-                  { end: 340, suffix: '%', label: 'Traffic Growth', decimals: 0 },
-                  { end: 10, suffix: '+', label: 'Brands Scaled', decimals: 0 },
-                  { end: 60, suffix: '%', label: 'Cost Per Lead Reduced', decimals: 0 },
-                ].map(({ end, suffix, label, decimals }) => (
+                  { end: 7, suffix: '', label: 'Services' },
+                  { end: 48, suffix: 'h', label: 'Scoping window' },
+                  { end: 4, suffix: '', label: 'Delivery steps' },
+                  { end: 0, suffix: '', label: 'Junior hand-offs' },
+                ].map(({ end, suffix, label }) => (
                   <div key={label}>
-                    <div className="font-cormorant text-[2.8rem] font-bold leading-none tracking-tight text-shimmer">
-                      <CountUp end={end} suffix={suffix} decimals={decimals} />
+                    <div className="font-cormorant text-[2.4rem] font-bold leading-none tracking-tight text-shimmer">
+                      <CountUp end={end} suffix={suffix} />
                     </div>
-                    <div className="text-[0.75rem] mt-1.5 tracking-[0.05em]" style={{ color: '#6B6860' }}>{label}</div>
+                    <div className="text-[0.72rem] mt-1.5 tracking-[0.05em]" style={{ color: '#6B6860' }}>{label}</div>
                   </div>
                 ))}
               </div>
@@ -139,53 +145,12 @@ export default function Home() {
                 <Hero3DObject />
               </div>
             </ScrollReveal>
-            {/* Main card */}
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[300px] rounded-[20px] p-7 z-20 card" style={{ background: 'var(--obsidian-3)' }}>
-              <div className="w-10 h-10 rounded-[10px] bg-[rgba(74,122,100,0.15)] flex items-center justify-center text-xl mb-4">📈</div>
-              <div className="font-syne text-[0.78rem] font-bold mb-1 tracking-[0.06em] uppercase" style={{ color: '#6B6860' }}>Monthly Revenue</div>
-              <div className="font-cormorant text-[2.2rem] font-bold" style={{ color: '#6BA889' }}>+127%</div>
-              <div className="text-[0.7rem] font-semibold mt-0.5" style={{ color: '#4A7A64' }}>↑ vs last quarter</div>
-              <div className="flex items-end gap-1 h-10 mt-4">
-                {[30, 45, 40, 60, 70, 65, 85, 100].map((h, i) => (
-                  <div key={i} className={`mini-bar ${i > 3 ? 'active' : ''}`} style={{ height: `${h}%` }} />
-                ))}
-              </div>
-            </div>
 
-            {/* ROAS card */}
-            <div className="absolute top-2 right-2 w-[200px] rounded-[20px] p-6 z-30 card">
-              <div className="w-9 h-9 rounded-[8px] bg-[rgba(201,169,110,0.12)] flex items-center justify-center text-lg mb-3">🎯</div>
-              <div className="font-syne text-[0.72rem] font-bold uppercase tracking-[0.06em] mb-1" style={{ color: '#6B6860' }}>Ads ROAS</div>
-              <div className="font-cormorant text-[2rem] font-bold" style={{ color: '#E8E3D8' }}>6.8×</div>
-              <div className="h-[3px] rounded-full mt-3 overflow-hidden bg-[#232638]">
-                <div className="h-full rounded-full grow-bar" style={{ background: 'var(--gold)' }} />
-              </div>
-            </div>
-
-            {/* Traffic card */}
-            <div className="absolute bottom-20 -left-4 w-[185px] rounded-[20px] p-6 z-30 card">
-              <div className="w-9 h-9 rounded-[8px] bg-[rgba(74,122,100,0.15)] flex items-center justify-center text-lg mb-3">🌐</div>
-              <div className="font-syne text-[0.72rem] font-bold uppercase tracking-[0.06em] mb-1" style={{ color: '#6B6860' }}>Organic Traffic</div>
-              <div className="font-cormorant text-[2rem] font-bold" style={{ color: '#E8E3D8' }}>+340%</div>
-            </div>
-
-            {/* Live card */}
-            <div className="absolute bottom-4 right-2 w-[210px] rounded-[20px] p-6 z-30 card">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-dot" />
-                <span className="text-[0.68rem] font-bold uppercase tracking-[0.08em]" style={{ color: '#4A7A64' }}>Live</span>
-              </div>
-              <div className="font-syne text-[0.72rem] font-bold uppercase tracking-[0.06em] mb-1" style={{ color: '#6B6860' }}>New Leads Today</div>
-              <div className="font-cormorant text-[2rem] font-bold" style={{ color: '#E8E3D8' }}>47</div>
-            </div>
-
-            {/* Floating badge */}
-            <div className="absolute top-[200px] -right-10 btn-primary text-[0.72rem] px-4 py-2 animate-float z-40 pointer-events-none whitespace-nowrap shadow-[0_0_30px_rgba(201,169,110,0.3)]">
-              ✨ Free Audit Available
-            </div>
           </div>
         </div>
       </section>
+
+      <TestimonialStrip testimonials={siteConfig.testimonials} />
 
       {/* ══ MARQUEE ══ */}
       <div className="marquee-wrapper py-5 border-y border-[rgba(201,169,110,0.1)]" style={{ background: 'var(--obsidian-2)' }}>
@@ -206,7 +171,7 @@ export default function Home() {
             <ScrollReveal><SectionLabel>Why Eva-Tech-Studio</SectionLabel></ScrollReveal>
             <ScrollReveal delay={80}>
               <h2 className="text-[clamp(2rem,4vw,3.4rem)] font-semibold mt-2 mb-6" style={{ color: '#E8E3D8' }}>
-                We Don't Just Run<br />Campaigns. We Build<br />Growth Machines.
+                We Don&apos;t Just Run<br />Campaigns. We Build<br />Growth Machines.
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={140}>
@@ -240,20 +205,16 @@ export default function Home() {
           {/* Stat cards */}
           <div className="grid grid-cols-2 gap-4">
             {[
-              { end: 94, suffix: '%', label: 'Client retention rate', desc: 'Our results keep clients coming back', gold: false },
-              { end: 28, suffix: '', label: 'Days avg to first results', desc: 'Fast momentum, long-term impact', gold: true },
-              { end: 3, suffix: '×', label: 'Avg. Traffic Increase', desc: 'Organic growth multiplier', gold: true },
-              { end: 150, suffix: '+', label: 'Brands scaled globally', desc: 'B2B, DTC, SaaS & beyond', gold: false },
-            ].map((c, i) => (
-              <ScrollReveal key={c.label} delay={i * 80}>
-                <div className={`rounded-[20px] p-7 card h-full ${c.gold ? 'border-[rgba(201,169,110,0.2)]' : ''}`}
-                  style={{ background: c.gold ? 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))' : 'var(--obsidian-3)' }}>
-                  <div className={`font-cormorant text-[3rem] font-bold leading-none tracking-tight mb-2 count-up-number ${c.gold ? 'text-shimmer' : ''}`}
-                    style={c.gold ? undefined : { color: '#E8E3D8' }}>
-                    <CountUp end={c.end} suffix={c.suffix} decimals={c.suffix === '×' ? 1 : 0} />
-                  </div>
-                  <div className="text-[0.74rem] mb-2" style={{ color: '#6B6860' }}>{c.label}</div>
-                  <div className="text-[0.82rem] font-medium" style={{ color: '#B8B2A8' }}>{c.desc}</div>
+              { title: 'Scope before execution', desc: 'Set priorities and define what the work includes before delivery begins.', gold: false },
+              { title: 'One connected team', desc: 'Marketing, creative, and technology work toward the same business goals.', gold: true },
+              { title: 'Four clear steps', desc: 'Diagnose, architect, execute, and scale through a defined delivery process.', gold: true },
+              { title: 'Senior-led delivery', desc: 'Experienced specialists own the work, with no junior hand-offs.', gold: false },
+            ].map((card, i) => (
+              <ScrollReveal key={card.title} delay={i * 80}>
+                <div className={`rounded-[20px] p-7 card h-full ${card.gold ? 'border-[rgba(201,169,110,0.2)]' : ''}`}
+                  style={{ background: card.gold ? 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))' : 'var(--obsidian-3)' }}>
+                  <h3 className="font-cormorant text-[1.4rem] font-semibold mb-2" style={{ color: '#E8E3D8' }}>{card.title}</h3>
+                  <p className="text-[0.82rem] font-medium leading-[1.6]" style={{ color: '#B8B2A8' }}>{card.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -317,7 +278,7 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <MagneticButton>
-              <Link href="/services" className="btn-outline">View All Services →</Link>
+              <Link href="/services" className="btn-outline">Explore Services</Link>
             </MagneticButton>
           </div>
         </div>
@@ -392,11 +353,11 @@ export default function Home() {
             </h2>
             <p className="leading-[1.85] font-light mb-12 text-[1rem]" style={{ color: '#6B6860' }}>
               Every day without a clear growth strategy is a day your competitors pull further ahead.
-              Let's build your unfair advantage — starting with a free, no-pressure strategy session.
+              Let&apos;s map your next move and start with practical, focused next steps.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <MagneticButton><Link href="/contact" className="btn-primary text-[0.9rem] px-8 py-4">Book a Strategy Call →</Link></MagneticButton>
-              <MagneticButton><Link href="/contact" className="btn-ghost text-[0.9rem] px-8 py-4">Get a Free Audit</Link></MagneticButton>
+              <MagneticButton><BookingLink className="btn-primary text-[0.9rem] px-8 py-4">Book a Strategy Call</BookingLink></MagneticButton>
+              <MagneticButton><Link href="/services" className="btn-ghost text-[0.9rem] px-8 py-4">Explore Services</Link></MagneticButton>
             </div>
             <p className="text-[0.73rem] mt-6 tracking-[0.04em]" style={{ color: '#3A3830' }}>
               No commitment required · 30-minute call · Real, actionable insights

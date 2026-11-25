@@ -327,7 +327,7 @@ export default function AIAuditWidget() {
                     <p className="text-[0.72rem] text-center tracking-[0.04em]" style={{ color: '#3A3830' }}>Instant when available — otherwise request a manual audit via email</p>
                     {manualSuccess && (
                       <div className="mt-3 p-3 rounded-[10px]" style={{ background: 'rgba(201,169,110,0.08)', color: '#C9A96E' }}>
-                        Manual audit request sent. We'll email you within 24 hours.
+                        Manual audit request sent. We&apos;ll email you within 24 hours.
                       </div>
                     )}
                     <div className="mt-3 flex flex-col sm:flex-row gap-2 justify-center">

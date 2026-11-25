@@ -4,9 +4,9 @@ import MagneticButton from '@/components/MagneticButton'
 import PricingModal from '@/components/PricingModal'
 
 const plans = [
-  { name: 'Starter', price: 10000, desc: 'For businesses ready to establish a strong digital foundation.', cta: 'Get Started', popular: false },
-  { name: 'Growth', price: 20000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', cta: 'Start Growing →', popular: true },
-  { name: 'Scale', price: 35000, desc: 'Full-service partnership for established brands ready to dominate their market.', cta: "Let's Talk", popular: false },
+  { name: 'Starter', price: 10000, desc: 'For businesses ready to establish a strong digital foundation.', cta: 'Choose Plan', popular: false },
+  { name: 'Growth', price: 20000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', cta: 'Choose Plan', popular: true },
+  { name: 'Scale', price: 35000, desc: 'Full-service partnership for established brands ready to dominate their market.', cta: 'Choose Plan', popular: false },
 ]
 
 export default function PricingGrid(){
@@ -28,7 +28,7 @@ export default function PricingGrid(){
             <div className="h-px mb-6" style={{ background: 'rgba(201,169,110,0.08)' }} />
             <div className="flex-1" />
             <MagneticButton className="w-full">
-              <button onClick={() => setOpenPackage(p.name)} className={p.popular ? 'btn-primary w-full justify-center text-center block' : 'btn-outline w-full justify-center text-center block'}>
+              <button onClick={() => setOpenPackage(p.name)} aria-label={`Choose ${p.name} plan`} className={p.popular ? 'btn-primary w-full justify-center text-center block' : 'btn-outline w-full justify-center text-center block'}>
                 {p.cta}
               </button>
             </MagneticButton>

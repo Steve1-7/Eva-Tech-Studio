@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import BookingLink from '@/components/BookingLink'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
-import MagneticButton from '@/components/MagneticButton'
-import CountUp from '@/components/CountUp'
 import PricingGrid from '@/components/PricingGrid'
 
 export const metadata: Metadata = {
@@ -15,12 +13,6 @@ export const metadata: Metadata = {
     description: 'Transparent pricing plans for digital marketing services.',
   },
 }
-
-const plans = [
-  { name: 'Starter', price: 10000, desc: 'For businesses ready to establish a strong digital foundation.', features: ['Social media management (2 platforms)', '12 posts/month with graphics', 'Basic paid ads (up to R5K spend)', 'Monthly performance report', 'Email support within 24 hours', 'Onboarding strategy session'], cta: 'Get Started', popular: false },
-  { name: 'Growth', price: 20000, desc: 'For ambitious brands ready to scale fast with integrated, multi-channel growth.', features: ['Full social media management (4 platforms)', '24 posts/month + Stories & Reels', 'Paid ads management (up to R25K spend)', 'SEO optimisation (on-page & technical)', 'Email marketing (2 campaigns/month)', 'Bi-weekly strategy calls', 'CRO & landing page optimisation', 'Priority Slack support'], cta: 'Start Growing →', popular: true },
-  { name: 'Scale', price: 35000, desc: 'Full-service partnership for established brands ready to dominate their market.', features: ['Everything in Growth, plus:', 'Dedicated account director', 'Unlimited paid ads management', 'Website development & CRO (ongoing)', 'Full CRM & automation setup', 'Video & photography production', 'Weekly strategy sessions', 'Brand strategy & positioning'], cta: "Let's Talk", popular: false },
-]
 
 const oneTime = [
   { icon: '💻', label: 'Website Build', from: 'From R10,000' },
@@ -52,7 +44,7 @@ export default function PricingPage() {
 
           <p className="text-center text-[0.82rem] mt-8" style={{ color: '#6B6860' }}>
             All plans billed monthly. No lock-in after the initial 3-month onboarding.{' '}
-            <Link href="/contact" className="transition-colors hover:text-[#C9A96E]" style={{ color: '#8B6F3A', textDecoration: 'underline' }}>Build a bespoke package.</Link>
+            <BookingLink className="underline underline-offset-4 transition-colors hover:text-[#C9A96E]">Book a Strategy Call</BookingLink>
           </p>
 
           <div className="mt-16 rounded-[24px] p-12" style={{ background: 'var(--obsidian-3)', border: '1px solid rgba(232,227,216,0.06)' }}>

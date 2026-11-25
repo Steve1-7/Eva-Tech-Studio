@@ -14,6 +14,7 @@ import {
 } from 'recharts'
 import apiFetch from '@/lib/api'
 import Sidebar from './Sidebar'
+import WhatsAppLink from '@/components/WhatsAppLink'
 
 function StatCard({ title, value, subtitle }: { title: string, value: string, subtitle?: string }) {
   return (
@@ -433,7 +434,7 @@ export default function ClientDashboard() {
         <div className="mt-4">
           <h4 className="font-semibold mb-2" style={{ color: '#E8E3D8' }}>Live Support</h4>
           <div className="flex gap-3 items-center">
-            <a href="https://wa.me/27676283210" target="_blank" rel="noreferrer" className="btn-outline">WhatsApp</a>
+            <WhatsAppLink className="btn-outline">WhatsApp</WhatsAppLink>
             <a href="mailto:support@eva-tech-studio.com" className="btn-primary">Email Support</a>
             <button className="btn-outline">Quick Support Form</button>
           </div>

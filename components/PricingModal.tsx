@@ -30,7 +30,7 @@ export default function PricingModal({ selectedPackage, onClose }:{selectedPacka
   if(success) return (
     <div className="p-6">
       <h3 className="font-semibold text-lg" style={{ color: '#E8E3D8' }}>Thanks — we received your inquiry</h3>
-      <p style={{ color: '#6B6860' }} className="mt-2">We'll review and be in touch within 24 hours.</p>
+      <p style={{ color: '#6B6860' }} className="mt-2">We will review your inquiry and share next steps within 48 hours.</p>
       <div className="mt-4"><button className="btn-primary" onClick={onClose}>Close</button></div>
     </div>
   )
