@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { services } from '@/lib/siteContent'
+import { BOOKING_URL, COMPANY_REGISTRATION_NUMBER, PRIMARY_CTA_LABEL, REGISTERED_ADDRESS } from '@/config/site'
 
 const resourceLinks = [
   ['Case studies', '/case-studies'],
@@ -20,6 +21,8 @@ export default function Footer() {
           </Link>
           <p>Senior engineering for websites, apps, and software that solve real problems.</p>
           <p className="ets-footer-location">Johannesburg, South Africa · Serving clients globally</p>
+          {COMPANY_REGISTRATION_NUMBER && <p className="ets-footer-location">Company registration number: {COMPANY_REGISTRATION_NUMBER}</p>}
+          {REGISTERED_ADDRESS && <p className="ets-footer-location">Registered address: {REGISTERED_ADDRESS}</p>}
         </div>
         <div>
           <h2>Services</h2>
@@ -31,8 +34,9 @@ export default function Footer() {
         </div>
         <div>
           <h2>Company</h2>
+          <Link href="/contact" className="ets-footer-primary-cta">{PRIMARY_CTA_LABEL}</Link>
+          {BOOKING_URL && <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Book a 20-minute call</a>}
           <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
           <Link href="/privacy">Privacy policy</Link>
           <Link href="/terms">Terms</Link>
           <a href="tel:+27676283210">+27 67 628 3210</a>

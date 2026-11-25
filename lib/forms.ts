@@ -4,6 +4,7 @@ type ContactPayload = {
   lastName?: string
   email: string
   phone?: string
+  country?: string
   service?: string
   budget?: string
   timeline?: string
@@ -25,6 +26,7 @@ export async function submitContact(payload: ContactPayload) {
     lastName: payload.lastName?.trim() || '',
     email: (payload.email || '').trim(),
     phone: payload.phone?.trim() || '',
+    country: payload.country?.trim() || '',
     service: payload.service?.trim() || '',
     budget: payload.budget?.trim() || '',
     timeline: payload.timeline?.trim() || '',
@@ -61,6 +63,7 @@ export async function submitContact(payload: ContactPayload) {
         lastName: p.lastName,
         email: p.email,
         phone: p.phone,
+        country: p.country,
         service: p.service,
         budget: p.budget,
         timeline: p.timeline,

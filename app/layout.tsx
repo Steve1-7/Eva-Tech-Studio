@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import GoogleAnalytics from '@/components/site/GoogleAnalytics'
 import ScrollRevealObserver from '@/components/site/ScrollRevealObserver'
+import FloatingContactActions from '@/components/site/FloatingContactActions'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />
+        <FloatingContactActions />
       </body>
     </html>
   )

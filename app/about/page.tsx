@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'About Eva Tech Studio',
@@ -38,7 +39,7 @@ export default function AboutPage() {
       <section className="ets-section">
         <div className="ets-container ets-service-cta">
           <div><p className="ets-eyebrow">Working globally</p><h2>Based in Johannesburg. Built for wherever you are.</h2><p>We work remotely with clients and teams across time zones.</p></div>
-          <Link className="ets-button primary" href="/contact">Talk through a project <span aria-hidden="true">↗</span></Link>
+          <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </div>
       </section>
     </div>

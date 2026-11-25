@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { services } from '@/lib/siteContent'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
 
 const serviceDetails: Record<string, { intro: string; outcomes: string[]; fit: string; approach: string }> = {
   'website-development': {
@@ -75,7 +76,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
           <h1 className="ets-service-title">{service.title}<em>, built with care.</em></h1>
           <p className="ets-lede">{service.description}</p>
           <div className="ets-button-row">
-            <Link href="/contact" className="ets-button primary">Get a project quote <span aria-hidden="true">↗</span></Link>
+            <Link href="/contact" className="ets-button primary">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
             <Link href="/pricing" className="ets-button secondary">View pricing</Link>
           </div>
         </div>
@@ -101,7 +102,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
       <section className="ets-section">
         <div className="ets-container ets-service-cta">
           <div><p className="ets-eyebrow">Start with a clear scope</p><h2>Free technical scoping in 48 hours.</h2><p>Share what you need to change. We’ll come back with questions, risks, and a practical next step.</p></div>
-          <Link className="ets-button primary" href="/contact">Send a brief <span aria-hidden="true">↗</span></Link>
+          <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </div>
       </section>
     </div>

@@ -56,7 +56,6 @@ export default function Page() {
         pricing={pricing}
         faqs={faqs}
         caseStudies={caseStudies}
-        ctaText="Request AI Estimate"
       />
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </>

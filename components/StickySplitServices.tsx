@@ -94,7 +94,7 @@ export default function StickySplitServices() {
               }}
             >
               <h4 className="font-syne text-[0.7rem] font-bold uppercase tracking-[0.12em] mb-5" style={{ color: '#6B6860' }}>
-                What's Included
+                What&apos;s Included
               </h4>
               <ul className="flex flex-col gap-3">
                 {sv.features.map(f => (

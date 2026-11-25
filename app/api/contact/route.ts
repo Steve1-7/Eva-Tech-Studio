@@ -13,6 +13,7 @@ type ContactBody = {
   lastName?: unknown
   email?: unknown
   phone?: unknown
+  country?: unknown
   service?: unknown
   budget?: unknown
   timeline?: unknown
@@ -89,15 +90,16 @@ export async function POST(request: NextRequest) {
   ).replace(/[\r\n]+/g, ' ')
   const email = text(body.email, 254)
   const phone = text(body.phone, 50)
+  const country = text(body.country, 100).replace(/[\r\n]+/g, ' ')
   const service = text(body.service, 120)
   const budget = text(body.budget, 80)
   const timeline = text(body.timeline, 80)
   const message = text(body.message, 5000)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-  if (!name || !email || !service || !budget || !timeline || !message) {
+  if (!name || !email || !message) {
     return NextResponse.json(
-      { success: false, error: 'Name, email, service, budget, timeline, and message are required.' },
+      { success: false, error: 'Name, email, and message are required.' },
       { status: 400 },
     )
   }
@@ -118,7 +120,8 @@ export async function POST(request: NextRequest) {
     <p><strong>Name:</strong> ${escapeHtml(name)}</p>
     <p><strong>Email:</strong> ${escapeHtml(email)}</p>
     <p><strong>Phone:</strong> ${escapeHtml(phone || 'Not provided')}</p>
-    <p><strong>Service:</strong> ${escapeHtml(service)}</p>
+    <p><strong>Country:</strong> ${escapeHtml(country || 'Not provided')}</p>
+    <p><strong>Service:</strong> ${escapeHtml(service || 'Not provided')}</p>
     <p><strong>Budget:</strong> ${escapeHtml(budget)}</p>
     <p><strong>Timeline:</strong> ${escapeHtml(timeline)}</p>
     <p><strong>Message:</strong></p>
@@ -135,9 +138,10 @@ export async function POST(request: NextRequest) {
         `Name: ${name}`,
         `Email: ${email}`,
         `Phone: ${phone || 'Not provided'}`,
-        `Service: ${service}`,
-        `Budget: ${budget}`,
-        `Timeline: ${timeline}`,
+        `Country: ${country || 'Not provided'}`,
+        `Service: ${service || 'Not provided'}`,
+        `Budget: ${budget || 'Not provided'}`,
+        `Timeline: ${timeline || 'Not provided'}`,
         '',
         message,
       ].join('\n'),
@@ -148,7 +152,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'We could not deliver your brief. Please try again.' }, { status: 502 })
     }
 
-    return NextResponse.json({ success: true, message: 'Your brief has been sent. We will be in touch soon.' })
+    try {
+      const autoReply = await resend.emails.send({
+        from: 'Eva Tech Studio <contact@eva-tech-studio.com>',
+        to: [email],
+        subject: 'We received your enquiry',
+        text: `Hi ${name},\n\nThanks for getting in touch with Eva Tech Studio. We have received your enquiry and will review the details. We will reply within 48 hours with a clear first scope, any key questions, and practical next steps. There is no obligation to proceed.\n\nEva Tech Studio`,
+        html: `<p>Hi ${escapeHtml(name)},</p><p>Thanks for getting in touch with Eva Tech Studio. We have received your enquiry and will review the details.</p><p>We will reply within <strong>48 hours</strong> with a clear first scope, any key questions, and practical next steps. There is no obligation to proceed.</p><p>Eva Tech Studio</p>`,
+      })
+      if (autoReply.error) console.error('[CONTACT] Auto-reply email was rejected', autoReply.error)
+    } catch (autoReplyError) {
+      console.error('[CONTACT] Auto-reply email failed', autoReplyError)
+    }
+
+    return NextResponse.json({ success: true, message: 'Your enquiry has been received.' })
   } catch (error) {
     console.error('[CONTACT] Email delivery failed', error)
     return NextResponse.json({ success: false, error: 'We could not deliver your brief. Please try again.' }, { status: 502 })

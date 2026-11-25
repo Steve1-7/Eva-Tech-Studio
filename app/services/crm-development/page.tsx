@@ -51,7 +51,6 @@ export default function Page() {
         process={process}
         pricing={pricing}
         faqs={faqs}
-        ctaText="Build My CRM"
       />
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </>

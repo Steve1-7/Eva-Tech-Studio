@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { blogPosts } from '@/lib/blogContent'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
 
 type Props = { params: { id: string } }
 
@@ -54,8 +55,8 @@ export default function BlogArticlePage({ params }: Props) {
         ))}
         <aside>
           <p className="ets-eyebrow">Talk it through</p>
-          <p>Have a project in mind? Send us the brief and we’ll help you work out a practical next step.</p>
-          <Link className="ets-button primary" href="/contact">Send a brief <span aria-hidden="true">↗</span></Link>
+          <p>Have a project in mind? Get a clear first scope and practical next steps within 48 hours.</p>
+          <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </aside>
       </div>
     </article>

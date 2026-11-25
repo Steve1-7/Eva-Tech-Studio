@@ -51,7 +51,6 @@ export default function Page() {
         process={process}
         pricing={pricing}
         faqs={faqs}
-        ctaText="Build My Store"
       />
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </>

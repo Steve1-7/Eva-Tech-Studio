@@ -108,7 +108,7 @@ export function MarketTimes() {
                     hour: '2-digit',
                     minute: '2-digit',
                   }).format(now)
-                : '--:--'}
+                : 'Local time'}
             </strong>
             <small>{market.label}</small>
           </div>

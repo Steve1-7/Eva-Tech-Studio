@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
 
 type FAQ = { q: string; a: string }
 
@@ -11,8 +12,7 @@ export default function ServiceTemplate({
   process,
   pricing,
   faqs,
-  caseStudies,
-  ctaText
+  caseStudies
 }: {
   title: string
   subtitle?: string
@@ -22,7 +22,6 @@ export default function ServiceTemplate({
   pricing?: { label: string; price?: string; desc?: string }[]
   faqs?: FAQ[]
   caseStudies?: { title: string; href: string }[]
-  ctaText?: string
 }) {
   return (
     <article className="max-w-6xl mx-auto px-6 py-16">
@@ -31,8 +30,8 @@ export default function ServiceTemplate({
         {subtitle && <p className="mt-4 text-lg text-gray-300">{subtitle}</p>}
         {intro && <p className="mt-6 text-base text-gray-300 max-w-3xl">{intro}</p>}
         <div className="mt-8 flex gap-4">
-          <Link href="/contact" className="btn-primary" aria-label={`Contact about ${title}`}>
-            {ctaText || 'Start Project'}
+          <Link href="/contact" className="btn-primary">
+            {PRIMARY_CTA_LABEL}
           </Link>
           <Link href="/pricing" className="btn-outline">See Pricing</Link>
         </div>
@@ -72,7 +71,7 @@ export default function ServiceTemplate({
                 {p.price && <div className="mt-2 text-3xl text-white">{p.price}</div>}
                 {p.desc && <p className="mt-3 text-gray-300">{p.desc}</p>}
                 <div className="mt-6">
-                  <Link href="/contact" className="btn-primary">Get Started</Link>
+                  <Link href="/contact" className="btn-primary">{PRIMARY_CTA_LABEL}</Link>
                 </div>
               </div>
             ))}

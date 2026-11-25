@@ -4,6 +4,9 @@ import CountUp from '@/components/CountUp'
 import SitePricing from '@/components/site/SitePricing'
 import { ChatbotDemo, MarketTimes, TradingBotDemo } from '@/components/site/InteractiveShowcases'
 import { faqs, projects, services, techStack } from '@/lib/siteContent'
+import { blogPosts } from '@/lib/blogContent'
+import { PRIMARY_CTA_LABEL, SECONDARY_CTA_LABEL, SHOW_PROOF_SECTION } from '@/config/site'
+import TestimonialsStrip from '@/components/site/TestimonialsStrip'
 
 export const metadata: Metadata = {
   title: 'Eva Tech Studio | Senior Engineering for Digital Products',
@@ -53,12 +56,6 @@ const reasons = [
   ['Built for scale', 'Start with the right foundation, then extend it without rebuilding by default.'],
 ]
 
-const articleTopics = [
-  ['What does a website actually cost?', 'A practical way to compare scope, build quality, and ongoing costs.'],
-  ['Web app or website: which do you need?', 'Understand the difference before you pay to build the wrong thing.'],
-  ['What to ask before automating a workflow', 'Map the exceptions and risks before connecting business-critical tools.'],
-]
-
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@graph': services.map((service) => ({
@@ -87,8 +84,8 @@ export default function Home() {
             <h1>We build software that <em>earns its keep.</em></h1>
             <p className="ets-lede">Websites, apps, and custom software designed around your business—not a template, trend, or sales pitch.</p>
             <div className="ets-button-row">
-              <Link className="ets-button primary" href="/contact">Get a Free Project Quote <span aria-hidden="true">↗</span></Link>
-              <Link className="ets-button secondary" href="/services">View services <span aria-hidden="true">↓</span></Link>
+              <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
+              <Link className="ets-button secondary" href="/case-studies">{SECONDARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
             </div>
             <div className="ets-hero-stats" aria-label="Studio facts">
               <div><strong><CountUp end={7} /></strong><span>focused services</span></div>
@@ -123,27 +120,29 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="ets-section ets-results">
-        <div className="ets-container">
-          <div className="ets-section-heading">
-            <p className="ets-eyebrow">Results at a glance</p>
-            <h2>Proof, not promises.</h2>
-            <p>We publish client outcomes only when they are verified and approved. These figures are awaiting confirmed data.</p>
+      {SHOW_PROOF_SECTION && (
+        <section className="ets-section ets-results">
+          <div className="ets-container">
+            <div className="ets-section-heading">
+              <p className="ets-eyebrow">Results at a glance</p>
+              <h2>Proof, not promises.</h2>
+              <p>We publish client outcomes only when they are verified and approved. These figures are awaiting confirmed data.</p>
+            </div>
+            <div className="ets-results-grid">
+              {[
+                ['6', 'projects showcased', 'Published project count'],
+                ['Pending', 'uptime', 'Verified monitoring data needed'],
+                ['Pending', 'average load time', 'Field measurement needed'],
+                ['Pending', 'client retention', 'Verified client data needed'],
+              ].map(([value, label, note]) => (
+                <article className="ets-result-card" key={label}>
+                  <strong>{value}</strong><span>{label}</span><small>{note}</small>
+                </article>
+              ))}
+            </div>
           </div>
-          <div className="ets-results-grid">
-            {[
-              ['6', 'projects showcased', 'Published project count'],
-              ['Pending', 'uptime', 'Verified monitoring data needed'],
-              ['Pending', 'average load time', 'Field measurement needed'],
-              ['Pending', 'client retention', 'Verified client data needed'],
-            ].map(([value, label, note]) => (
-              <article className="ets-result-card" key={label}>
-                <strong>{value}</strong><span>{label}</span><small>{note}</small>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="ets-section ets-services" id="services">
         <div className="ets-container">
@@ -168,7 +167,7 @@ export default function Home() {
       <section className="ets-offer-band">
         <div className="ets-container ets-offer-inner">
           <div><p className="ets-eyebrow">Free · no obligation</p><h2>Project scoping and technical audit in 48 hours.</h2><p>Get a clear first assessment, key risks, and a practical next step.</p></div>
-          <Link className="ets-button light" href="/contact">Send us your brief <span aria-hidden="true">↗</span></Link>
+          <Link className="ets-button light" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </div>
       </section>
 
@@ -233,13 +232,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="ets-quote-marquee" aria-label="Client feedback">
-        <p className="ets-eyebrow">Client words</p>
-        <div className="ets-quote-track" aria-live="off">
-          {[1, 2, 3, 4].map((item) => <span key={item}>Client testimonials will appear here once approved <b>✦</b></span>)}
-        </div>
-        <small>No client quotes have been published on this redesign.</small>
-      </section>
+      <TestimonialsStrip testimonials={[]} />
 
       <section className="ets-stack-section">
         <div className="ets-container ets-stack-heading"><p className="ets-eyebrow">Tools we work with</p><span>Chosen for the project, not the trend.</span></div>
@@ -264,8 +257,8 @@ export default function Home() {
             <Link className="ets-text-link" href="/blog">Browse the notes <span aria-hidden="true">↗</span></Link>
           </div>
           <div className="ets-article-grid">
-            {articleTopics.map(([title, description], index) => (
-              <article key={title}><span>0{index + 1} / ENGINEERING NOTES</span><h3>{title}</h3><p>{description}</p><Link href="/blog" className="ets-text-link">Read the blog <span aria-hidden="true">↗</span></Link></article>
+            {blogPosts.slice(0, 3).map((post, index) => (
+              <article key={post.slug}><span>0{index + 1} / {post.category.toUpperCase()}</span><h3>{post.title}</h3><p>{post.excerpt}</p><Link href={`/blog/${post.slug}`} className="ets-text-link">Read article <span aria-hidden="true">↗</span></Link></article>
             ))}
           </div>
         </div>
@@ -295,7 +288,7 @@ export default function Home() {
       <section className="ets-final-cta">
         <div className="ets-container ets-final-cta-inner">
           <div><p className="ets-eyebrow">A good first step</p><h2>Tell us what you want to make possible.</h2><p>We’ll help you work out what to build, what to leave out, and what happens next.</p></div>
-          <Link href="/contact" className="ets-button primary">Let’s talk <span aria-hidden="true">↗</span></Link>
+          <Link href="/contact" className="ets-button primary">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </div>
       </section>
     </div>

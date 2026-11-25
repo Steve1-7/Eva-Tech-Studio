@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import ScopeBriefTool from '@/components/site/ScopeBriefTool'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Free Tools',
@@ -23,7 +24,7 @@ export default function ToolsPage() {
           <ScopeBriefTool />
           <div className="ets-tool-cta">
             <div><p className="ets-eyebrow">Want a senior review?</p><h2>We’ll scope your brief for free.</h2><p>Copy your notes, then paste them into the contact form for a technical assessment in 48 hours.</p></div>
-            <Link className="ets-button primary" href="/contact">Open contact form <span aria-hidden="true">↗</span></Link>
+            <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
       </section>

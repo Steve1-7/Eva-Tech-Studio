@@ -18,7 +18,7 @@ export default function CountUp({
   decimals = 0,
   className = '',
 }: Props) {
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(end)
   const [started, setStarted] = useState(false)
   const ref = useRef<HTMLSpanElement>(null)
 
@@ -40,22 +40,22 @@ export default function CountUp({
   }, [started])
 
   useEffect(() => {
-    if (!started) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setValue(end)
-      return
-    }
+    if (!started || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    setValue(0)
     const startTime = performance.now()
     const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
+    let frame = 0
 
     const tick = (now: number) => {
       const elapsed = now - startTime
       const progress = Math.min(elapsed / duration, 1)
       setValue(parseFloat((easeOut(progress) * end).toFixed(decimals)))
-      if (progress < 1) requestAnimationFrame(tick)
+      if (progress < 1) frame = requestAnimationFrame(tick)
       else setValue(end)
     }
-    requestAnimationFrame(tick)
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
   }, [started, end, duration, decimals])
 
   return (

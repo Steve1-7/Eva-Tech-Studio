@@ -51,7 +51,6 @@ export default function Page() {
         process={process}
         pricing={pricing}
         faqs={faqs}
-        ctaText="Talk SaaS"
       />
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </>

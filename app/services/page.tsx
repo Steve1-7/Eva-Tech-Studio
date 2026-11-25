@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { services } from '@/lib/siteContent'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Services',
@@ -36,7 +37,7 @@ export default function ServicesPage() {
       <section className="ets-final-cta">
         <div className="ets-container ets-final-cta-inner">
           <div><p className="ets-eyebrow">Not sure where to start?</p><h2>Bring us the problem, not a perfect spec.</h2><p>We’ll help turn your idea into a practical scope and next step.</p></div>
-          <Link className="ets-button primary" href="/contact">Get a free project quote <span aria-hidden="true">↗</span></Link>
+          <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </div>
       </section>
     </div>
