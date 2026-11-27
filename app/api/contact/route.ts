@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { getEnquiryRecipients, getResendApiKey, primaryEnquiryRecipient } from '../../../lib/server/enquiry-email'
 
 export const runtime = 'nodejs'
 export const maxDuration = 10
@@ -11,8 +12,6 @@ const requestsByIp = new Map<string, { startedAt: number; count: number }>()
 const resendApiUrl = 'https://api.resend.com/emails'
 const primaryEmailTimeoutMs = 6500
 const autoReplyTimeoutMs = 1500
-const defaultRecipient = 'info@eva-tech-studio.com'
-const recoveryEmail = 'info@eva-tech-studio.com or stevezuluu@gmail.com'
 const contactBodySchema = z.object({
   name: z.string().trim().max(160).optional(),
   firstName: z.string().trim().max(80).optional(),
@@ -182,7 +181,7 @@ function getFallbackMessage(code: ContactFailureCode): string {
     : code === 'config_missing'
       ? 'Email delivery is temporarily unavailable.'
       : 'The email provider could not accept your brief.'
-  return `${reason} We captured it in our server recovery log; to make sure it reaches us, email ${recoveryEmail}.`
+  return `${reason} We captured it in our server recovery log; to make sure it reaches us, email ${primaryEnquiryRecipient}.`
 }
 
 function failureResponse(code: string, error: string, status: number, fallbackLogged = false) {
@@ -232,22 +231,22 @@ export async function POST(request: NextRequest) {
   const budget = body.budget || ''
   const timeline = body.timeline || ''
   const message = body.message
-  const apiKey = process.env.RESEND_EMAIL_RESEND_API_KEY?.trim() || process.env.RESEND_API_KEY?.trim() || ''
+  const apiKey = getResendApiKey()
   const senderDomain = process.env.RESEND_EMAIL_DOMAIN?.trim() || 'eva-tech-studio.com'
-  const recipient = process.env.CONTACT_TO_EMAIL?.trim() || defaultRecipient
+  const recipients = getEnquiryRecipients('contact')
   const sender = `Eva Tech Studio <contact@${senderDomain}>`
   const requestId = randomUUID()
   const submission = { name, email, phone, country, service, budget, timeline, message }
 
   const domainIsValid = /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i.test(senderDomain)
-  const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient)
-  if (!apiKey || !domainIsValid || !emailIsValid) {
+  const recipientsAreValid = recipients.every((recipient) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient))
+  if (!apiKey || !domainIsValid || !recipientsAreValid) {
     const failure: ProviderFailure = {
       statusCode: null,
       providerCode: null,
       message: !apiKey
         ? 'No supported Resend API key variable is configured.'
-        : 'The configured sender domain or contact recipient is invalid.',
+        : 'The configured sender domain or enquiry recipients are invalid.',
     }
     logLeadFallback(requestId, submission, 'config_missing', failure, apiKey)
     return failureResponse('config_missing', getFallbackMessage('config_missing'), 503, true)
@@ -256,7 +255,7 @@ export async function POST(request: NextRequest) {
   const htmlMessage = escapeHtml(message).replace(/\n/g, '<br>')
   const primaryEmail = {
     from: sender,
-    to: [recipient],
+    to: recipients,
     reply_to: email,
     subject: `New project brief from ${name}`,
     text: [

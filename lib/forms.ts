@@ -76,8 +76,8 @@ export async function submitContact(payload: ContactPayload) {
     const data = await res.json().catch(() => null)
     if (!res.ok || !data?.success) {
       const fallbackMessage = res.status === 504
-        ? 'Email delivery timed out. Your details are still here; email info@eva-tech-studio.com or stevezuluu@gmail.com to make sure we receive them.'
-        : 'We could not confirm delivery. Your details are still here; email info@eva-tech-studio.com or stevezuluu@gmail.com to make sure we receive them.'
+        ? 'Email delivery timed out. Your details are still here; email info@eva-tech-studio.com to make sure we receive them.'
+        : 'We could not confirm delivery. Your details are still here; email info@eva-tech-studio.com to make sure we receive them.'
       throw new Error(typeof data?.error === 'string' ? data.error : fallbackMessage)
     }
 

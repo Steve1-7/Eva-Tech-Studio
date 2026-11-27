@@ -1,14 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
+
+vi.mock('server-only', () => ({}))
+
+import { getEnquiryRecipients, primaryEnquiryRecipient } from '../lib/server/enquiry-email'
 import { POST } from '../app/api/contact/route'
 
-const envKeys = ['RESEND_API_KEY', 'RESEND_EMAIL_RESEND_API_KEY', 'RESEND_EMAIL_DOMAIN', 'CONTACT_TO_EMAIL'] as const
+const envKeys = ['RESEND_API_KEY', 'RESEND_EMAIL_RESEND_API_KEY', 'RESEND_EMAIL_DOMAIN'] as const
 const previousEnv = new Map<(typeof envKeys)[number], string | undefined>()
 
 const validPayload = {
   name: 'Endpoint smoke test',
   email: 'contact-smoke-test@example.com',
-  phone: '',
+  phone: '+27 67 628 3210',
   country: 'South Africa',
   service: 'Website Development',
   budget: 'R 5 000–R 15 000',
@@ -30,7 +34,6 @@ beforeEach(() => {
   process.env.RESEND_API_KEY = 'mock-resend-key-for-tests'
   process.env.RESEND_EMAIL_RESEND_API_KEY = 'mock-integration-resend-key-for-tests'
   process.env.RESEND_EMAIL_DOMAIN = 'eva-tech-studio.com'
-  process.env.CONTACT_TO_EMAIL = 'info@eva-tech-studio.com'
 })
 
 afterEach(() => {
@@ -62,8 +65,16 @@ describe('POST /api/contact', () => {
       Authorization: 'Bearer mock-integration-resend-key-for-tests',
     })
     expect(emailRequest.from).toBe('Eva Tech Studio <contact@eva-tech-studio.com>')
-    expect(emailRequest.to).toEqual(['info@eva-tech-studio.com'])
-    expect(emailRequest.text).toContain('Within 2–4 weeks')
+    expect(emailRequest.to).toEqual(getEnquiryRecipients('contact'))
+    expect(emailRequest.to[0]).toBe(primaryEnquiryRecipient)
+    expect(emailRequest.text).toContain('Name: Endpoint smoke test')
+    expect(emailRequest.text).toContain('Email: contact-smoke-test@example.com')
+    expect(emailRequest.text).toContain('Phone: +27 67 628 3210')
+    expect(emailRequest.text).toContain('Country: South Africa')
+    expect(emailRequest.text).toContain('Service: Website Development')
+    expect(emailRequest.text).toContain('Budget: R 5 000–R 15 000')
+    expect(emailRequest.text).toContain('Timeline: Within 2–4 weeks')
+    expect(emailRequest.text).toContain('Automated contact endpoint test payload.')
   })
 
   it('returns a provider error code and logs a recoverable lead without the API key', async () => {
@@ -89,5 +100,6 @@ describe('POST /api/contact', () => {
     expect(loggedText).toContain('Endpoint smoke test')
     expect(loggedText).not.toContain('mock-resend-key-for-tests')
     expect(loggedText).not.toContain('mock-integration-resend-key-for-tests')
+    expect(body.error).not.toContain('gmail')
   })
 })

@@ -17,9 +17,9 @@ Set these Production environment variables:
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | `https://www.eva-tech-studio.com` |
 | `NEXT_PUBLIC_APP_URL` | `https://www.eva-tech-studio.com` |
-| `RESEND_API_KEY` | Server-side Resend API key; the route also accepts the existing integration-provided `RESEND_EMAIL_RESEND_API_KEY` |
+| `RESEND_EMAIL_RESEND_API_KEY` | Preferred server-side Resend API key supplied by the connected integration |
+| `RESEND_API_KEY` | Optional legacy server-side Resend key used only when the integration key is unavailable |
 | `RESEND_EMAIL_DOMAIN` | Optional sender domain supplied by the Resend integration; defaults to `eva-tech-studio.com` and must be a verified plain domain |
-| `CONTACT_TO_EMAIL` | Optional recipient; defaults to `info@eva-tech-studio.com` |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Optional GA4 ID in `G-...` format |
 
 Add the same values to Preview if you want working contact submissions and analytics on preview deployments. Keep private keys server-only; never add a `NEXT_PUBLIC_` prefix to them.
@@ -44,17 +44,17 @@ If Supabase pricing rows differ from these configured defaults, the live Supabas
 
 ## 4. Contact delivery and spam controls
 
-The project brief form sends through `/api/contact` to `CONTACT_TO_EMAIL` (default `info@eva-tech-studio.com`) from `contact@<RESEND_EMAIL_DOMAIN>` (default `contact@eva-tech-studio.com`). The handler validates required fields and optional project details, retains the honeypot and per-IP limit, uses the Node.js runtime, and bounds provider requests to fit the 10-second function deadline. Provider failures return a safe error code and write a structured recovery record to Vercel runtime logs without logging credentials.
+The contact and package-inquiry forms send through `/api/contact`; negotiation requests and human/booking chat requests use their respective server routes. All enquiry recipients are managed centrally in `lib/server/enquiry-email.ts`, with `info@eva-tech-studio.com` first and the temporary backup kept server-side. The backup address is not included in website content or client-facing delivery errors. The contact handler validates project details, retains the honeypot and per-IP limit, uses the Node.js runtime, and bounds provider requests to fit the 10-second function deadline.
 
-The log record is a best-effort fallback, not durable storage. Hobby runtime logs have limited retention; if a delivery error is reported, inspect the logs promptly and use the manual email addresses shown in the form. No database integration or migration is required for this fallback.
+Provider failures return a safe error code and write a structured recovery record to Vercel runtime logs without logging credentials. This is a best-effort fallback, not durable storage; runtime logs have limited retention. No database integration or migration is required for this fallback.
 
 After deployment:
 
-1. Confirm Production has either `RESEND_API_KEY` or the connected Resend integration key `RESEND_EMAIL_RESEND_API_KEY`.
+1. Confirm Production has the connected Resend integration key `RESEND_EMAIL_RESEND_API_KEY`; the legacy `RESEND_API_KEY` is only a fallback.
 2. Confirm `RESEND_EMAIL_DOMAIN` is a plain domain and that its Resend status is verified. The active sender is `contact@<domain>`.
 3. Confirm the domain's SPF and DKIM records in Resend and at the DNS host; don't add duplicate SPF records.
-4. Confirm `CONTACT_TO_EMAIL` is set to the intended inbox, or leave it unset to use `info@eva-tech-studio.com`.
-5. After any environment-variable or DNS changes, redeploy and submit a deliberate test brief; the smoke script requires explicit send flags and is not run automatically.
+4. Review recipient routing in `lib/server/enquiry-email.ts`; keep `info@eva-tech-studio.com` first and remove the temporary secondary recipient there when no longer needed.
+5. After environment-variable or DNS changes, redeploy and submit deliberate test enquiries; provider acceptance can be checked in the response/logs, while mailbox receipt must be confirmed by the recipients.
 6. Confirm the validation response, delivery failure guidance, and honeypot behavior on the deployed `/contact` page.
 
 ## 5. Build and deploy

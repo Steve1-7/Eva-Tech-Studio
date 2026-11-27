@@ -209,7 +209,7 @@ Example environment variables file with:
 
 2. **Hard-coded Email**
    - File: `lib/auth.ts`
-   - Issue: `AUTHORIZED_EMAIL = 'stevezuluu@gmail.com'` hard-coded
+   - Issue: the authorized admin email was hard-coded
    - Impact: Not scalable for production
    - Fix: Move to environment variable
 
