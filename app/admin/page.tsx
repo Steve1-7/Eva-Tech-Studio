@@ -229,7 +229,7 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: 'var(--obsidian)' }}>
+      <div className="min-h-[calc(100svh-16rem)] flex items-center justify-center px-6" style={{ background: 'var(--obsidian)' }}>
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-[2rem] font-semibold mb-2" style={{ color: '#E8E3D8' }}>Admin Dashboard</h1>
