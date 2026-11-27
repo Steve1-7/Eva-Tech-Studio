@@ -21,6 +21,9 @@ interface BlogPost {
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const [isRequestingLogin, setIsRequestingLogin] = useState(false)
+  const [loginMessage, setLoginMessage] = useState('')
   const [email, setEmail] = useState('')
   const [adminEmail, setAdminEmail] = useState('')
   const [posts, setPosts] = useState<BlogPost[]>([])
@@ -63,6 +66,32 @@ export default function AdminDashboard() {
   }
 
   useEffect(() => {
+    let active = true
+
+    const restoreAdminSession = async () => {
+      if (new URLSearchParams(window.location.search).get('auth') === 'failed') {
+        setLoginMessage('That sign-in link could not be verified. Request a new link and try again.')
+      }
+
+      try {
+        const response = await apiFetch('/api/auth/session')
+        const data = await response.json()
+        if (active && data.isAuthenticated) {
+          setIsAuthenticated(true)
+          setAdminEmail(data.email || '')
+        }
+      } catch {
+        if (active) setLoginMessage('Unable to check your admin session. Please try again.')
+      } finally {
+        if (active) setIsCheckingAuth(false)
+      }
+    }
+
+    void restoreAdminSession()
+    return () => { active = false }
+  }, [])
+
+  useEffect(() => {
     if (isAuthenticated && adminEmail) {
       loadPosts()
     }
@@ -70,6 +99,9 @@ export default function AdminDashboard() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsRequestingLogin(true)
+    setLoginMessage('')
+
     try {
       const res = await apiFetch('/api/auth/login', {
         method: 'POST',
@@ -77,20 +109,26 @@ export default function AdminDashboard() {
         body: JSON.stringify({ email })
       })
       const data = await res.json()
-      if (data.success) {
-        setIsAuthenticated(true)
-        setAdminEmail(email)
-      } else {
-        alert('Unauthorized access')
-      }
-    } catch (error) {
-      alert('Login failed. Please try again.')
+      setLoginMessage(res.ok
+        ? data.message || 'If this address is authorized, a sign-in link is on its way.'
+        : data.error || 'Could not request a sign-in link. Please try again.')
+    } catch {
+      setLoginMessage('Could not request a sign-in link. Please try again.')
+    } finally {
+      setIsRequestingLogin(false)
     }
   }
 
-  const handleLogout = () => {
-    setIsAuthenticated(false)
-    setEmail('')
+  const handleLogout = async () => {
+    try {
+      await apiFetch('/api/auth/session', { method: 'DELETE' })
+    } finally {
+      setIsAuthenticated(false)
+      setAdminEmail('')
+      setEmail('')
+      setPosts([])
+      setLoginMessage('')
+    }
   }
 
   const handleCreatePost = () => {
@@ -181,21 +219,31 @@ export default function AdminDashboard() {
     }
   }
 
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: 'var(--obsidian)', color: '#B8B2A8' }}>
+        <p role="status">Checking admin access…</p>
+      </div>
+    )
+  }
+
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: 'var(--obsidian)' }}>
+      <div className="min-h-[calc(100svh-16rem)] flex items-center justify-center px-6" style={{ background: 'var(--obsidian)' }}>
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-[2rem] font-semibold mb-2" style={{ color: '#E8E3D8' }}>Admin Dashboard</h1>
-            <p style={{ color: '#6B6860' }}>Enter your email to access</p>
+            <p style={{ color: '#6B6860' }}>We&apos;ll email you a secure sign-in link.</p>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-[0.72rem] font-bold uppercase tracking-[0.08em] mb-2" style={{ color: '#6B6860' }}>
+              <label htmlFor="admin-email" className="block text-[0.72rem] font-bold uppercase tracking-[0.08em] mb-2" style={{ color: '#6B6860' }}>
                 Email
               </label>
               <input
+                id="admin-email"
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
@@ -203,8 +251,9 @@ export default function AdminDashboard() {
                 required
               />
             </div>
-            <button type="submit" className="btn-primary w-full py-3">
-              Access Dashboard
+            {loginMessage && <p className="text-sm" role="status" aria-live="polite" style={{ color: '#B8B2A8' }}>{loginMessage}</p>}
+            <button type="submit" className="btn-primary w-full py-3 disabled:opacity-50" disabled={isRequestingLogin}>
+              {isRequestingLogin ? 'Sending link…' : 'Email me a sign-in link'}
             </button>
           </form>
         </div>

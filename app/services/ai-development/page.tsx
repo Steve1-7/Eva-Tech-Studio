@@ -1,13 +1,13 @@
 import React from 'react'
 import ServiceTemplate from '@/components/ServiceTemplate'
-import { canonicalUrl } from '@/lib/metadata'
-import { ogUrl } from '@/lib/og'
+import { canonicalUrl, createPageMetadata } from '@/lib/metadata'
 
-export const metadata = {
-  title: 'AI Development — Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'AI Development Services',
   description: 'End-to-end AI development services: custom models, pipelines, MLOps, and production integrations.',
-  openGraph: { title: 'AI Development — Eva Tech Studio', description: 'End-to-end AI development services', url: canonicalUrl('/services/ai-development'), image: ogUrl('AI Development','End-to-end AI development services: custom models, pipelines, MLOps, and production integrations.') }
-}
+  path: '/services/ai-development',
+})
+
 
 export default function Page() {
   const benefits = [
@@ -49,6 +49,7 @@ export default function Page() {
     <>
       <ServiceTemplate
         title="AI Development"
+  canonicalPath="/services/ai-development"
         subtitle="Custom AI solutions engineered for production"
         intro="From research to production, we build reliable, explainable AI systems that drive measurable business outcomes."
         benefits={benefits}
@@ -56,7 +57,6 @@ export default function Page() {
         pricing={pricing}
         faqs={faqs}
         caseStudies={caseStudies}
-        ctaText="Request AI Estimate"
       />
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </>

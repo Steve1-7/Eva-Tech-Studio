@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import ThemeToggle from '@/components/site/ThemeToggle'
+import { AVAILABILITY_LINE, PRIMARY_CTA_LABEL } from '@/config/site'
 
 const links = [
   { href: '/services', label: 'Services' },
@@ -24,10 +25,10 @@ export default function Navbar() {
       <div className="ets-site-header">
         <div className="ets-topbar">
           <div className="ets-topbar-inner">
-            <span><i className="ets-status-dot" /> Ask about current availability</span>
+            <span><i className="ets-status-dot" /> {AVAILABILITY_LINE}</span>
             <span>Mon–Fri · 8am–6pm SAST</span>
             <span>Johannesburg · Working globally</span>
-            <Link href="/contact">Send us a brief <span aria-hidden="true">↗</span></Link>
+            <Link href="/contact">Contact <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
       </div>
@@ -48,12 +49,12 @@ export default function Navbar() {
           ))}
           <div className="ets-mobile-nav-tools">
             <ThemeToggle />
-            <Link className="ets-button primary" href="/contact" onClick={() => setMenuOpen(false)}>Let’s Talk</Link>
+            <Link className="ets-button primary" href="/contact" onClick={() => setMenuOpen(false)}>{PRIMARY_CTA_LABEL}</Link>
           </div>
         </div>
         <div className="ets-nav-actions">
           <ThemeToggle />
-          <Link className="ets-button primary" href="/contact">Let’s Talk <span aria-hidden="true">↗</span></Link>
+          <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </div>
         <div className="ets-mobile-actions">
           <ThemeToggle />

@@ -1,22 +1,22 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import AIAuditWidget from '@/components/AIAuditWidget'
 
-export const metadata: Metadata = {
-  title: 'AI Growth Audit — Eva-Tech-Studio',
-  description: 'Generate an AI-powered growth audit for your website, audience, and conversion funnel.',
-  keywords: ['AI audit', 'growth audit', 'digital audit', 'AI tools', 'business audit'],
-  openGraph: {
-    title: 'AI Growth Audit — Eva-Tech-Studio',
+export const metadata = {
+  ...createPageMetadata({
+    title: 'AI Website and Growth Audit',
     description: 'Generate an AI-powered growth audit for your website, audience, and conversion funnel.',
-    type: 'website',
-  },
+    path: '/ai-audit',
+  }),
+  keywords: ['AI audit', 'growth audit', 'digital audit', 'AI tools', 'business audit'],
 }
 
 export default function AIAuditPage() {
   return (
     <main className="min-h-screen pb-[100px] pt-[180px] px-6 md:px-[60px]" style={{ background: 'var(--obsidian)' }}>
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'AI tools', path: '/ai' }, { name: 'Growth Audit', path: '/ai-audit' }]} />
       <div className="max-w-[1040px] mx-auto">
         <ScrollReveal>
           <SectionLabel>AI Audit</SectionLabel>

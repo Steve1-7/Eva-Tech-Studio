@@ -5,6 +5,10 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import GoogleAnalytics from '@/components/site/GoogleAnalytics'
 import ScrollRevealObserver from '@/components/site/ScrollRevealObserver'
+import FloatingContactActions from '@/components/site/FloatingContactActions'
+import MarketSuggestionBanner from '@/components/site/MarketSuggestionBanner'
+import { JsonLd } from '@/components/site/JsonLd'
+import { canonicalUrl } from '@/lib/metadata'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -29,32 +33,14 @@ const syne = Syne({
 
 const organizationSchema = {
   '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      name: 'Eva Tech Studio',
-      url: 'https://www.eva-tech-studio.com',
-      email: 'info@eva-tech-studio.com',
-      telephone: '+27676283210',
-      sameAs: [
-        'https://www.linkedin.com/company/eva-tech-studio',
-        'https://www.tiktok.com/@evatechstudio',
-      ],
-    },
-    {
-      '@type': 'LocalBusiness',
-      name: 'Eva Tech Studio',
-      url: 'https://www.eva-tech-studio.com',
-      email: 'info@eva-tech-studio.com',
-      telephone: '+27676283210',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Johannesburg',
-        addressCountry: 'ZA',
-      },
-      areaServed: 'Worldwide',
-      openingHours: 'Mo-Fr 08:00-18:00',
-    },
+  '@type': 'Organization',
+  name: 'Eva Tech Studio',
+  url: canonicalUrl('/'),
+  logo: canonicalUrl('/logo5.webp'),
+  email: 'info@eva-tech-studio.com',
+  sameAs: [
+    'https://www.linkedin.com/company/eva-tech-studio',
+    'https://www.tiktok.com/@evatechstudio',
   ],
 }
 
@@ -92,12 +78,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable} ${syne.variable}`}>
       <body>
         <a className="ets-skip-link" href="#main-content">Skip to content</a>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <JsonLd data={organizationSchema} />
         <GoogleAnalytics />
         <ScrollRevealObserver />
         <Navbar />
+        <MarketSuggestionBanner />
         <main id="main-content">{children}</main>
         <Footer />
+        <FloatingContactActions />
       </body>
     </html>
   )

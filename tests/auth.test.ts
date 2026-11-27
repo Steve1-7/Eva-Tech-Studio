@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getSessionFromRequest } from '../lib/auth'
+import { getSessionFromRequest, isCurrentAdminSessionToken } from '../lib/auth'
 
 function makeReq(cookieHeader: string | null) {
   return {
@@ -8,6 +8,13 @@ function makeReq(cookieHeader: string | null) {
     }
   } as any
 }
+
+describe('isCurrentAdminSessionToken', () => {
+  it('accepts only the versioned token format', () => {
+    expect(isCurrentAdminSessionToken('v2.random-token')).toBe(true)
+    expect(isCurrentAdminSessionToken('legacy-token')).toBe(false)
+  })
+})
 
 describe('getSessionFromRequest', () => {
   it('returns null when no cookie header', () => {

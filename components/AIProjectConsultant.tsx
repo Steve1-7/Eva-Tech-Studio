@@ -173,7 +173,7 @@ export default function AIProjectConsultant() {
 
         <div className="mt-6 p-4 border rounded bg-gray-800">
           <h4 className="font-semibold mb-2">Request a Consultation</h4>
-          <p className="text-sm text-gray-400 mb-3">Leave your contact and we'll follow up with a formal proposal.</p>
+          <p className="text-sm text-gray-400 mb-3">Leave your contact and we&apos;ll follow up with a formal proposal.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input placeholder="Full name" value={lead.fullName} onChange={(e) => setLead({ ...lead, fullName: e.target.value })} className="form-input" />
             <input placeholder="Email" value={lead.email} onChange={(e) => setLead({ ...lead, email: e.target.value })} className="form-input" />

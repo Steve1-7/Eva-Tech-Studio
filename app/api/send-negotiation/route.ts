@@ -1,19 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { getEnquiryRecipients, getResendApiKey } from '../../../lib/server/enquiry-email'
 
-// Initialize Resend with API key from environment
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
-
-const RECIPIENT_EMAILS = [
-  'info@eva-tech-studio.com',
-  'support@eva-tech-studio.com',
-  'sales@eva-tech-studio.com',
-  'marketing@eva-tech-studio.com'
-]
 const FROM_EMAIL = 'Eva-Tech-Studio <quotes@eva-tech-studio.com>'
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
+  const apiKey = getResendApiKey()
+  const resend = apiKey ? new Resend(apiKey) : null
 
   try {
     const { name, email, budget, timeline, message, quoteResult, services, tier, businessName } = await request.json()
@@ -60,7 +54,7 @@ export async function POST(request: NextRequest) {
       try {
         const emailResult = await resend.emails.send({
           from: FROM_EMAIL,
-          to: RECIPIENT_EMAILS,
+          to: getEnquiryRecipients('negotiation'),
           subject: `💬 Negotiation Request from ${businessName || name}`,
           html: `
             <!DOCTYPE html>

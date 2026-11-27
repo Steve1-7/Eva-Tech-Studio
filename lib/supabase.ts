@@ -13,22 +13,34 @@ if (supabaseUrl && supabaseAnonKey) {
 	supabaseAdmin = supabaseServiceRole ? createClient(supabaseUrl, supabaseServiceRole) : createClient(supabaseUrl, supabaseAnonKey)
 } else {
 	// Provide a safe stub for build-time so Next.js won't fail when env vars are missing.
-	const noopQuery = () => ({
-		select: async () => ({ data: null, error: null }),
-		insert: async () => ({ data: null, error: null }),
-		update: async () => ({ data: null, error: null }),
-		delete: async () => ({ data: null, error: null }),
-		upsert: async () => ({ data: null, error: null }),
-		eq: () => noopQuery(),
-		order: () => noopQuery(),
-		limit: () => noopQuery(),
-		match: () => noopQuery(),
-		single: async () => ({ data: null, error: null }),
-	})
+	const noopQuery = (): any => {
+		const result = { data: null, error: null }
+		const query: any = {}
+		const chain = () => query
+
+		query.select = chain
+		query.insert = chain
+		query.update = chain
+		query.delete = chain
+		query.upsert = chain
+		query.eq = chain
+		query.gt = chain
+		query.order = chain
+		query.limit = chain
+		query.match = chain
+		query.single = async () => result
+		query.maybeSingle = async () => result
+		query.then = (resolve: (value: typeof result) => unknown, reject: (reason: unknown) => unknown) => Promise.resolve(result).then(resolve, reject)
+
+		return query
+	}
 
 	const stub = {
 		from: () => noopQuery(),
-		auth: { signInWithOtp: async () => ({}) },
+		auth: {
+			signInWithOtp: async () => ({ error: null }),
+			getUser: async () => ({ data: { user: null }, error: null }),
+		},
 		// allow other chained calls without breaking builds
 		rpc: async () => ({ data: null, error: null }),
 	}

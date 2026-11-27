@@ -6,6 +6,7 @@ import Confetti from './Confetti'
 import { downloadPDF } from '@/lib/pdf-export'
 import { submitContact } from '@/lib/forms'
 import { apiFetch } from '@/lib/api'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
 
 interface AuditData {
   url: string
@@ -327,7 +328,7 @@ export default function AIAuditWidget() {
                     <p className="text-[0.72rem] text-center tracking-[0.04em]" style={{ color: '#3A3830' }}>Instant when available — otherwise request a manual audit via email</p>
                     {manualSuccess && (
                       <div className="mt-3 p-3 rounded-[10px]" style={{ background: 'rgba(201,169,110,0.08)', color: '#C9A96E' }}>
-                        Manual audit request sent. We'll email you within 24 hours.
+                        Manual audit request sent. We&apos;ll email you within 24 hours.
                       </div>
                     )}
                     <div className="mt-3 flex flex-col sm:flex-row gap-2 justify-center">
@@ -419,7 +420,7 @@ export default function AIAuditWidget() {
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href="/contact" className="btn-primary flex-1 text-center text-[0.86rem] py-4">
-                    Book a Full Strategy Session →
+                    {PRIMARY_CTA_LABEL} →
                   </Link>
                   <button
                     onClick={handleExportAuditPDF}

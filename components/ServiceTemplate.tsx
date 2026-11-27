@@ -1,20 +1,23 @@
 import React from 'react'
 import Link from 'next/link'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
+import { BreadcrumbJsonLd, JsonLd } from '@/components/site/JsonLd'
 
 type FAQ = { q: string; a: string }
 
 export default function ServiceTemplate({
   title,
+  canonicalPath,
   subtitle,
   intro,
   benefits,
   process,
   pricing,
   faqs,
-  caseStudies,
-  ctaText
+  caseStudies
 }: {
   title: string
+  canonicalPath: string
   subtitle?: string
   intro?: string
   benefits: string[]
@@ -22,17 +25,30 @@ export default function ServiceTemplate({
   pricing?: { label: string; price?: string; desc?: string }[]
   faqs?: FAQ[]
   caseStudies?: { title: string; href: string }[]
-  ctaText?: string
 }) {
+  const faqSchema = faqs?.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.q,
+          acceptedAnswer: { '@type': 'Answer', text: faq.a },
+        })),
+      }
+    : null
+
   return (
     <article className="max-w-6xl mx-auto px-6 py-16">
+      {faqSchema && <JsonLd data={faqSchema} />}
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }, { name: title, path: canonicalPath }]} />
       <header className="mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-white">{title}</h1>
         {subtitle && <p className="mt-4 text-lg text-gray-300">{subtitle}</p>}
         {intro && <p className="mt-6 text-base text-gray-300 max-w-3xl">{intro}</p>}
         <div className="mt-8 flex gap-4">
-          <Link href="/contact" className="btn-primary" aria-label={`Contact about ${title}`}>
-            {ctaText || 'Start Project'}
+          <Link href="/contact" className="btn-primary">
+            {PRIMARY_CTA_LABEL}
           </Link>
           <Link href="/pricing" className="btn-outline">See Pricing</Link>
         </div>
@@ -69,10 +85,11 @@ export default function ServiceTemplate({
             {pricing.map((p, i) => (
               <div key={i} className="card p-6 glass">
                 <div className="text-xl font-semibold text-white">{p.label}</div>
-                {p.price && <div className="mt-2 text-3xl text-white">{p.price}</div>}
+                <div className="mt-2 text-2xl text-white">Request a quote</div>
                 {p.desc && <p className="mt-3 text-gray-300">{p.desc}</p>}
+                <p className="mt-3 text-sm text-gray-400">Scope and final price are confirmed in a written proposal.</p>
                 <div className="mt-6">
-                  <Link href="/contact" className="btn-primary">Get Started</Link>
+                  <Link href="/contact" className="btn-primary">{PRIMARY_CTA_LABEL}</Link>
                 </div>
               </div>
             ))}

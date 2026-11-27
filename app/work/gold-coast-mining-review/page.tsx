@@ -1,14 +1,28 @@
 import Button from '../../../components/Button'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd, JsonLd } from '@/components/site/JsonLd'
 import CaseStudyDownload from '../../../components/CaseStudyDownload'
 
-export const metadata = {
-  title: 'Gold Coast Mining Review — Case Study',
-  description: 'Case study: Gold Coast Mining Review — Mining news & advertising platform',
-}
+export const metadata = createPageMetadata({
+  title: 'Gold Coast Mining Review Case Study',
+  description: 'Gold Coast Mining Review publishing platform for mining news, magazines, and advertising.',
+  path: '/work/gold-coast-mining-review',
+  type: 'article',
+})
 
 export default function Page() {
   return (
     <main className="max-w-6xl mx-auto py-16 px-6">
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        name: 'Gold Coast Mining Review case study',
+        description: 'A publishing platform with editorial workflows, magazine downloads, advertising placements, and search foundations.',
+        url: 'https://www.eva-tech-studio.com/work/gold-coast-mining-review',
+        creator: { '@type': 'Organization', name: 'Eva Tech Studio' },
+        sameAs: 'https://www.goldcoastminingreview.com',
+      }} />
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies' }, { name: 'Gold Coast Mining Review', path: '/work/gold-coast-mining-review' }]} />
       <header className="mb-12">
         <h1 className="text-4xl font-bold mb-4">Gold Coast Mining Review</h1>
         <p className="text-gray-600">Mining News & Advertising Platform — Website, CMS, SEO, Advertising</p>
@@ -76,15 +90,7 @@ export default function Page() {
         </ul>
       </section>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Screenshots</h2>
-        <p className="text-gray-700 mb-4">Placeholder images — add production screenshots to public/portfolio/goldcoast/.</p>
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="h-40 bg-gray-100 rounded" />
-          <div className="h-40 bg-gray-100 rounded" />
-          <div className="h-40 bg-gray-100 rounded" />
-        </div>
-      </section>
+      {/* TODO(content): Add approved production screenshots when the source assets are provided. */}
 
       <section>
         <h2 className="text-2xl font-semibold mb-4">Results Achieved</h2>

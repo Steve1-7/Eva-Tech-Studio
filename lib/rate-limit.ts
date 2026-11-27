@@ -121,6 +121,11 @@ export const aiConsultantLimiter = new RateLimiter({
   maxRequests: 5 // 5 consultant requests per hour per IP
 })
 
+export const adminLoginLimiter = new RateLimiter({
+  windowMs: 3600000,
+  maxRequests: 5
+})
+
 /**
  * Express/Next.js compatible rate limit check
  */

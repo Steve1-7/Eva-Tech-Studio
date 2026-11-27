@@ -4,6 +4,7 @@ type ContactPayload = {
   lastName?: string
   email: string
   phone?: string
+  country?: string
   service?: string
   budget?: string
   timeline?: string
@@ -25,6 +26,7 @@ export async function submitContact(payload: ContactPayload) {
     lastName: payload.lastName?.trim() || '',
     email: (payload.email || '').trim(),
     phone: payload.phone?.trim() || '',
+    country: payload.country?.trim() || '',
     service: payload.service?.trim() || '',
     budget: payload.budget?.trim() || '',
     timeline: payload.timeline?.trim() || '',
@@ -61,6 +63,7 @@ export async function submitContact(payload: ContactPayload) {
         lastName: p.lastName,
         email: p.email,
         phone: p.phone,
+        country: p.country,
         service: p.service,
         budget: p.budget,
         timeline: p.timeline,
@@ -70,9 +73,12 @@ export async function submitContact(payload: ContactPayload) {
       credentials: 'same-origin',
     })
 
-    const data = await res.json()
-    if (!res.ok || !data.success) {
-      throw new Error(data.error || data.message || 'Submission failed')
+    const data = await res.json().catch(() => null)
+    if (!res.ok || !data?.success) {
+      const fallbackMessage = res.status === 504
+        ? 'Email delivery timed out. Your details are still here; email info@eva-tech-studio.com to make sure we receive them.'
+        : 'We could not confirm delivery. Your details are still here; email info@eva-tech-studio.com to make sure we receive them.'
+      throw new Error(typeof data?.error === 'string' ? data.error : fallbackMessage)
     }
 
     return data

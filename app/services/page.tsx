@@ -1,16 +1,19 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { services } from '@/lib/siteContent'
+import { PRIMARY_CTA_LABEL } from '@/config/site'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Services',
+export const metadata = createPageMetadata({
+  title: 'Software and Website Development Services',
   description: 'Website, app, software, chatbot, trading-system, and automation engineering from Eva Tech Studio.',
-  alternates: { canonical: '/services' },
-}
+  path: '/services',
+})
 
 export default function ServicesPage() {
   return (
     <div className="ets-page">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
           <p className="ets-eyebrow">What we do</p>
@@ -36,7 +39,7 @@ export default function ServicesPage() {
       <section className="ets-final-cta">
         <div className="ets-container ets-final-cta-inner">
           <div><p className="ets-eyebrow">Not sure where to start?</p><h2>Bring us the problem, not a perfect spec.</h2><p>We’ll help turn your idea into a practical scope and next step.</p></div>
-          <Link className="ets-button primary" href="/contact">Get a free project quote <span aria-hidden="true">↗</span></Link>
+          <Link className="ets-button primary" href="/contact">{PRIMARY_CTA_LABEL} <span aria-hidden="true">↗</span></Link>
         </div>
       </section>
     </div>

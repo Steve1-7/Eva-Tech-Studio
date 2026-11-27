@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
 import ServiceDetail from '@/components/site/ServiceDetail'
+import { createPageMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-  title: 'AI Chatbot Development',
+export const metadata = createPageMetadata({
+  title: 'AI Chatbot Development for Support',
   description: 'Useful AI chat experiences with approved knowledge, clear fallbacks, and human escalation.',
-  alternates: { canonical: '/services/ai-chatbots' },
-}
+  path: '/services/ai-chatbots',
+})
 
 export default function AiChatbotsPage() {
   return <ServiceDetail slug="ai-chatbots" />

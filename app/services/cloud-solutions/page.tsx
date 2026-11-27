@@ -1,13 +1,13 @@
 import React from 'react'
 import ServiceTemplate from '@/components/ServiceTemplate'
-import { canonicalUrl } from '@/lib/metadata'
-import { ogUrl } from '@/lib/og'
+import { canonicalUrl, createPageMetadata } from '@/lib/metadata'
 
-export const metadata = {
-  title: 'Cloud Solutions — Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'Cloud Architecture and Migration Services',
   description: 'Cloud architecture, migrations, and cost optimisation for resilient applications.',
-  openGraph: { title: 'Cloud Solutions — Eva Tech Studio', description: 'Cloud solutions', url: canonicalUrl('/services/cloud-solutions'), image: ogUrl('Cloud Solutions — Eva Tech Studio','Cloud architecture, migrations, and cost optimisation for resilient applications.') }
-}
+  path: '/services/cloud-solutions',
+})
+
 
 export default function Page() {
   const benefits = [
@@ -45,13 +45,13 @@ export default function Page() {
     <>
       <ServiceTemplate
         title="Cloud Solutions"
+  canonicalPath="/services/cloud-solutions"
         subtitle="Cloud architecture and migrations"
         intro="We design cloud platforms for resilience, cost efficiency and operational simplicity."
         benefits={benefits}
         process={process}
         pricing={pricing}
         faqs={faqs}
-        ctaText="Plan My Cloud"
       />
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </>

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { generateCSRFToken, needsCSRFProtection, extractCSRFToken, validateCSRFToken } from '@/lib/csrf'
+import { getMarketSuggestion } from '@/config/markets'
 
 /**
  * Security Headers Middleware
@@ -20,6 +21,24 @@ export function middleware(request: NextRequest) {
     }
   } catch (e) {
     // ignore normalization errors
+  }
+
+  if (!request.nextUrl.pathname.startsWith('/api/')
+    && !request.cookies.has('ets-market-suggestion')
+    && !request.cookies.has('ets-market-dismissed')) {
+    const market = getMarketSuggestion(
+      request.headers.get('x-vercel-ip-country'),
+      request.headers.get('accept-language'),
+    )
+    if (market) {
+      response.cookies.set('ets-market-suggestion', market, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 30,
+      })
+    }
   }
 
   // ════════════════════════════════════════════════════════════

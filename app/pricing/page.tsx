@@ -1,21 +1,23 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import SitePricing from '@/components/site/SitePricing'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Pricing',
-  description: 'Eva Tech Studio launch pricing for websites, applications, software, chatbots, trading systems, automation, and maintenance.',
-  alternates: { canonical: '/pricing' },
-}
+export const metadata = createPageMetadata({
+  title: 'Service Pricing and Project Quotes',
+  description: 'Explore service-level pricing information and request a written project quote from Eva Tech Studio.',
+  path: '/pricing',
+})
 
 export default function PricingPage() {
   return (
     <div className="ets-page">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Pricing', path: '/pricing' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
-          <p className="ets-eyebrow">Limited-time launch offer</p>
-          <h1>Clear pricing. <em>Scope agreed first.</em></h1>
-          <p className="ets-lede">Launch prices are calculated from our current rates. The three monthly tiers are shared across services; each project is scoped in writing before work starts, so you know what is included.</p>
+          <p className="ets-eyebrow">Service pricing</p>
+          <h1>Clear scope. <em>Written quotes.</em></h1>
+          <p className="ets-lede">Each service has Starter, Business, and Custom scope options. Prices and package details are published only after they are confirmed; until then, request a quote for your project.</p>
         </div>
       </section>
       <section className="ets-section ets-home-pricing">

@@ -1,42 +1,51 @@
 "use client"
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createClient as createSupabaseBrowserClient } from '@/lib/supabase/client'
 
 export default function AuthCallbackPage() {
   const router = useRouter()
 
   useEffect(() => {
     let mounted = true
-    ;(async () => {
+
+    const completeAdminSignIn = async () => {
+      let supabase: ReturnType<typeof createSupabaseBrowserClient> | null = null
+
       try {
-        // supabase.auth.getSessionFromUrl may not be available in this client version.
-        // Parse the URL fragment (hash) that contains the magic-link tokens and set the session.
-        const hash = window.location.hash || ''
-        const params = new URLSearchParams(hash.replace(/^#/, ''))
-        const access_token = params.get('access_token')
-        const refresh_token = params.get('refresh_token')
+        supabase = createSupabaseBrowserClient()
+        const callbackUrl = new URL(window.location.href)
+        const code = callbackUrl.searchParams.get('code')
+        window.history.replaceState(null, '', callbackUrl.pathname)
+        if (!code) throw new Error('The sign-in link did not contain an authorization code.')
 
-        if (access_token) {
-          // Set the session so supabase client can use it
-          await supabase.auth.setSession({ access_token, refresh_token: refresh_token ?? '' })
-        }
+        const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+        if (error || !data.session) throw new Error('Supabase could not verify the sign-in link.')
 
-        if (!mounted) return
-        router.replace('/')
-      } catch (e) {
-        console.error('[auth/callback] error', e)
-        router.replace('/')
+        const response = await fetch('/api/auth/session', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accessToken: data.session.access_token }),
+        })
+        if (!response.ok) throw new Error('The account is not authorized for the admin dashboard.')
+
+        await supabase.auth.signOut().catch(() => undefined)
+        if (mounted) router.replace('/admin')
+      } catch (error) {
+        console.error('[auth/callback] Admin sign-in verification failed', error)
+        if (supabase) await supabase.auth.signOut().catch(() => undefined)
+        if (mounted) router.replace('/admin?auth=failed')
       }
-    })()
+    }
 
+    void completeAdminSignIn()
     return () => { mounted = false }
   }, [router])
 
   return (
-    <div className="p-8">
-      <div className="font-semibold">Signing you in…</div>
-      <div className="text-sm text-muted">If you are not redirected, return to the portal and try again.</div>
-    </div>
+    <main className="min-h-screen flex items-center justify-center p-8" style={{ background: 'var(--obsidian)', color: '#B8B2A8' }}>
+      <p role="status">Verifying your sign-in link…</p>
+    </main>
   )
 }

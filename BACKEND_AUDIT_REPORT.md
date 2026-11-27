@@ -121,7 +121,7 @@ The current schema is missing tables for:
 
 #### Issue 1: Hard-coded Authorized Email
 ```
-const AUTHORIZED_EMAIL = 'stevezuluu@gmail.com'
+const AUTHORIZED_EMAIL = '[redacted admin email]'
 ```
 - **Risk:** Single point of access, not production-scalable
 - **Fix:** Move to environment variable

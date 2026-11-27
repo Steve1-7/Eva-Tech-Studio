@@ -1,14 +1,15 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import SectionLabel from '@/components/SectionLabel'
 import ScrollReveal from '@/components/ScrollReveal'
 import MagneticButton from '@/components/MagneticButton'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Terms of Service | Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'Terms of Service',
   description: 'The terms and conditions governing your use of our website and services.',
-  alternates: { canonical: '/terms' },
-}
+  path: '/terms',
+})
 
 const sections = [
   {
@@ -68,6 +69,7 @@ const sections = [
 export default function TermsPage() {
   return (
     <div className="ets-page ets-legal">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Terms of Service', path: '/terms' }]} />
       {/* Hero */}
       <section className="pt-[180px] pb-[80px] px-6 md:px-[60px] relative overflow-hidden" style={{ background: 'var(--obsidian)' }}>
         <div className="aurora-bg" style={{ opacity: 0.25 }}>

@@ -1,21 +1,23 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { projects } from '@/lib/siteContent'
+import { createPageMetadata } from '@/lib/metadata'
+import { BreadcrumbJsonLd } from '@/components/site/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Case Studies',
+export const metadata = createPageMetadata({
+  title: 'Software and Website Case Studies',
   description: 'Selected websites, applications, and software projects by Eva Tech Studio.',
-  alternates: { canonical: '/case-studies' },
-}
+  path: '/case-studies',
+})
 
 export default function CaseStudiesPage() {
   return (
     <div className="ets-page">
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies' }]} />
       <section className="ets-section ets-hero">
         <div className="ets-container">
           <p className="ets-eyebrow">Selected work</p>
           <h1>Built for <em>people who use it.</em></h1>
-          <p className="ets-lede">A selection of live products and platforms. We share what was built, not unverified performance claims.</p>
+          <p className="ets-lede">A selection of products and platforms. Demo links are labelled, and unverified performance claims are left out.</p>
         </div>
       </section>
       <section className="ets-section ets-projects">
@@ -34,7 +36,7 @@ export default function CaseStudiesPage() {
                   rel={project.href.startsWith('http') ? 'noreferrer' : undefined}
                   className="ets-text-link"
                 >
-                  {project.href.startsWith('http') ? 'Visit project' : 'Read project details'} <span aria-hidden="true">↗</span>
+                  Read case study <span aria-hidden="true">↗</span>
                 </Link>
               </div>
             </article>

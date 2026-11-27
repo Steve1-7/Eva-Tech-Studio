@@ -45,7 +45,7 @@ export function validateSession(token: string): boolean {
 
 **Current Code (INSECURE):**
 ```typescript
-const AUTHORIZED_EMAIL = 'stevezuluu@gmail.com'
+const AUTHORIZED_EMAIL = '[redacted admin email]'
 ```
 
 **Fix:**

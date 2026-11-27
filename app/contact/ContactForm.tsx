@@ -1,9 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import Link from 'next/link'
 import { submitContact } from '@/lib/forms'
+import {
+  DEFAULT_BUDGET_CURRENCY,
+  getBudgetOptionsForCurrency,
+  isBudgetCurrency,
+  SUPPORTED_CURRENCIES,
+  type BudgetCurrency,
+} from '@/config/markets'
 
 const serviceOptions = [
   'Website Development',
@@ -16,14 +23,7 @@ const serviceOptions = [
   'Not sure yet',
 ]
 
-const budgetOptions = [
-  'Under R5,000',
-  'R5,000–R15,000',
-  'R15,000–R30,000',
-  'R30,000+',
-  'Not sure yet',
-]
-
+const CURRENCY_COOKIE = 'ets-currency'
 const timelineOptions = ['As soon as possible', 'Within 2–4 weeks', 'Within 1–3 months', 'Flexible']
 
 export default function ContactForm() {
@@ -34,12 +34,31 @@ export default function ContactForm() {
     name: '',
     email: '',
     phone: '',
+    country: '',
     service: '',
     budget: '',
     timeline: '',
     message: '',
     website: '',
   })
+  const [budgetCurrency, setBudgetCurrency] = useState<BudgetCurrency>(DEFAULT_BUDGET_CURRENCY)
+  const budgetOptions = getBudgetOptionsForCurrency(budgetCurrency)
+
+  useEffect(() => {
+    const savedCurrency = document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith(`${CURRENCY_COOKIE}=`))
+      ?.split('=')[1]
+    if (savedCurrency && isBudgetCurrency(savedCurrency)) setBudgetCurrency(savedCurrency)
+  }, [])
+
+  function handleBudgetCurrencyChange(value: string) {
+    if (!isBudgetCurrency(value)) return
+    setBudgetCurrency(value)
+    const secure = window.location.protocol === 'https:' ? '; Secure' : ''
+    document.cookie = `${CURRENCY_COOKIE}=${value}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`
+    setForm((current) => ({ ...current, budget: '' }))
+  }
 
   function updateField(field: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [field]: value }))
@@ -66,7 +85,7 @@ export default function ContactForm() {
         <div className="ets-contact-success" role="status">
           <p className="ets-eyebrow">Brief received</p>
           <h2>Thanks for the context.</h2>
-          <p>We’ll review your project details and follow up by email.</p>
+          <p>Your enquiry is with us. We’ll review it and send a clear first scope and next steps within 48 hours.</p>
           <Link className="ets-text-link" href="/">Back to Eva Tech Studio <span aria-hidden="true">↗</span></Link>
         </div>
       ) : (
@@ -81,22 +100,28 @@ export default function ContactForm() {
               <input autoComplete="email" name="email" type="email" required maxLength={254} value={form.email} onChange={(event) => updateField('email', event.target.value)} />
             </label>
             <label>
-              <span>Service</span>
-              <select name="service" required value={form.service} onChange={(event) => updateField('service', event.target.value)}>
+              <span>Service <small>Optional</small></span>
+              <select name="service" value={form.service} onChange={(event) => updateField('service', event.target.value)}>
                 <option value="">Choose a service</option>
                 {serviceOptions.map((option) => <option key={option}>{option}</option>)}
               </select>
             </label>
             <label>
-              <span>Budget</span>
-              <select name="budget" required value={form.budget} onChange={(event) => updateField('budget', event.target.value)}>
+              <span>Budget currency</span>
+              <select name="budgetCurrency" value={budgetCurrency} onChange={(event) => handleBudgetCurrencyChange(event.target.value)}>
+                {SUPPORTED_CURRENCIES.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>Budget ({budgetCurrency}) <small>Optional</small></span>
+              <select name="budget" value={form.budget} onChange={(event) => updateField('budget', event.target.value)}>
                 <option value="">Choose a range</option>
                 {budgetOptions.map((option) => <option key={option}>{option}</option>)}
               </select>
             </label>
             <label>
-              <span>Timeline</span>
-              <select name="timeline" required value={form.timeline} onChange={(event) => updateField('timeline', event.target.value)}>
+              <span>Timeline <small>Optional</small></span>
+              <select name="timeline" value={form.timeline} onChange={(event) => updateField('timeline', event.target.value)}>
                 <option value="">Choose a timeline</option>
                 {timelineOptions.map((option) => <option key={option}>{option}</option>)}
               </select>
@@ -104,6 +129,10 @@ export default function ContactForm() {
             <label>
               <span>Phone <small>Optional</small></span>
               <input autoComplete="tel" name="phone" type="tel" maxLength={50} value={form.phone} onChange={(event) => updateField('phone', event.target.value)} />
+            </label>
+            <label>
+              <span>Country <small>Optional</small></span>
+              <input autoComplete="country-name" name="country" maxLength={100} value={form.country} onChange={(event) => updateField('country', event.target.value)} />
             </label>
             <label className="ets-contact-message">
               <span>Tell us what you want to build</span>
@@ -114,7 +143,7 @@ export default function ContactForm() {
             <label htmlFor="contact-website">Leave this field empty</label>
             <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={(event) => updateField('website', event.target.value)} />
           </div>
-          {error && <p className="ets-form-error" role="alert">{error}</p>}
+          {error && <p id="contact-form-error" className="ets-form-error" role="alert">{error}</p>}
           <button className="ets-button primary" type="submit" disabled={loading}>
             {loading ? 'Sending brief…' : 'Send project brief'} <span aria-hidden="true">↗</span>
           </button>

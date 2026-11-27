@@ -4,7 +4,11 @@ import { requireAdmin } from '@/lib/rbac'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
-  if (new URL(request.url).searchParams.get('admin') === 'true' && !(await requireAdmin(request))) {
+  const adminRequest = new URL(request.url).searchParams.get('admin') === 'true'
+  if (!adminRequest) {
+    return NextResponse.json({ plans: [], source: 'service-pricing-config' })
+  }
+  if (!(await requireAdmin(request))) {
     return NextResponse.json({ error: 'Sign in from the admin dashboard to manage pricing.' }, { status: 401 })
   }
 

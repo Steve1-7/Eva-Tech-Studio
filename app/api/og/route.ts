@@ -1,45 +1,42 @@
-import { NextResponse } from 'next/server'
+import { createElement } from 'react'
+import { ImageResponse } from 'next/og'
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const title = (searchParams.get('title') || 'Eva Tech Studio').slice(0, 70)
-  const subtitle = (searchParams.get('subtitle') || 'Premium Digital Agency').slice(0, 100)
+export const runtime = 'edge'
 
-  const primary = '#6D28D9'
-  const accent = '#A855F7'
-  const bg = '#09090B'
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const title = (searchParams.get('title') || 'Eva Tech Studio').slice(0, 80)
+  const subtitle = (searchParams.get('subtitle') || 'Senior engineering for digital products.').slice(0, 140)
 
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>
-  <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-        <stop offset="0%" stop-color="${primary}" stop-opacity="0.95" />
-        <stop offset="100%" stop-color="${accent}" stop-opacity="0.85" />
-      </linearGradient>
-      <filter id="blur"><feGaussianBlur stdDeviation="30" /></filter>
-    </defs>
-    <rect width="1200" height="630" fill="${bg}" />
-    <g filter="url(#blur)" opacity="0.6">
-      <circle cx="980" cy="120" r="220" fill="url(#g)" />
-      <circle cx="160" cy="500" r="300" fill="url(#g)" />
-    </g>
-    <g>
-      <rect x="60" y="80" width="1080" height="470" rx="24" fill="rgba(255,255,255,0.02)" />
-      <rect x="60" y="80" width="1080" height="470" rx="24" stroke="rgba(255,255,255,0.04)" fill="none" />
-    </g>
-    <g transform="translate(100,180)">
-      <text x="0" y="0" font-family="Syne, Arial, sans-serif" font-weight="700" font-size="52" fill="#FAFAFA">${escapeXml(title)}</text>
-      <text x="0" y="70" font-family="DM Sans, Arial, sans-serif" font-weight="500" font-size="28" fill="#D1D1D6">${escapeXml(subtitle)}</text>
-    </g>
-    <g transform="translate(100,420)">
-      <rect x="0" y="0" width="220" height="40" rx="8" fill="${primary}" />
-      <text x="18" y="27" font-family="DM Sans, Arial, sans-serif" font-weight="600" font-size="16" fill="#09090B">Visit Eva-Tech-Studio.com</text>
-    </g>
-  </svg>`
+  const image = createElement(
+    'div',
+    {
+      style: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '76px 82px',
+        color: '#E8E3D8',
+        background: 'linear-gradient(135deg, #10100F 0%, #1C1A16 58%, #282217 100%)',
+        fontFamily: 'Arial, sans-serif',
+      },
+    },
+    createElement(
+      'div',
+      { style: { display: 'flex', alignItems: 'center', gap: 18, color: '#C9A96E', fontSize: 24, letterSpacing: 5 } },
+      createElement('span', { style: { width: 48, height: 2, background: '#C9A96E' } }),
+      'EVA TECH STUDIO',
+    ),
+    createElement(
+      'div',
+      { style: { display: 'flex', flexDirection: 'column', gap: 22, maxWidth: 1000 } },
+      createElement('div', { style: { fontSize: 62, lineHeight: 1.1, fontWeight: 700, letterSpacing: -2 } }, title),
+      createElement('div', { style: { color: '#B8B2A8', fontSize: 29, lineHeight: 1.35 } }, subtitle),
+    ),
+    createElement('div', { style: { width: 100, height: 5, background: '#C9A96E' } }),
+  )
 
-  return new NextResponse(svg, { headers: { 'Content-Type': 'image/svg+xml' } })
-}
-
-function escapeXml(s: string) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
+  return new ImageResponse(image, { width: 1200, height: 630 })
 }

@@ -1,13 +1,13 @@
 import React from 'react'
 import ServiceTemplate from '@/components/ServiceTemplate'
-import { canonicalUrl } from '@/lib/metadata'
-import { ogUrl } from '@/lib/og'
+import { canonicalUrl, createPageMetadata } from '@/lib/metadata'
 
-export const metadata = {
-  title: 'CRM Development — Eva Tech Studio',
+export const metadata = createPageMetadata({
+  title: 'CRM Development Services',
   description: 'Custom CRM and integrations tailored to your sales and support workflows.',
-  openGraph: { title: 'CRM Development — Eva Tech Studio', description: 'CRM development services', url: canonicalUrl('/services/crm-development'), image: ogUrl('CRM Development — Eva Tech Studio','Custom CRM and integrations tailored to your sales and support workflows.') }
-}
+  path: '/services/crm-development',
+})
+
 
 export default function Page() {
   const benefits = [
@@ -45,13 +45,13 @@ export default function Page() {
     <>
       <ServiceTemplate
         title="CRM Development"
+  canonicalPath="/services/crm-development"
         subtitle="Custom CRMs that power sales and support"
         intro="We build CRMs designed around your team's workflows, with automation and reporting built-in."
         benefits={benefits}
         process={process}
         pricing={pricing}
         faqs={faqs}
-        ctaText="Build My CRM"
       />
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
     </>
