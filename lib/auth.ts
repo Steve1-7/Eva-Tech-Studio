@@ -1,20 +1,41 @@
 import { supabaseAdmin } from './supabase'
 import { randomBytes } from 'node:crypto'
 
-function authorizedEmails(): string[] {
-  return (process.env.AUTHORIZED_EMAIL || '')
-    .split(',')
-    .map(email => email.trim().toLowerCase())
-    .filter(Boolean)
+const ADMIN_SESSION_PREFIX = 'v2.'
+
+export function normalizeAdminEmail(email: string): string {
+  return email.trim().toLowerCase()
+}
+
+export function isCurrentAdminSessionToken(token: string): boolean {
+  return token.startsWith(ADMIN_SESSION_PREFIX)
+}
+
+export async function isAuthorizedAdminEmail(email: string): Promise<boolean> {
+  const normalizedEmail = normalizeAdminEmail(email)
+  if (!normalizedEmail) return false
+
+  const { data, error } = await supabaseAdmin
+    .from('admin_access')
+    .select('email')
+    .eq('email', normalizedEmail)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`Admin access lookup failed: ${error.message}`)
+  }
+
+  return Boolean(data)
 }
 
 export async function createSession(email: string): Promise<string> {
-  const token = randomBytes(32).toString('base64url')
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+  const token = `${ADMIN_SESSION_PREFIX}${randomBytes(32).toString('base64url')}`
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
   const { data, error } = await supabaseAdmin
     .from('admin_sessions')
-    .insert({ token, email, expires_at: expiresAt.toISOString() })
+    .insert({ token, email: normalizeAdminEmail(email), expires_at: expiresAt.toISOString() })
     .select('id')
 
   if (error || !data?.length) {
@@ -25,29 +46,32 @@ export async function createSession(email: string): Promise<string> {
   return token
 }
 
-export async function validateSession(token: string): Promise<boolean> {
-  if (!token) return false
+export async function getAdminSessionEmail(token: string | null | undefined): Promise<string | null> {
+  if (!token || !isCurrentAdminSessionToken(token)) return null
 
   try {
     const { data: session, error } = await supabaseAdmin
       .from('admin_sessions')
-      .select('*')
+      .select('email')
       .eq('token', token)
       .gt('expires_at', new Date().toISOString())
       .maybeSingle()
 
     if (error) {
-      console.error('[AUTH] validateSession query error:', error)
-      return false
+      console.error('[AUTH] Session lookup failed:', error)
+      return null
     }
 
-    if (!session) return false
-
-    return authorizedEmails().includes(session.email?.toLowerCase())
-  } catch (e) {
-    console.error('[AUTH] validateSession unexpected error', e)
-    return false
+    if (!session?.email) return null
+    return await isAuthorizedAdminEmail(session.email) ? normalizeAdminEmail(session.email) : null
+  } catch (error) {
+    console.error('[AUTH] Session validation failed:', error)
+    return null
   }
+}
+
+export async function validateSession(token: string): Promise<boolean> {
+  return Boolean(await getAdminSessionEmail(token))
 }
 
 export async function validateSessionAsync(token: string): Promise<boolean> {
@@ -93,7 +117,6 @@ export async function getAuthInfo(request: Request): Promise<{ isAdmin: boolean;
   const token = getSessionFromRequest(request)
   const isAdmin = token ? await validateSessionAsync(token) : false
 
-  // Try to infer a client user id from common headers or cookies
   const headerUserId = request.headers.get('x-user-id')
   const cookieHeader = request.headers.get('cookie') || ''
   let cookieUserId: string | null = null
