@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
   const budget = body.budget || ''
   const timeline = body.timeline || ''
   const message = body.message
-  const apiKey = process.env.RESEND_API_KEY?.trim() || process.env.RESEND_EMAIL_RESEND_API_KEY?.trim() || ''
+  const apiKey = process.env.RESEND_EMAIL_RESEND_API_KEY?.trim() || process.env.RESEND_API_KEY?.trim() || ''
   const senderDomain = process.env.RESEND_EMAIL_DOMAIN?.trim() || 'eva-tech-studio.com'
   const recipient = process.env.CONTACT_TO_EMAIL?.trim() || defaultRecipient
   const sender = `Eva Tech Studio <contact@${senderDomain}>`

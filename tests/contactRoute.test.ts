@@ -28,6 +28,7 @@ function makeRequest(payload: unknown, ip: string) {
 beforeEach(() => {
   for (const key of envKeys) previousEnv.set(key, process.env[key])
   process.env.RESEND_API_KEY = 'mock-resend-key-for-tests'
+  process.env.RESEND_EMAIL_RESEND_API_KEY = 'mock-integration-resend-key-for-tests'
   process.env.RESEND_EMAIL_DOMAIN = 'eva-tech-studio.com'
   process.env.CONTACT_TO_EMAIL = 'info@eva-tech-studio.com'
 })
@@ -57,6 +58,9 @@ describe('POST /api/contact', () => {
     expect(response.status).toBe(200)
     expect(body.success).toBe(true)
     expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(fetchMock.mock.calls[0]?.[1]?.headers).toMatchObject({
+      Authorization: 'Bearer mock-integration-resend-key-for-tests',
+    })
     expect(emailRequest.from).toBe('Eva Tech Studio <contact@eva-tech-studio.com>')
     expect(emailRequest.to).toEqual(['info@eva-tech-studio.com'])
     expect(emailRequest.text).toContain('Within 2–4 weeks')
@@ -84,5 +88,6 @@ describe('POST /api/contact', () => {
     expect(loggedText).toContain('The sender address is not allowed.')
     expect(loggedText).toContain('Endpoint smoke test')
     expect(loggedText).not.toContain('mock-resend-key-for-tests')
+    expect(loggedText).not.toContain('mock-integration-resend-key-for-tests')
   })
 })
